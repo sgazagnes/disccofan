@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Testing last developments" 
+repet=5
+counter=1
+lambda=0
+while [ $counter -le $repet ]
+do
+lambda=$(($lambda + 101*$counter))
+
+echo -e "Lambda is $lambda"  >> Timingcheck.txt
+mpirun -np 1 ./disccoman -g 1,1,1 -l $lambda --outprefix GT --threads 1  --inprefix test --intype fits
+mpirun -np 32 ./disccoman -g 4,4,2 -l $lambda --outprefix out --threads 1  --inprefix test --intype fits 
+./src/misc/polyImage compare GT fits out fits 1
+((counter++))
+done
+
+

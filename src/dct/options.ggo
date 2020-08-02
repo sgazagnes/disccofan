@@ -1,0 +1,54 @@
+package "Area/DAP/Pattern spectrum"
+version "1.5"
+purpose "This program filters 1D, 2D or 3D images using distributed-memory parallel computation of max-trees"
+description "Area: Input files are expected to be preprocessed into tiles of the form [inprefix]-[x].[intype], e.g. tile-1.pgm to tile-8.pgm for a 2x2x2 grid. HDF5 files can be used (name should be [inprefix].h5).
+Fits images can be used (name should be [inprefix].fits). Output files will be generated following the same grid with [outprefix]-[x].[outtype], e.g. out-1.pgm to out-8.pgm for typical images format,
+HDF5 files will be saved as [outprefix].h5 and fits images as [outprefix].fits. 
+CSL: Three external output will be produced, the contrast output (C), the luminance (L), and the scale (S).
+Pattern: Only one output is produced, the pattern.txt file."
+
+section "Filename handling"
+text "These options select the prefix of the in- and output tiles, as well as the filetype and dataset name for HDF5 files"
+
+option "inprefix" - "Prefix of the filenames of input tiles" string optional default="tile"
+option "outprefix" o "Prefix of the filenames for the output tiles" string optional default="out"
+option "intype" - "filetype of the input tiles" string optional default="pgm"
+option "outtype" - "filetype of the output tiles" string optional
+option "infile" - "Define how the input files are organized. 0: 1 file to be divided internally, 1: Each process takes a different file (see expected format names), 2: same file copied on all processes, 3: Combine RBG files" int optional default="0"
+option "outfile" - "Define how the output files are organized. 0: 1 single file is written, 2: Each process writes his tile (see expected format names)" int optional 
+option "dataset" - "Name of the dataset if using HDF5 files" string optional 
+option "saveout" s "Save the output images. In case it needs to be deactivated for testing purposes" int values="0","1" optional default="1"
+option "overlap" - "Save the output images. In case it needs to be deactivated for testing purposes" int values="0","1" optional default="1"
+
+section "Tiles"
+text "The --grid (-g) option takes a three comma separated values which controls the number of expected horizontal, vertical and in depth tiles. The --threads option define the number of threads used for 
+local building and filtering of the trees (maximum 128)"
+
+option "grid" g "Number of tiles horizontally, vertically, in depth, comma separated" int multiple(3) required
+option "threads" - "Number of threads to use" int optional default="1"
+
+section "Image options"
+
+option "bpp" b "Define the dynamic range (if different from 8, 16 or 32 bits)" int optional default="8"
+option "refine" r "Transform the data in 16-bit per pixel if original range is higher" int optional default="0"
+option "image" - "Type of input: classic, rgb, lofar, sequence of 2D tiles to be combined internally" string optional default="classic"
+option "negative" - "Transform the data in 16-bit per pixel if original range is higher" int optional default="0"
+
+section "Filter options"
+
+option "attribute" a "Choose the attribute to build the tree" int optional default = "0"
+option "decision" d "Choose the pruning rule to filter the tree" int optional default = "0"
+option "flood" - "Choose the used flooding technique (0: Salembier, 1: Wilkinson). Default is 1 for >8 bits images, 0 for <= 8 bits images" int values="0","1","2" optional default="0"
+option "filter" f "Choose the used filter" string values="filter","csl","pattern","eor","test","none" optional default="filter"
+option "lambda" l "Lambda value" double optional default="100"
+option "lvec"  - "Lambda vector for  attribute" string optional default="res/lvec.txt"
+option "tree" t "Type of tree (Min or Max)" string values="min","max" optional default="max" 
+option "morphology" m "Type of morphological operation (opening or closing)" string values="opening","closing" optional default="opening" 
+option "connectivity" c "Type of connectivity (4 or 8 for 2D, 6 or 26 for 3D)" int values="4","8","6","26" optional default="4" 
+option "imscale" - "Scale for lvec file" float optional default="1.0"
+option "background" - "Account for background level in the pattern spectra" int optional default="0"
+
+
+section "Other options"
+option "verbosity" v "Add verbose output" values="OFF","off","ERROR","error","WARN","warn","INFO","info","DEBUG","debug","TRACE","trace","TIMING","timing","ALL","all" optional default="WARN"
+option "savetree" - "Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used)" int values="0","1" optional default="0"

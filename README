@@ -1,0 +1,155 @@
+---------------------------------------------------------------
+					README INFO PROGRAM
+---------------------------------------------------------------
+
+DIStributed Connected COMponent ANalysis [DISCCOMAN]
+Version "2.0" (23/10/2018)
+Authors: Simon Gazagnes, including code from Michael Wilkinson and Jan Kazemier
+Contact: s.r.n.gazagnes@rug.nl
+Publication: In prep
+License: -
+Purpose: This program filters 2D or 3D data set using distributed-memory
+         parallel computation of component trees. 
+         
+---------------------------------------------------------------
+						LIBRARIES
+---------------------------------------------------------------
+Libraries needed: OpenMPI, OpenMP, FreeImage, CFITSIO, HDF5
+
+
+---------------------------------------------------------------
+						COMPILER
+---------------------------------------------------------------
+
+Method works best with Intel compilers. Some conflict between OpenMP and OpenMPI seems to cause timings 10 to 100 times larger with GCC.
+The compilation is done with 
+
+make
+
+You might want to adapt the Makefile if some libraries are installer locally.
+
+---------------------------------------------------------------
+						RUN THE PROGRAM
+---------------------------------------------------------------
+The basic line command to run the program is (if in the program directory):
+
+mpirun -np [NUM_PROC] ./disccoman -g X,Y,Z --inprefix [imgprefix] --intype [imgtype] 
+
+This will run a direct pruning based on the area of connected component using a max-tree representation of the data. In this case, the file name is expected to be [imgprefix].[imgtype]. 
+The data will be divided internally and feed [NUM_PROC] processes ( [NUM_PROC] should be equal to X,Y,Z).
+The program allows also to use different attributes, file organization, pruning rules, multi scale operations... See the following part with the options descriptions
+
+---------------------------------------------------------------
+						COMMAND LINE OPTIONS
+---------------------------------------------------------------
+
+--grid (-g) X,Y,Z :  (REQUIRED) Defines the grid division of the full volume. Example, for a MPI distribution such that the fulle volume is divided in 4 parts horizontally, 8 parts vertically and 2 parts in depth,
+			then X = 4, Y = 8, Z = 2 (-g 4,8,2). Note that [NUM_PROC] should then be equal to X*Y*Z
+
+--infile [0-4] : (OPTIONAL) How the input images are organized:
+				      0: the input data is one single file that needs to be divided in this program (default). 
+				      1: the input data is already divided and the images have names such as [imgprefix]-[X].[imgtype] where [X] is the file to be processed by the process [X]. 
+				         Note that each file should include an overlap of 1 pixels from the neighbour tiles. See the notes at the end if this is not possible 
+				      2: the input data is a single file that will be loaded by each process. For testing purpose
+				      3: In case of combining RGB images (one file). For testing purpose currently
+				      4: In case of combining RGB images (individual files). For testing purpose currently
+
+--inprefix [imgprefix] : (OPTIONAL BUT SHOULD BE SPECIFIED) Prefix of the images to be read. Full names should be [imgprefix]-[X].[imgtype] if the volume is already divided in [NUM_PROC]*[X] files, 
+						 or [imgprefix].[imgtype] if the data has to be divided internally. Default name prefix are "tile"
+ 
+--intype [imgtype] : (OPTIONAL BUT SHOULD BE SPECIFIED) Type of the input image. Either classicial images format (png, jpg, pgm, tif ...), fits or h5. Default is "pgm"
+
+--dataset [dataset name]: (REQUIRED IF USING HDF5 FILES). Name of the dataset in the h5 file
+
+--refine (-r) [0 or 1] : (OPTIONAL) Refinement of the pixel intensities. Only if the initial data set is floating point or > to 16-bits, this option (if set to 1) will transform it into a 16-bit data set. Default is 0
+
+--outfile [0 or 1] : (OPTIONAL) Output file organization. 
+					  0: the output data will be written as one single file. 
+				      1: Each process will write a file corresponding to the tile (+ the overlapping pixels from neighbour tiles) that it processed. 
+						  Output file name will be [outputprefix]-[X].[outputtype] where [X] is id of the process that handled the tile  
+					  Default: Same as the option --infile
+
+--outtype [outputtype] : (OPTIONAL) Format for the output files, either classicial images format (png, jpg, pgm, tif ...), fits or h5.. By default, the output format is the same as the input format.
+
+--outprefix [outputprefix]: (OPTIONAL) Prefix of the output files. The output files created will have their name as [outputprefix]-[X].[outputtype] if [outfile] is 1, 
+							[outputprefix].[outputtype] is [outfile] is 0. By default, out prefix name is "out", "out-{L,S,C}" for differential profile or "pattern.txt" for pattern spectra.
+
+--saveout (-s) [0 or 1] : (OPTIONAL) Choice to save the output images. By default, the program saves all output files (1). 
+
+--threads [Number of threads] : (OPTIONAL) Number of threads to use in each process. Default is the environment OMP_NUM_THREADS.
+
+--bitsperpixel (-b) [bit-per-pixel] : (OPTIONAL) Manually specify the dynamic range of the image. To use only if you know a priori the dynamic range of the data set used, as it can speed the method 
+									(if allocation has to be done only for 28 bits rather than 32).  
+					
+--flood [0-2]  : (OPTIONAL) Flooding algorithm:
+			0: Salembier's method (default for data set with bit depth < 16 bits)
+			1: Improved Wilkinson's method by Paul Teeninga (default if floating point data or bit depth >= 16 bits)
+			2: Basic Wilkinson's method (if improved method fail, as it seems to be instable depending on the hardware architectures and compilers)
+			
+--attribute (-a) [0-7] : (OPTIONAL) Choose the attribute used in the tree nodes
+						0: Area (default)
+						1: Area of min enclosing rectangle
+						2: Square of diagonal of minimal enclosing rectangle
+						3: Moment of inertia
+						4: (Moment of Inertia) / (area)^2
+						5: Mean X position
+						6: Mean Y position
+						7: Mean Z position
+
+--filter (-f) [operation]: (OPTIONAL) Choice of the method to apply:
+							"filter": Basic tree pruning based on the attribute choice (default)
+							"differential": Differential profile based on the attribute choice
+							"pattern":  Pattern spectra based on the attribute choice
+							"none": No filtering 
+
+--decision (-d) [0-3] : (OPTIONAL) Choose the pruning rule (only in case of filtering, not for differential profile or pattern spectra)
+						0: Direct pruning (default): The direct rule consists of simply removing the nodes that have to be removed even if this does not create a pruning strategy. The pixels belonging to the nodes that have been
+							removed are merged to the node of their first ancestor that has to be preserved. 
+						1: Min pruning. The min rule prunes the branches from the leaves up tothe last node that has to be removed. 
+						2: Max pruning. The max rule prunes the branches from the leaves up to the first node that has to be preserved.
+						3: Subtractive pruning. The subtractive rule is the same as the direct rule except that the gray levels of surviving descendants of removed nodes are also lowered, so that the contrast with the
+							local background remains the same.
+
+--lambda (-l) [value] : (OPTIONAL BUT SHOULD BE SPECIFIED IF -f IS FILTER) Threshold value for pruning. Default value is 100
+
+--lvec [file name]: (OPTIONAL) Lambda vector file name. By default is the file in the directory res, named lvec.txt
+
+--tree (-t) [tree representation]: (OPTIONAL) Type of tree representation:
+									Min: Min-tree
+									Max: Max-tree (default)
+			
+--morphology (-m) [morphological operation]: (OPTIONAL) Type of morphological operation.
+											opening: Morphological opening based on attribute choice (default)
+											closing: Morphological closing based on attribute choice
+					
+--connectivity (-c) [connectivity]: (OPTIONAL) Type of connectivity:
+									4:  4 connectivity for 2D dataset (default for 2D)
+									6:  6 connectivity for 3D dataset (default for 3D)
+									8:  8 connectivity for 2D dataset
+									26: 26 connectivity for 3D dataset	
+										
+--imscale [value] :(OPTIONAL) Scaling factor for thresholds in the vector file (lvec option). Default is 1.0
+
+--background [0 or 1]: (OPTIONAL) Account for background intensity pixels in the pattern spectra, default is 0.
+
+--verbosity (-v) [verbosity]: (OPTIONAL) Add verbose output
+							"off": No verbose output, except for warnings and errors (default)
+							"timing": Timings of main steps performed
+							"info": Addtionnal information from proc 0
+							"debug": Follow-up of every steps in each process
+							"all": Equivalent to debug
+							
+--interactive (-i) [0 or 1] "Interactive mode, where you can change the value of lambda in an interactive manner and see the output obtained. Not activated by default (0)
+
+---------------------------------------------------------------
+				ADDITIONNAL DESCRIPTION 
+---------------------------------------------------------------
+
+- Any new attributes can be easily added by including them in the attributes .c and .h files. 
+- In case of really huge files, there might be issues in the communication process. This comes from the MPI library and should be solved soon.
+- The method used here takes advantage of an overlapping border that basically included a 1 pixel overlap from the pixels in the neighbour tiles. 
+	This is handled internally when the file to process is a single file, but this needs to be included if the file is divided before by the user.
+	If the latter case is not possible, you can use a second version of the program (slower but results in the same output), that does not need this overlapping border in each tile.
+	To do so, use 
+	     make disccoman_skiplist
+	And then do use it in the same way than the classical executable. (mpirun -np [NUM_PROC] ./disccoman_skiplist -g X,Y,Z --inprefix [imgprefix] --intype [imgtype])
