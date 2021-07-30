@@ -97,14 +97,14 @@ int main(int argc, char** argv) {
      return -1;
      }*/
  
-  fprintf(stdout, "CHECK DISCCOMAN VALIDITY, MODE:" GRN "  %s\n"RESET, mode);  fflush(stdout);
+  fprintf(stdout, "CHECK DISCCOFAN VALIDITY, MODE:" GRN "  %s\n"RESET, mode);  fflush(stdout);
   // fprintf(LOG, "CHECK DISCCOMAN VALIDITY, MODE: %s\n", mode);
 
 
   if(choice == IO || choice == ALL){
-    fprintf(stdout, CYN "Checking I/O: start\n" RESET);  fflush(stdout);
+    fprintf(stdout, CYN "\n\n Checking I/O: start\n" RESET);  fflush(stdout);
     fprintf(stdout,  "\n PGM to PGM, single file \n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 -v off");
     if( access("out.pgm", F_OK ) != -1){
       system("./polyImage compare check_files/lena512 pgm out pgm 1");
       system("rm *pgm *fits");
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to PGM, single to chunks\n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outfile 1 -v off");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outfile 1 -v off");
     if( access("out-0.pgm", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out pgm 4");
       system("rm *pgm *fits");
@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to PGM, chunks to chunks\n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outfile 1 -v off --overlap 1");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outfile 1 -v off --overlap 1");
     if( access("out-0.pgm", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out pgm 4");
       system("rm *pgm *fits");
@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
 
     
     fprintf(stdout,  "\n\n\n PGM to FITS, single file\n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype fits -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype fits -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena512 pgm out fits 1");
       system("rm *fits");
@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to FITS, single to chunks\n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype fits --outfile 1 -v off");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype fits --outfile 1 -v off");
     if( access("out-0.fits", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out fits 4");
       system("rm *fits");
@@ -156,7 +156,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to FITS, chunks to single \n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype fits --outfile 0 -v off --overlap 1");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype fits --outfile 0 -v off --overlap 1");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena512 pgm out fits 1");
       system("rm *fits");
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to FITS, chunks to chunks \n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype fits --outfile 1 -v off --overlap 1");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype fits --outfile 1 -v off --overlap 1");
     if( access("out-0.fits", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out fits 4");
       system("rm *fits");
@@ -177,7 +177,7 @@ int main(int argc, char** argv) {
 
     
     fprintf(stdout,  "\n\n\n PGM to H5, single file\n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype h5 -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype h5 -v off");
     if( access("out.h5", F_OK ) != -1){
        system("./polyImage compare check_files/lena512 pgm out h5 1 p filter_Area_0");
       system("rm *fits *h5");
@@ -187,7 +187,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to H5, single to chunks\n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype h5 --outfile 1 -v off");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/lena512 --intype pgm -l 0 --threads 1 --outtype h5 --outfile 1 -v off");
     if( access("out-0.h5", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out h5 4 p filter_Area_0");
       system("rm *fits *h5");
@@ -197,7 +197,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to H5, chunks to single\n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype h5 --outfile 0 -v off");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype h5 --outfile 0 -v off");
     if( access("out.h5", F_OK ) != -1){
       system("./polyImage compare check_files/lena512 pgm out h5 1 p filter_Area_0");
       system("rm *fits *h5");
@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n PGM to H5, chunks to chunks \n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype h5 --outfile 1 -v off --overlap 1");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype pgm --infile 1 -l 0 --threads 1 --outtype h5 --outfile 1 -v off --overlap 1");
     if( access("out-0.h5", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out h5 4 p filter_Area_0");
       system("rm *fits *h5");
@@ -217,7 +217,7 @@ int main(int argc, char** argv) {
     }
       
     fprintf(stdout,  "\n FITS to FITS, single file (2D) \n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/lena512 --intype fits -l 0 --threads 1 --outtype fits  -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/lena512 --intype fits -l 0 --threads 1 --outtype fits  -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena512 fits out fits 1 ");
       system("rm *fits");
@@ -227,7 +227,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n FITS to FITS, single file to chunks (2D) \n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/lena512 --intype fits -l 0 --threads 1 --outtype fits --outfile 1 -v off");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/lena512 --intype fits -l 0 --threads 1 --outtype fits --outfile 1 -v off");
     if( access("out-0.fits", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out fits 4 ");
       system("rm *fits");
@@ -237,7 +237,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n FITS to FITS, chunks to chunks (2D) \n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 1 -v off --overlap 1");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 1 -v off --overlap 1");
     if( access("out-0.fits", F_OK ) != -1){
       system("./polyImage compare check_files/tile pgm out fits 4 ");
       system("rm *fits");
@@ -247,7 +247,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n FITS to FITS, chunks to single (2D) \n" );  fflush(stdout);
-    system("mpirun -np 4 ./disccoman -g 2,2,1 --inprefix check_files/tileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 0 -v off --overlap 1");
+    system("mpirun -np 4 ./disccofan -g 2,2,1 --inprefix check_files/tileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 0 -v off --overlap 1");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena512 fits out fits 1 ");
       system("rm *fits");
@@ -259,7 +259,7 @@ int main(int argc, char** argv) {
 
       
     fprintf(stdout,  "\n\n\n FITS to FITS, single file (3D) \n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype fits  -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype fits  -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b fits out fits 1 ");
       system("rm *fits");
@@ -269,7 +269,7 @@ int main(int argc, char** argv) {
     }
     
     fprintf(stdout,  "\n FITS to FITS, single file to chunks (3D) \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype fits --outfile 1 -v off");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype fits --outfile 1 -v off");
     if( access("out-0.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Checktile fits out fits 8 ");
       system("rm *fits");
@@ -279,7 +279,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n FITS to FITS, chunks to chunks (3D) \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 1 -v off");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 1 -v off");
     if( access("out-0.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Checktile fits out fits 8 ");
       system("rm *fits");
@@ -289,7 +289,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n FITS to FITS, chunks to single (3D) \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 0 -v off --overlap 1");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype fits --outfile 0 -v off --overlap 1");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b fits out fits 1 ");
       system("rm *fits");
@@ -300,7 +300,7 @@ int main(int argc, char** argv) {
 
       
     fprintf(stdout,  "\n\n\n FITS to H5, single file (3D) \n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype h5  -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype h5  -v off");
     if( access("out.h5", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b fits out h5 1 p filter_Area_0 ");
       system("rm *fits *h5");
@@ -310,7 +310,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n FITS to H5, single file to chunks (3D) \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype h5 --outfile 1 -v off");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Check16b --intype fits -l 0 --threads 1 --outtype h5 --outfile 1 -v off");
     if( access("out-0.h5", F_OK ) != -1){
       system("./polyImage compare check_files/Checktile fits out h5 8 p filter_Area_0");
       system("rm *fits *h5");
@@ -320,7 +320,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n FITS to H5, chunks to chunks (3D) \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype h5 --outfile 1 -v off --overlap 1 ");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype h5 --outfile 1 -v off --overlap 1 ");
     if( access("out-0.h5", F_OK ) != -1){
       system("./polyImage compare check_files/Checktile fits out h5 8  p filter_Area_0");
       system("rm *fits *h5");
@@ -330,7 +330,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n FITS to H5, chunks to single (3D) \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype h5 --outfile 0 -v off --overlap 1");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Checktileov --intype fits --infile 1 -l 0 --threads 1 --outtype h5 --outfile 0 -v off --overlap 1");
     if( access("out.h5", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b fits out h5 1 p filter_Area_0 ");
       system("rm *fits *h5");
@@ -341,9 +341,9 @@ int main(int argc, char** argv) {
   }
 
   if(choice == FILTER || choice == ALL){
-    fprintf(stdout, CYN "Checking Filtering: start\n" RESET);  fflush(stdout);
+    fprintf(stdout, CYN "\n\n Checking Filtering: start\n" RESET);  fflush(stdout);
     fprintf(stdout,  "\n\n\n Lena (512x512 2D 8bit), 1 MPI proc, 1 thread \n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/lena512 --intype pgm -f test --threads 1 -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/lena512 --intype pgm -f test --threads 1 -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena_check fits out fits 1");
       system("rm *fits");
@@ -354,7 +354,7 @@ int main(int argc, char** argv) {
    
 
     fprintf(stdout,  "\n\n\n Lena (512x512 2D 8bit ), 32 MPI proc, 1 thread \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 32 ./disccoman -g 8,4,1 --inprefix check_files/lena512 --intype pgm -f test --threads 1 -v off --outtype fits");
+    system("mpirun --oversubscribe -np 32 ./disccofan -g 8,4,1 --inprefix check_files/lena512 --intype pgm -f test --threads 1 -v off --outtype fits");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena_check fits out fits 1");
       system("rm *fits");
@@ -365,7 +365,7 @@ int main(int argc, char** argv) {
     
     
     fprintf(stdout,  "\n\n\n Lena (512x512 2D 8bit), 4 MPI proc, 8 thread \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 4 ./disccoman -g 2,2,1 --inprefix check_files/lena512 --intype pgm -f test --threads 8 -v off --outtype fits");
+    system("mpirun --oversubscribe -np 4 ./disccofan -g 2,2,1 --inprefix check_files/lena512 --intype pgm -f test --threads 8 -v off --outtype fits");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/lena_check fits out fits 1");
       system("rm *fits");
@@ -377,7 +377,7 @@ int main(int argc, char** argv) {
     
   
     fprintf(stdout,  "\n\n\n Random image (200x100x150 3D 16bit), 1 MPI proc, 1 thread, lambda \n" );  fflush(stdout);
-    system("mpirun -np 1 ./disccoman -g 1,1,1 --inprefix check_files/Check16b --intype fits -f test --threads 1 -v off");
+    system("mpirun -np 1 ./disccofan -g 1,1,1 --inprefix check_files/Check16b --intype fits -f test --threads 1 -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b_check fits out fits 1");
       system("rm *fits");
@@ -388,7 +388,7 @@ int main(int argc, char** argv) {
   
     
     fprintf(stdout,  "\n Random image (200x100x150 3D 16bit), 32 MPI proc, 1 thread \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 32 ./disccoman -g 4,2,4 --inprefix check_files/Check16b --intype fits -f test --threads 1 -v off");
+    system("mpirun --oversubscribe -np 32 ./disccofan -g 4,2,4 --inprefix check_files/Check16b --intype fits -f test --threads 1 -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b_check fits out fits 1");
       system("rm  *fits");
@@ -398,7 +398,7 @@ int main(int argc, char** argv) {
     }
       
     fprintf(stdout,  "\n\n\n Random image (200x100x150 3D 16bit), 4 MPI proc, 3 threads \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Check16b --intype fits -f test --threads 3 -v off");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Check16b --intype fits -f test --threads 3 -v off");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b_check fits out fits 1");
       system("rm *fits");
@@ -408,7 +408,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n\n\n Random image (200x100x150 3D 16bit), 4 MPI proc, 3 threads, connectivity 26 \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Check16b --intype fits -f test --threads 3 -v off -c 26");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Check16b --intype fits -f test --threads 3 -v off -c 26");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b_check26 fits out fits 1");
       system("rm *fits");
@@ -418,7 +418,7 @@ int main(int argc, char** argv) {
     }
 
     fprintf(stdout,  "\n\n\n Random image (200x100x150 3D 16bit), 4 MPI proc, 3 threads, Attribute inertia \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 2,2,2 --inprefix check_files/Check16b --intype fits -f test --threads 3 -v off -a 4");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 2,2,2 --inprefix check_files/Check16b --intype fits -f test --threads 3 -v off -a 4");
     if( access("out.fits", F_OK ) != -1){
       system("./polyImage compare check_files/Check16b_checkIn fits out fits 1");
       system("rm *fits");
@@ -429,9 +429,9 @@ int main(int argc, char** argv) {
   }
 
   if(choice == CSL || choice == ALL){
-    fprintf(stdout, CYN "Checking CSL segmentation: start\n" RESET);  fflush(stdout);
+    fprintf(stdout, CYN "\n\n Checking CSL segmentation: start\n" RESET);  fflush(stdout);
     fprintf(stdout,  "\n\n\n Lena image (512x512 2D 8bit), 8 MPI proc, 4 thread, lvec.txt \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 4,2,1 --inprefix check_files/lena512 --intype pgm --threads 4 -v off --filter csl --outtype fits");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 4,2,1 --inprefix check_files/lena512 --intype pgm --threads 4 -v off --filter csl --outtype fits");
     if( access("out-C.fits", F_OK ) != -1 && access( "out-L.fits", F_OK ) != -1 && access( "out-S.fits", F_OK ) != -1) {
       system("./polyImage compare check_files/C pgm out-C fits 1");
       system("./polyImage compare check_files/L pgm out-L fits 1");
@@ -444,7 +444,7 @@ int main(int argc, char** argv) {
 
       
     fprintf(stdout,  "\n Random image (200x100x150 3D 16bit), 8 MPI proc, 3 threads, lvec.txt \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 4,2,1 --inprefix check_files/Check16b --intype fits  --threads 3 -v off --filter csl");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 4,2,1 --inprefix check_files/Check16b --intype fits  --threads 3 -v off --filter csl");
     if( access("out-C.fits", F_OK ) != -1 && access( "out-L.fits", F_OK ) != -1 && access( "out-S.fits", F_OK ) != -1) {
       system("./polyImage compare check_files/Check-C fits out-C fits 1");
       system("./polyImage compare check_files/Check-L fits out-L fits 1");
@@ -457,9 +457,9 @@ int main(int argc, char** argv) {
   }
 
   if(choice == PATTERN || choice == ALL){
-    fprintf(stdout, CYN "Checking Pattern segmentation: start\n" RESET);  fflush(stdout);
+    fprintf(stdout, CYN "\n\n Checking Pattern spectrum: start\n" RESET);  fflush(stdout);
     fprintf(stdout,  "\n\n\n Lena image (512x512 2D 8bit), 8 MPI proc, 4 thread, lvec.txt \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 4,2,1 --inprefix check_files/lena512 --intype pgm --threads 4 -v off --filter pattern");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 4,2,1 --inprefix check_files/lena512 --intype pgm --threads 4 -v off --filter pattern");
     if( access("pattern.txt", F_OK ) != -1) {
       system("./polyImage compare check_files/lenapatt txt pattern txt 1");
       system("rm *txt");
@@ -470,7 +470,7 @@ int main(int argc, char** argv) {
 
       
     fprintf(stdout,  "\n Random image (200x100x150 3D 16bit), 8 MPI proc, 3 threads, lvec.txt \n" );  fflush(stdout);
-    system("mpirun --oversubscribe -np 8 ./disccoman -g 4,2,1 --inprefix check_files/Check16b --intype fits  --threads 3 -v off --filter pattern");
+    system("mpirun --oversubscribe -np 8 ./disccofan -g 4,2,1 --inprefix check_files/Check16b --intype fits  --threads 3 -v off --filter pattern");
     if( access("pattern.txt", F_OK ) != -1) {
       system("./polyImage compare check_files/Checkpat txt pattern txt 1");
       system("rm *txt");

@@ -5,8 +5,8 @@
 //#include <stdlib.h>
 #include <string.h>
 
-#include "tree.h"
-#include "constants.h"
+//#include "flood.h"
+//include "constants.h"
 #include "writefile.h"
 #include "types.h"
 #include "checks.h"
@@ -17,7 +17,7 @@
 
 void write_boundary_file_ascii(Boundary *b, const char *filename) {
   FILE *fp = fopen(filename, "w");
-  check_not_null(fp, errno);
+  // check_not_null(fp, errno);
 
   fprintf(fp, "array: %p\n", (void*) b->array);
   fprintf(fp, "size: %zu\n", b->size_curr);
@@ -40,7 +40,7 @@ void write_boundary_file_ascii(Boundary *b, const char *filename) {
 void write_boundary_file_txt(Boundary *b, const char *fname) {
   char *fname_attr;
   FILE *fp = fopen(fname, "wb");
-  check_not_null(fp, errno);
+  //check_not_null(fp, errno);
   asprintf(&fname_attr, "%s_attr", fname);
   FILE *fp_attr = fopen(fname_attr, "wb");
   check_not_null(fp_attr, errno);
@@ -72,7 +72,7 @@ void write_boundary_file_txt(Boundary *b, const char *fname) {
 
 void write_tree_file_acsii(Node *m, ulong size, const char *filename) {
   FILE *fp = fopen(filename, "w");
-  check_not_null(fp, errno);
+  //  check_not_null(fp, errno);
 
   fprintf(fp, "size: %zu\n", size);
   fprintf(fp, "+ b-index   +   index   +   parent   + gval +\n");
@@ -100,12 +100,12 @@ void write_tree_file_txt(Arguments args, Node *tree, ulong size, ulong *dims_ti,
   if(np() == 1) asprintf(&fname_file, "saves/Component_tree_%s.txt", image_name);
   else asprintf(&fname_file, "saves/Component_tree_%s_part_%d.txt", image_name, rank());
   FILE *fp = fopen(fname_file, "wb");
-  check_not_null(fp, errno);
+  // check_not_null(fp, errno);
 
   if(np() == 1) asprintf(&fname_attr, "saves/Attributes_%s.txt", image_name);
   else asprintf(&fname_attr, "saves/Attributes_%s_part_%d.txt", image_name, rank());
   FILE *fp_attr = fopen(fname_attr, "wb");
-  check_not_null(fp_attr, errno);
+  // check_not_null(fp_attr, errno);
 
  
   fprintf(fp, "Image prefix: %s \n", args.inprefix_arg);
@@ -155,12 +155,12 @@ void write_tree_binary(Arguments args, Node *tree, ulong size) {
   if(np() == 1) asprintf(&fname_file, "Component_tree_%s", image_name);
   else asprintf(&fname_file, "Component_tree_%s_part_%d", image_name, rank());
   FILE *fp = fopen(fname_file, "wb");
-  check_not_null(fp, errno);
+  //  check_not_null(fp, errno);
 
   if(np() == 1) asprintf(&fname_attr, "Attributes_%s", image_name);
   else asprintf(&fname_file, "Attributes_%s_part_%d", image_name, rank());
   FILE *fp_attr = fopen(fname_attr, "wb");
-  check_not_null(fp_attr, errno);
+  // check_not_null(fp_attr, errno);
 
   fwrite(tree, sizeof(Node), size, fp);
 
@@ -179,7 +179,7 @@ void write_params_txt(Arguments args,  ulong *dims_i, int bitpix) {
   else image_name++;
   asprintf(&fname_file, "Parameters_%s.txt", image_name);
   FILE *fp = fopen(fname_file, "wb");
-  check_not_null(fp, errno);
+  // check_not_null(fp, errno);
 
  
   fprintf(fp, "Image prefix: %s \n", args.inprefix_arg);
@@ -208,7 +208,7 @@ Node *read_tree_file_txt(Arguments *args, ulong* size_tree, ulong *size_tile, ul
   if(np() == 1) asprintf(&fname_file, "saves/Component_tree_%s.txt",args->inprefix_arg);
   else asprintf(&fname_file, "saves/Component_tree_%s_part_%d.txt", args->inprefix_arg, rank());
   FILE *fp = fopen(fname_file, "rb");
-  check_not_null(fp, errno);
+  // check_not_null(fp, errno);
   int numproc;
   
   fscanf(fp, "Image prefix: %s \n", args->inprefix_arg);

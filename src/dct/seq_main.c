@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
   ulong 	dims_img[3]     = {1, 1, 1}; 
   parse_args(argc, argv, &args);			// Read input arguments //
 
-  info("******* DISCCOMAN, starting... ******* \n");
+  info("******* DISCCOFAN, starting... ******* \n");
 
   check_bytes();
   create_mpi_value_type();				// Create MPI struct for value type //
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
   check_operation(&args, local_tree,  g_max_greyval);    
 
   // Initialization of attributes functions //
-  
+  info("Attribute choice: %s",     	AttribsArray[args.attribute_arg].name);
   local_tree->size_attr  = AttribsArray[args.attribute_arg].size;
   new_aux_data           = AttribsArray[args.attribute_arg].new_data;
   init_aux_data          = AttribsArray[args.attribute_arg].init_data;
@@ -243,7 +243,7 @@ int main(int argc, char** argv) {
   else 
     info("Error or no filter chosen");
   
-  info("******* End of DISCCOMAN, cleaning ... *****\n\n");
+  info("******* End of DISCCOFAN, cleaning ... *****\n\n");
   /* +++++++++++++++++++++++++++++++ */
   /*              Clean Up           */
   /* +++++++++++++++++++++++++++++++ */

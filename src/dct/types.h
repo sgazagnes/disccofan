@@ -181,6 +181,12 @@ typedef struct _InertiaData {
    double sumX, sumY, sumZ, sumR2;
 } InertiaData;
 
+typedef struct _InertiaDataFull {
+  double area, sumval, sumval2;//, sumvald, sumval2d;
+  double sumX, sumY, sumZ, sumX2, sumY2, sumZ2, sumXY, sumYZ, sumXZ;
+  //double sumXd, sumYd, sumZd, sumX2d, sumY2d, sumZ2d, sumXYd, sumYZd, sumXZd;
+} InertiaDataFull;
+
 /* Attribute enclosing rectangle Structure */
 typedef struct _EnclRectData {
    ulong minX;
@@ -208,7 +214,7 @@ typedef struct _AttribStruct{
   const char 	 *name;
   ulong  size;
   void 	 *(*new_data)(AuxDataStore *, void *);
-  void   (*init_data)(void *, bool , ulong , ulong,  ulong);
+  void   (*init_data)(void *, bool , ulong , ulong,  ulong, value);
   void   (*delete_data)(void *);
   void   (*add_to_data)(void *, void*);
   void   (*merge_data)(void *, void *);
@@ -227,7 +233,7 @@ typedef struct _AttribStruct{
 #define BOTTOM (-1)
 #define MAXDIM 4
 #define MAXTHREADS 512
-#define NUMATTR 8
+#define NUMATTR 13
 #define NUMDECISIONS 4
 #define NUMBUCKETS 65536
 

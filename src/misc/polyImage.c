@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
       int   negative     = atoi(argv[9]);
       int   n_dims       = dims[2] > 1 ? 3 : 2;
       ulong size         = dims[0] * dims[1] * dims[2];
-      
+      printf("%ld, %ld \n", size, dims[0]);
       if(atoi(argv[2]) == 0)       im_out = create_random(size, bitpix, negative);
       else if(atoi(argv[2]) == 1)  im_out = create_sequence(size, bitpix, negative);
       else if(atoi(argv[2]) == 2)  im_out = create_ioniz(size, atof(argv[10]), dims);

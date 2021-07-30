@@ -1,1 +1,0 @@
-ulong prio_queue_find(PrioQueue *q, ulong prefix);

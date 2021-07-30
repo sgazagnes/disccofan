@@ -161,3 +161,43 @@ void create_mpi_inertia_type(void) {
 } /* create_mpi_inertia_type */
 
 
+void create_mpi_inertiafull_type(void) {
+  /* Create MPI_Type for MaxTree Nodes */
+
+  const int nitems = 12;
+  int blocklengths[12] = {1,1,1,1,1,1,1,1,1,1,1,1};
+  MPI_Aint offsets[12];
+  offsets[0] = offsetof(InertiaDataFull, area);
+  offsets[1] = offsetof(InertiaDataFull, sumX);
+  offsets[2] = offsetof(InertiaDataFull, sumY);
+  offsets[3] = offsetof(InertiaDataFull, sumZ);
+  offsets[4] = offsetof(InertiaDataFull, sumX2);
+  offsets[5] = offsetof(InertiaDataFull, sumY2);
+  offsets[6] = offsetof(InertiaDataFull, sumZ2);
+  offsets[7] = offsetof(InertiaDataFull, sumXY);
+  offsets[8] = offsetof(InertiaDataFull, sumYZ);
+  offsets[9] = offsetof(InertiaDataFull, sumXZ);
+  offsets[10] = offsetof(InertiaDataFull, sumval);
+  offsets[11] = offsetof(InertiaDataFull, sumval2);
+
+
+  /* skipped global index here */
+
+  MPI_Datatype types[12] = {
+    MPI_UINT64_T,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+  };
+
+  MPI_Type_create_struct(nitems, blocklengths, offsets, types, &mpi_attribute_type);
+  MPI_Type_commit(&mpi_attribute_type);
+} /* create_mpi_inertia_type */

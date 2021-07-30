@@ -92,7 +92,7 @@ void build_local_tree(Arguments *args, Node *local_tree, ulong *dims){
     PrioQueue *q        = create_prio_queue(upb-lwb-1, &work_alloc);
     BitArray *visited   = create_bit_array(upb-lwb, &work_alloc);
     
-    init_attrib_array(local_tree->attribute, local_tree->border, dims, local_tree->offsets, lwb, upb, local_tree->size_attr);
+    init_attrib_array(local_tree->attribute, local_tree->gval, local_tree->border, dims, local_tree->offsets, lwb, upb, local_tree->size_attr);
     
     tree_flood(local_tree->parent, local_tree->attribute, visited, q, ranks+lwb, ranks_inv, dims, lwb, upb, connectivity, local_tree->size_attr);
     
@@ -258,7 +258,7 @@ void build_local_tree_att(Node *local_tree, ulong *ranks,  ulong *dims){
   bool *visited     = calloc(local_tree->size_curr, sizeof(bool));  check_alloc(visited, 603);
   local_tree->attribute 	= malloc(local_tree->size_curr * local_tree->size_attr);
 
-  init_attrib_array(local_tree->attribute, local_tree->border, dims, local_tree->offsets, 0, local_tree->size_curr, local_tree->size_attr);
+  init_attrib_array(local_tree->attribute, local_tree->gval, local_tree->border, dims, local_tree->offsets, 0, local_tree->size_curr, local_tree->size_attr);
   for( long i = local_tree->size_curr-1; i >= 0; i--) {
     idx p = ranks[i];
     visited[p] = true;

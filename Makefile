@@ -3,8 +3,8 @@
 CC          := mpicc
 CCMISC      := gcc 
 #The Target Binary Program
-TARGETA      := disccoman
-TARGETB      := dct_interactive
+TARGETA      := disccofan
+TARGETB      := disccofan_interactive
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src/dct

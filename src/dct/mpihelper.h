@@ -16,4 +16,5 @@ void create_mpi_borderindex_type(void);
 void create_mpi_area_type(void);
 void create_mpi_rect_type(void);
 void create_mpi_inertia_type(void);
+void create_mpi_inertiafull_type(void);
 #endif

@@ -354,6 +354,7 @@ double *create_bubbles_ov(ulong dim, ulong size, float fract, int periodic){
 
 double *create_bubbles_nov(ulong dim, ulong size,  float fract, int periodic){
   double *gvals_out = calloc(size, sizeof(double));
+
   //memset(gvals_out, 1, size * sizeof(double));
   srand(time(NULL));
   ulong npixels = (ulong) (fract * size);
@@ -362,7 +363,8 @@ double *create_bubbles_nov(ulong dim, ulong size,  float fract, int periodic){
     double myRand = rand()/(1.0 + RAND_MAX); 
     int range = size + 1;
     int myRand_scaled = myRand * range;
-    double r = round(randn(5, 3));
+    double r = round(randn(10, 10));
+
     // double r = 10;
     long x0 = myRand_scaled%dim;
     long z0 = myRand_scaled/(dim*dim);
@@ -375,6 +377,7 @@ double *create_bubbles_nov(ulong dim, ulong size,  float fract, int periodic){
     if ((x0 - r -2< 0 || x0 + r +2>= dim) && !periodic) continue;
     if ((y0 - r -2< 0 || y0 + r +2>= dim) && !periodic) continue;
     if ((z0 - r -2< 0 || z0 + r +2>= dim) && !periodic) continue;
+
     for (z=z0-r-2;z<=z0+r+2;z++){
       dz = z-z0;
       zp = z;
@@ -394,6 +397,8 @@ double *create_bubbles_nov(ulong dim, ulong size,  float fract, int periodic){
 	}
       }
     }
+    printf("r is %lf, npixels_v id %d, ok is %d \n", r, npixels_c, ok);
+
     if(ok){
       for (z=z0-r;z<=z0+r;z++){
 	dz = z-z0;
