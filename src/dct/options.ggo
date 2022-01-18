@@ -11,7 +11,7 @@ section "Filename handling"
 text "These options select the prefix of the in- and output tiles, as well as the filetype and dataset name for HDF5 files"
 
 option "inprefix" - "Prefix of the filenames of input tiles" string optional default="tile"
-option "outprefix" o "Prefix of the filenames for the output tiles" string optional default="out"
+option "outprefix" - "Prefix of the filenames for the output tiles" string optional default="out"
 option "intype" - "filetype of the input tiles" string optional default="pgm"
 option "outtype" - "filetype of the output tiles" string optional
 option "infile" - "Define how the input files are organized. 0: 1 file to be divided internally, 1: Each process takes a different file (see expected format names), 2: same file copied on all processes, 3: Combine RBG files" int optional default="0"
@@ -37,15 +37,18 @@ option "negative" - "Transform the data in 16-bit per pixel if original range is
 section "Filter options"
 
 option "attribute" a "Choose the attribute to build the tree" int optional default = "0"
+option "attribute2" - "Choose the second attribute for the pattern spectrum (only works with the inertia tensor so far)" int optional default = "9"
 option "decision" d "Choose the pruning rule to filter the tree" int optional default = "0"
-option "flood" - "Choose the used flooding technique (0: Salembier, 1: Wilkinson). Default is 1 for >8 bits images, 0 for <= 8 bits images" int values="0","1","2" optional default="0"
-option "filter" f "Choose the used filter" string values="filter","csl","pattern","eor","test","none" optional default="filter"
+option "flood" f "Choose the used flooding technique (deprecated)." int values="0","1","2" optional default="0"
+option "output" o "Choose the desired output" string values="filter","csl","pattern","pattern2d", "eor","test","tree","none" optional default="filter"
 option "lambda" l "Lambda value" double optional default="100"
 option "lvec"  - "Lambda vector for  attribute" string optional default="res/lvec.txt"
+option "lvec2"  - "Lambda vector for second attribute" string optional default="res/lvec2.txt"
 option "tree" t "Type of tree (Min or Max)" string values="min","max" optional default="max" 
 option "morphology" m "Type of morphological operation (opening or closing)" string values="opening","closing" optional default="opening" 
 option "connectivity" c "Type of connectivity (4 or 8 for 2D, 6 or 26 for 3D)" int values="4","8","6","26" optional default="4" 
 option "imscale" - "Scale for lvec file" float optional default="1.0"
+option "imscale2" - "Scale for lvec2 file" float optional default="1.0"
 option "background" - "Account for background level in the pattern spectra" int optional default="0"
 
 

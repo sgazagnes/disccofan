@@ -3,9 +3,9 @@
 ---------------------------------------------------------------
 
 DIStributed Connected COmponent Filtering and ANalysis [DISCCOFAN]
-Version "1.1" (30/07/2021)
-Authors: Simon Gazagnes, including code from Michael Wilkinson and Jan Kazemier
-Contact: s.r.n.gazagnes@rug.nl
+Version "1.15" (18/01/2022)
+Authors: Simon Gazagnes, including code from Michael Wilkinson, Jan Kazemier, Paul Teeninga
+Contact: gazagnes@utexas.edu
 Publications: 
 @ARTICLE{gazagnes2021,
   author={Gazagnes, Simon and Wilkinson, Michael H. F},
@@ -31,7 +31,7 @@ doi = {10.1142/S0218001419400123}
 License: See LICENSE file
 
 
-Purpose: This program performs connected component analysis/filtering in 2D and 3D data sets using distributed-memory and shared-memory parallelization techniques. It is intended for extremely large data sets, but works fine on smaller data sets :).
+Purpose: This program performs connected component analysis/filtering in 2D and 3D data sets using distributed-memory and shared-memory parallelization techniques. It is intended for extremely large data sets, but works very well on smaller data sets :).
          
 ---------------------------------------------------------------
 						LIBRARIES

@@ -154,7 +154,7 @@ int main(int argc, char** argv) {
   value 	*gvals_par	= NULL;			// Parents node intensities (pattern spec) //
   
   if (np() > 1){
-    if (!strcmp(args.filter_arg, "pattern")) {
+    if (!strcmp(args.output_arg, "pattern")) {
      
       //Need to copy attributes and parent values for distributed pattern spectra //
       gvals_par = calloc(local_tree->size_curr, sizeof(value));   check_alloc(gvals_par, 1);
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
       #pragma omp parallel for
       for (ulong i = 0; i < local_tree->size_curr; i++) {
 	copy_attr[i] = is_levelroot(local_tree, i) ?
-	  (*AttribsArray[args.attribute_arg].attribute)(local_tree->attribute + i*local_tree->size_attr) : -DBL_MAX;	
+	  (*AttribsArray[args.attribute_arg].area)(local_tree->attribute + i*local_tree->size_attr) : -DBL_MAX;	
 
 	if(local_tree->parent[i] != BOTTOM)
 	  gvals_par[i] = local_tree->gval[local_tree->parent[i]];
@@ -203,7 +203,7 @@ int main(int argc, char** argv) {
     start = times(&tstruct);
     lvec = lambda_vector_read(argv[0], args.lvec_arg, args.imscale_arg);
 
-    if (!strcmp(args.filter_arg, "filter")) {
+    if (!strcmp(args.output_arg, "filter")) {
       value *out_filter = calloc(local_tree->size_init, sizeof(value));   check_alloc(out_filter, 11);
       tree_filtering(local_tree, out_filter, local_tree->size_init, args.decision_arg, attrib, args.lambda_arg);
 
@@ -229,7 +229,7 @@ int main(int argc, char** argv) {
 
       //   CASE 2: Differential profile  //
 
-      else if (!strcmp(args.filter_arg, "csl")) {
+      else if (!strcmp(args.output_arg, "csl")) {
       
 	value *out_orig   = calloc(local_tree->size_curr, sizeof(value));   check_alloc(out_orig,   3);
 	value *out_dh     = calloc(local_tree->size_curr, sizeof(value));   check_alloc(out_dh,     4);
@@ -260,11 +260,11 @@ int main(int argc, char** argv) {
     
       //   CASE 3: Pattern spectra  //
 
-      else if (!strcmp(args.filter_arg, "pattern")) {
+      else if (!strcmp(args.output_arg, "pattern")) {
 	double *all_spectrum  = calloc(lvec->num_lambdas, sizeof(double)); check_alloc(all_spectrum, 18);
 	double *loc_spectrum  = calloc(lvec->num_lambdas, sizeof(double)); check_alloc(loc_spectrum, 19);
       
-	tree_pattern_spectrum(local_tree, local_tree->size_init, lvec, copy_attr, gvals_par, loc_spectrum, args.background_arg, AttribsArray[attrib].attribute);
+	tree_pattern_spectrum(local_tree, local_tree->size_init, lvec, copy_attr, gvals_par, loc_spectrum, args.background_arg, AttribsArray[attrib].area, AttribsArray[attrib].attribute);
 
 	MPI_Reduce(loc_spectrum, all_spectrum, lvec->num_lambdas, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
 				(float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
       
 	if(args.saveout_arg && rank() == 0)
-	  write_pattern_spectra(&args, all_spectrum, lvec->num_lambdas);
+	  write_pattern_spectra(&args, all_spectrum, lvec);
 
 	timing("Pattern spectra written, wallclock time = %0.2f",
 				(float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));

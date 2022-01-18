@@ -221,6 +221,7 @@ typedef struct _AttribStruct{
   void   (*merge_to_data)( AuxDataStore *, void **, void *, void *);
   void   (*clone_data)( AuxDataStore *, void **, void *);
   void   (*create_mpi_data)(void);
+  double (*area)(void *);
   double (*attribute)(void *);
 } AttribStruct;
 

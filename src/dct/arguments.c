@@ -26,6 +26,11 @@ Arguments *parse_args(int argc, char** argv, Arguments *args) {
     MPI_Abort(MPI_COMM_WORLD, 001);
   }
 
+  if(rank()==0 && !strcmp(args->output_arg, "pattern2d") && (args->attribute_arg < 8 || args->attribute2_arg < 8)){
+    error("The 2D pattern spectrum is only with the attributes related to the full moment of inertia tensor");
+    MPI_Abort(MPI_COMM_WORLD, 001);
+  }
+
   set_verbosity(args->verbosity_arg);
 
   if (args->outtype_arg == NULL)
@@ -79,11 +84,15 @@ void print_args(Arguments *args, ulong* dims) {
   debug("Morphological operation: %s",   args->morphology_arg);
   debug("Attribute choice: %s",     	AttribsArray[args->attribute_arg].name);
   debug("Pruning decision choice: %s",   Decisions[args->decision_arg].name);
-  debug("Type of operation: %s",      	args->filter_arg);
+  debug("Type of output: %s",      	args->output_arg);
   debug("Flooding algorithm: Teeninga algorithm");
   debug("Connectivity: %d neighbours",   args->connectivity_arg);
   debug("Lambda: %0.2lf",       		args->lambda_arg);
   debug("lambda vector file: %s", 	args->lvec_arg);
+  if(!strcmp(args->output_arg, "pattern2d")){
+    debug("Attribute 2 choice: %s",     	AttribsArray[args->attribute2_arg].name);
+    debug("lambda vector file 2: %s", 	args->lvec2_arg);
+  }
   debug("Scaling of the lambda vector values: %0.2lf", 	args->imscale_arg);
   debug("Including background intensity in pattern spectra: %d", args->background_arg);
   debug("Verbosity: %s",     		args->verbosity_arg);

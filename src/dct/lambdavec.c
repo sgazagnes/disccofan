@@ -15,7 +15,7 @@ LambdaVec *lambda_vector_create(uint size)
      return(NULL);
    }
 
-   lvec->num_lambdas = size-1;
+   lvec->num_lambdas = size;
    lvec->lambdas = malloc(size*sizeof(float));
    if (lvec->lambdas==NULL)
    {
@@ -42,8 +42,12 @@ LambdaVec *lambda_vector_read(char *prefix, char *suffixe, double imScale)
    char* dir = dirname(ts1);
    char *fname;
    asprintf(&fname,"%s/%s", dir, suffixe);
+   // printf("%s\n", fname);
    infile = fopen(fname, "r");
-   if (infile==NULL)  return(NULL);
+   if (infile==NULL) {
+     error("Couldn't read the lvec file at this address: %s", fname);
+     return(NULL);
+   }
    fscanf(infile, "LambdaVector\n");
 
    fscanf(infile, "%d\n", &size);
@@ -54,7 +58,8 @@ LambdaVec *lambda_vector_read(char *prefix, char *suffixe, double imScale)
    {
      fscanf(infile,"%f ",&test);
      if(test != 0) error("Vector file must start with 0");
-      for(c=0;c<size;c++)
+     l->lambdas[0] = 0;
+      for(c=1;c<size;c++)
 	{   
 	  fscanf(infile,"%f ",&l->lambdas[c]); 
 	  l->lambdas[c] /= imScale;

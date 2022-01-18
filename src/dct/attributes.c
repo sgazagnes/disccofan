@@ -337,6 +337,13 @@ void clone_inertia_data( AuxDataStore *store, void **thisattr, void *inertiaattr
   thisdata->sumR2 = inertiadata->sumR2;
 } /* clone_inertia_data */
 
+double inertia_area_attribute(void *inertiaattr){
+   InertiaData *inertiadata = inertiaattr;
+   double area, inertia;
+   area = inertiadata->area;
+   return(area);
+} /* inertia_area */
+
 double inertia_attribute(void *inertiaattr){
    InertiaData *inertiadata = inertiaattr;
    double area, inertia;
@@ -729,18 +736,18 @@ void init_attrib_array(void *attribute, value *gvals, bool border[6], ulong *dim
 
 AttribStruct AttribsArray[NUMATTR] =
 {
- {"Area", sizeof(AreaData), new_area_data, init_area_data, delete_area_data, add_to_area_data, merge_area_data, merge_to_area_data, clone_area_data, create_mpi_area_type, area_attribute}, //1
- {"Area of min. enclosing rectangle", sizeof(EnclRectData),  new_encl_rect_data, init_encl_rect_data, delete_encl_rect_data, add_to_encl_rect_data, merge_encl_rect_data, merge_to_encl_rect_data, clone_encl_rect_data, create_mpi_rect_type, encl_rect_area_attribute}, //2
- {"Square of diagonal of min. enclosing rectangle", sizeof(EnclRectData), new_encl_rect_data, init_encl_rect_data, delete_encl_rect_data, add_to_encl_rect_data, merge_encl_rect_data, merge_to_encl_rect_data, clone_encl_rect_data, create_mpi_rect_type, encl_rect_diag_attribute},//3
- {"Moment of Inertia", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data, create_mpi_inertia_type, inertia_attribute}, //4
- {"(Moment of Inertia) / (area)^2", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, inertia_div_a2_attribute},//5
- {"Mean X position", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, mean_x_attribute},//6
- {"Mean Y position", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, mean_y_attribute},//7
- {"Mean Z position", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, mean_z_attribute},//8
- {"Full inertia: area", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_area_attribute},//9
- {"Full inertia: elongation", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_elon_attribute},//10
- {"Full inertia: flatness", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_flat_attribute},//11
- {"Full inertia: sparseness", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_spar_attribute}, //12
- {"Full inertia: Ncompactness", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_ncom_attribute} //13
+ {"Area", sizeof(AreaData), new_area_data, init_area_data, delete_area_data, add_to_area_data, merge_area_data, merge_to_area_data, clone_area_data, create_mpi_area_type, area_attribute, area_attribute}, //1
+ {"Area of min. enclosing rectangle", sizeof(EnclRectData),  new_encl_rect_data, init_encl_rect_data, delete_encl_rect_data, add_to_encl_rect_data, merge_encl_rect_data, merge_to_encl_rect_data, clone_encl_rect_data, create_mpi_rect_type, encl_rect_area_attribute, encl_rect_area_attribute}, //2 TO CHANGE AREA!!!!
+ {"Square of diagonal of min. enclosing rectangle", sizeof(EnclRectData), new_encl_rect_data, init_encl_rect_data, delete_encl_rect_data, add_to_encl_rect_data, merge_encl_rect_data, merge_to_encl_rect_data, clone_encl_rect_data, create_mpi_rect_type, encl_rect_diag_attribute, encl_rect_diag_attribute},//3
+ {"Moment of Inertia", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data, create_mpi_inertia_type, inertia_area_attribute, inertia_attribute}, //4
+ {"(Moment of Inertia) / (area)^2", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, inertia_area_attribute, inertia_div_a2_attribute},//5
+ {"Mean X position", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, inertia_area_attribute, mean_x_attribute},//6
+ {"Mean Y position", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, inertia_area_attribute, mean_y_attribute},//7
+ {"Mean Z position", sizeof(InertiaData), new_inertia_data, init_inertia_data, delete_inertia_data, add_to_inertia_data, merge_inertia_data, merge_to_inertia_data, clone_inertia_data,  create_mpi_inertia_type, inertia_area_attribute, mean_z_attribute},//8
+ {"Full inertia: area", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_area_attribute, inertiafull_area_attribute},//9
+ {"Full inertia: elongation", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_area_attribute, inertiafull_elon_attribute},//10
+ {"Full inertia: flatness", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_area_attribute,inertiafull_flat_attribute},//11
+ {"Full inertia: sparseness", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_area_attribute,inertiafull_spar_attribute}, //12
+ {"Full inertia: non-compactness", sizeof(InertiaDataFull), new_inertiafull_data, init_inertiafull_data, delete_inertiafull_data, add_to_inertiafull_data, merge_inertiafull_data, merge_to_inertiafull_data, clone_inertiafull_data,  create_mpi_inertiafull_type, inertiafull_area_attribute, inertiafull_ncom_attribute} //13
 };
 

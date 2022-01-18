@@ -659,7 +659,7 @@ void write_output(Arguments *args, value *img, const char *attr_name, ulong dims
   }
 
   if (!strcmp(args->outtype_arg, "h5")){
-    asprintf(&dataset_out, "%s_%s_%1.0lf", args->filter_arg, attr_name, args->lambda_arg);
+    asprintf(&dataset_out, "%s_%s_%1.0lf", args->output_arg, attr_name, args->lambda_arg);
     write_hdf5(args, fname_out, dataset_out, img, dims_T, dims, border);
   }  else if (!strcmp(args->outtype_arg, "fits") || !strcmp(args->outtype_arg, "fit"))     
     write_fits(args, fname_out, img, dims_T, dims, border);      
@@ -697,7 +697,7 @@ void write_differential(Arguments *args, value *outOrig, value *outDH, value *ou
       out = outDH;
 
     if (!strcmp(args->outtype_arg, "h5")) {
-      asprintf(&dataset_out, "%s_%s", args->filter_arg, attr_name);
+      asprintf(&dataset_out, "%s_%s", args->output_arg, attr_name);
       write_hdf5(args, fname_out, dataset_out, out,  dims_T, dims, border);     
     } else if (!strcmp(args->outtype_arg, "fits") || !strcmp(args->outtype_arg, "fit"))
       write_fits(args, fname_out, out,  dims_T, dims, border);
@@ -887,11 +887,11 @@ void write_fits(Arguments *args, const char* fname, value *out, ulong dims_T[3],
       else 
 	fits_create_img(outfptr, LONGLONG_IMG, n_dims, naxes, &status);
       
-      fits_update_key(outfptr, TSTRING , "FILTER", args->filter_arg, "Type of filter used", &status);
+      fits_update_key(outfptr, TSTRING , "FILTER", args->output_arg, "Type of filter used", &status);
       fits_update_key(outfptr, TSTRING , "ATTRIBUTE", AttribsArray[args->attribute_arg].name, "Attribute name", &status);
       fits_update_key(outfptr, TSTRING , "DECISION", Decisions[args->decision_arg].name, "Pruning rule", &status);
       fits_update_key(outfptr, TINT , "CONNECTIVITY",  &args->connectivity_arg, "Neighbour connectivity", &status);
-      if(!strcmp(args->filter_arg, "filter"))
+      if(!strcmp(args->output_arg, "filter"))
 	fits_update_key(outfptr, TULONG , "LAMBDA", &args->lambda_arg, "Threshold value", &status);
       else
 	fits_update_key(outfptr, TSTRING , "LVEC", args->lvec_arg, "Name of threshold file", &status);
@@ -1033,8 +1033,9 @@ void write_basic(Arguments *args, const char* fname, value *out, ulong dims_T[3]
 
  
 
-void write_pattern_spectra(Arguments *args, double* spectrum, int numscales){
+void write_pattern_spectra(Arguments *args, double* spectrum,  LambdaVec *lvec){
   char *filename;
+  int numscales = lvec->num_lambdas;
   if(args->outprefix_orig != NULL)
     asprintf(&filename, "%s.txt", args->outprefix_arg);
   else
@@ -1045,14 +1046,43 @@ void write_pattern_spectra(Arguments *args, double* spectrum, int numscales){
     printf("Error opening file!\n");
     exit(1);
   }
+  fprintf(f, "#lambdas \t spectra \n");
+  //fprintf(f, "#lambdas \t spectra \n");
+
   for (ulong i = 0; i < (ulong) numscales; i++) 
-    fprintf(f, "Spec[%ld]= %lf \n", i, spectrum[i]);
+    //fprintf(f, "Spec[%ld]= %lf \n", i, spectrum[i]);
+    fprintf(f, "%f \t %lf \n", lvec->lambdas[i], spectrum[i]);
   
   fclose(f);
-  info("Pattern spectra wrote in %s", filename);
+  info("Pattern spectrum file closed (%s)", filename);
   free(filename);
 }
 
+void write_pattern_spectra2d(Arguments *args, double* spectrum, LambdaVec *lvec_attr1, LambdaVec *lvec_attr2){
+  char *filename;
+  int numscales_attr1 = lvec_attr1->num_lambdas;
+  int numscales_attr2 = lvec_attr2->num_lambdas;
+
+  if(args->outprefix_orig != NULL)
+    asprintf(&filename, "%s.txt", args->outprefix_arg);
+  else
+    asprintf(&filename, "pattern2d.txt");
+	       
+  FILE *f = fopen(filename, "w");
+  if (f == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+  fprintf(f, "#lambdas_attr1 \t #lambda_attr2 \t spectra \n");
+
+  for (ulong i = 0; i < (ulong) numscales_attr1*numscales_attr2; i++) 
+    //fprintf(f, "Spec[%ld]= %lf \n", i, spectrum[i]);
+    fprintf(f, "%f \t %f \t %lf \n", lvec_attr1->lambdas[i%numscales_attr1], lvec_attr2->lambdas[i/numscales_attr1],  spectrum[i]);
+  
+  fclose(f);
+  info("Pattern spectrum file closed (%s)", filename);
+  free(filename);
+}
 
 FIBITMAP* freeimage_generic_loader(const char* lpszPathName, int flag) {
   FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;

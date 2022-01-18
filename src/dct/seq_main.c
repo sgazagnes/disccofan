@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
   local_tree->size_init 	= local_tree->size_curr;
   
   if (np() > 1){
-    if (!strcmp(args.filter_arg, "pattern")) {
+    if (!strcmp(args.output_arg, "pattern")) {
      
       //Need to copy attributes and parent values for distributed pattern spectra //
       gvals_par = calloc(local_tree->size_curr, sizeof(value));   check_alloc(gvals_par, 1);
@@ -118,8 +118,8 @@ int main(int argc, char** argv) {
       #pragma omp parallel for
       for (ulong i = 0; i < local_tree->size_curr; i++) {
 	copy_attr[i] = is_levelroot(local_tree, i) ?
-	  (*AttribsArray[args.attribute_arg].attribute)(local_tree->attribute + i*local_tree->size_attr) : -DBL_MAX;	
-
+	  (*AttribsArray[args.attribute_arg].area)(local_tree->attribute + i*local_tree->size_attr) : -DBL_MAX;	
+	//Changed from attribute to area frunction
 	if(local_tree->parent[i] != BOTTOM)
 	  gvals_par[i] = local_tree->gval[local_tree->parent[i]];
       }    
@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
 
   //        CASE 1: Filtering        //
   
-  if (!strcmp(args.filter_arg, "filter")) {
+  if (!strcmp(args.output_arg, "filter")) {
     value *out_filter = calloc(local_tree->size_init, sizeof(value));   check_alloc(out_filter, 3);
     
     info("Filtering the data");
@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
    
   //   CASE 2: Differential profile  //
 
-  else if (!strcmp(args.filter_arg, "csl")) {
+  else if (!strcmp(args.output_arg, "csl")) {
     LambdaVec *lvec   = lambda_vector_read(argv[0], args.lvec_arg, args.imscale_arg);   
     value *out_orig   = calloc(local_tree->size_curr, sizeof(value));   check_alloc(out_orig,   4);
     value *out_dh     = calloc(local_tree->size_curr, sizeof(value));   check_alloc(out_dh,     5);
@@ -198,21 +198,21 @@ int main(int argc, char** argv) {
     
   //   CASE 3: Pattern spectra  //
 
-  else if (!strcmp(args.filter_arg, "pattern")) {
+  else if (!strcmp(args.output_arg, "pattern")) {
     LambdaVec *lvec   = lambda_vector_read(argv[0], args.lvec_arg, args.imscale_arg);   
     double *all_spectrum  = calloc(lvec->num_lambdas, sizeof(double)); check_alloc(all_spectrum, 10);
     double *loc_spectrum  = calloc(lvec->num_lambdas, sizeof(double)); check_alloc(loc_spectrum, 11);
 
-    info("Starting pattern spectrum");
-     tree_pattern_spectrum(local_tree, local_tree->size_init, lvec, copy_attr, gvals_par, loc_spectrum, args.background_arg, AttribsArray[args.attribute_arg].attribute);
+    info("Getting the pattern spectrum (pat pat pot)");
+    tree_pattern_spectrum(local_tree, local_tree->size_init, lvec, copy_attr, gvals_par, loc_spectrum, args.background_arg, AttribsArray[args.attribute_arg].area, AttribsArray[args.attribute_arg].attribute);
     MPI_Reduce(loc_spectrum, all_spectrum, lvec->num_lambdas, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
-    timing("Pattern spectra built: wallclock time = %0.2f",
+    timing("Pattern spectrum built: wallclock time = %0.2f",
 			   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
       
     if(args.saveout_arg && rank() == 0){
-      write_pattern_spectra(&args, all_spectrum, lvec->num_lambdas);
-      timing("Pattern spectra written, wallclock time = %0.2f",
+      write_pattern_spectra(&args, all_spectrum,  lvec);
+      timing("Pattern spectrum written, wallclock time = %0.2f",
 	   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
     }
 
@@ -223,10 +223,43 @@ int main(int argc, char** argv) {
     lambda_vector_delete(lvec);
   }
   
+  //   CASE 4: 2D Pattern spectra  //
 
-  //   CASE 4: Functional test  //
+  else if (!strcmp(args.output_arg, "pattern2d")) {
+    LambdaVec *lvec_attr1   = lambda_vector_read(argv[0], args.lvec_arg, args.imscale_arg);
+    LambdaVec *lvec_attr2   = lambda_vector_read(argv[0], args.lvec2_arg, args.imscale2_arg);   
 
-  else if (!strcmp(args.filter_arg, "test"))
+    double *all_spectrum  = calloc(lvec_attr1->num_lambdas*lvec_attr2->num_lambdas,  sizeof(double));
+    check_alloc(all_spectrum, 10);
+    double *loc_spectrum  = calloc(lvec_attr1->num_lambdas*lvec_attr2->num_lambdas, sizeof(double));
+    check_alloc(loc_spectrum, 11);
+
+    info("Getting the 2D pattern spectrum (pat pat pot)");
+    tree_pattern_spectrum2d(local_tree, local_tree->size_init, lvec_attr1, lvec_attr2, copy_attr, gvals_par, loc_spectrum, args.background_arg, AttribsArray[args.attribute_arg].area, AttribsArray[args.attribute_arg].attribute, AttribsArray[args.attribute2_arg].attribute);
+    
+    MPI_Reduce(loc_spectrum, all_spectrum, lvec_attr1->num_lambdas*lvec_attr2->num_lambdas, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD);
+    timing("2D Pattern spectrum built: wallclock time = %0.2f",
+	   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
+      
+    if(args.saveout_arg && rank() == 0){
+      write_pattern_spectra2d(&args, all_spectrum, lvec_attr1, lvec_attr2);
+      timing("2D Pattern spectrum written, wallclock time = %0.2f",
+	     (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
+    }
+
+    free(gvals_par);
+    free(copy_attr);
+    free(loc_spectrum);
+    free(all_spectrum);
+    lambda_vector_delete(lvec_attr1);
+    lambda_vector_delete(lvec_attr2);
+
+  }
+
+  //   CASE 5: Functional test  //
+
+  else if (!strcmp(args.output_arg, "test"))
     {
       args.bpp_arg = -32;
       float *out_filter = calloc(local_tree->size_init, sizeof(float));   check_alloc(out_filter, 3);
