@@ -257,7 +257,16 @@ int main(int argc, char** argv) {
 
   }
 
-  //   CASE 5: Functional test  //
+    //   CASE 5: save the tree with attributes //
+
+  else if (!strcmp(args.output_arg, "tree")) {
+    write_tree_file_txt(&args, local_tree);
+    timing("Component tree file written, wallclock time = %0.2f",
+	   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
+
+  }
+
+  //   CASE 6: Functional test  //
 
   else if (!strcmp(args.output_arg, "test"))
     {
@@ -271,7 +280,7 @@ int main(int argc, char** argv) {
     
     }
 
-  //   CASE 5: No filter  //
+  //   CASE 7: No filter  //
   
   else 
     info("Error or no filter chosen");

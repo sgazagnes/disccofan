@@ -9,4 +9,5 @@ void write_differential(Arguments *args, value *outOrig, value *outDH, value *ou
 //void write_pattern_spectra(Arguments *args, double* spectrum, int numscales);
 void write_pattern_spectra(Arguments *args, double* spectrum, LambdaVec *lvec);
 void write_pattern_spectra2d(Arguments *args, double* spectrum, LambdaVec *lvec_attr1, LambdaVec *lvec_attr2);
+void write_tree_file_txt(Arguments *args, Node *tree);
 #endif

@@ -1054,7 +1054,7 @@ void write_pattern_spectra(Arguments *args, double* spectrum,  LambdaVec *lvec){
     fprintf(f, "%f \t %lf \n", lvec->lambdas[i], spectrum[i]);
   
   fclose(f);
-  info("Pattern spectrum file closed (%s)", filename);
+  info("2D Pattern spectrum file closed (%s)", filename);
   free(filename);
 }
 
@@ -1083,6 +1083,86 @@ void write_pattern_spectra2d(Arguments *args, double* spectrum, LambdaVec *lvec_
   info("Pattern spectrum file closed (%s)", filename);
   free(filename);
 }
+
+void write_tree_file_txt(Arguments *args, Node *tree) {
+  char *filename;
+  
+  if(args->outprefix_orig != NULL)
+    asprintf(&filename, "%s.txt", args->outprefix_arg);
+  else
+    asprintf(&filename, "ComponentTree.txt");
+
+  FILE *f = fopen(filename, "w");
+  if (f == NULL) {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+
+  fprintf(f, "#index \t pixval \t parent \t size CC \t");
+  if(args->attribute_arg == 1)
+    fprintf(f, "Area of Min Enclosing rectangle");
+  else if(args->attribute_arg == 2)
+    fprintf(f, "Diag square of Min Enclosing rectangle");
+  else if(args->attribute_arg >= 3 && args->attribute_arg <= 7 )
+    fprintf(f, "Inertia tensor trace \t Inertia tensor trace / area ^2 \t Mean X \t Mean Y \t Mean Z");
+  else if( args->attribute_arg > 7 )
+    fprintf(f, "Elong \t Flatness \t Sparseness \t Non-compactness");
+
+   fprintf(f, "\n");
+
+  for (ulong i = 0; i < tree->size_curr; i++) {
+    long size;
+    if(is_levelroot(tree,i) ){
+      size = (long) (*AttribsArray[args->attribute_arg].area)(tree->attribute + i*tree->size_attr);
+    } else
+      size = -1;
+    fprintf(f, "%ld \t %f \t %ld \t %ld \t", i, tree->gval[i], tree->parent[i], size);
+    if(args->attribute_arg == 1){
+      if(is_levelroot(tree,i) ){
+	float encRec = (float) (*AttribsArray[args->attribute_arg].attribute)(tree->attribute + i*tree->size_attr);
+	fprintf(f, "%f", encRec);
+      } else {
+	fprintf(f, "%f", -1);
+      }
+    } else if(args->attribute_arg == 2){
+      if(is_levelroot(tree,i) ){
+	float diagRec = (float) (*AttribsArray[args->attribute_arg].attribute)(tree->attribute + i*tree->size_attr);
+	fprintf(f, "%f", diagRec);
+      } else {
+	fprintf(f, "%f", -1);
+      }
+    }  else if(args->attribute_arg >= 3 && args->attribute_arg <= 7 ){
+      if(is_levelroot(tree,i) ){
+	float in1 = (float) (*AttribsArray[3].attribute)(tree->attribute + i*tree->size_attr);
+	float in2 = (float) (*AttribsArray[4].attribute)(tree->attribute + i*tree->size_attr);
+	float meanx = (float) (*AttribsArray[5].attribute)(tree->attribute + i*tree->size_attr);
+	float meany = (float) (*AttribsArray[6].attribute)(tree->attribute + i*tree->size_attr);
+	float meanz = (float) (*AttribsArray[7].attribute)(tree->attribute + i*tree->size_attr);
+
+	fprintf(f, "%f \t %f \t %f \t %f \t %f", in1, in2, meanx, meany, meanz);
+      } else {
+	fprintf(f, "%f \t %f \t %f \t %f \t %f", -1, -1, -1, -1, -1);
+      }
+    } else if(args->attribute_arg > 7){
+      if(is_levelroot(tree,i) ){
+	float elong = (float) (*AttribsArray[9].attribute)(tree->attribute + i*tree->size_attr);
+	float flat  = (float) (*AttribsArray[10].attribute)(tree->attribute + i*tree->size_attr);
+	float spars = (float) (*AttribsArray[11].attribute)(tree->attribute + i*tree->size_attr);
+	float ncomp = (float) (*AttribsArray[12].attribute)(tree->attribute + i*tree->size_attr);
+	fprintf(f, "%f \t %f \t %f \t %f ", elong, flat, spars, ncomp);
+      } else {
+	fprintf(f, "%f \t %f \t %f \t %f ", -1, -1, -1, -1);
+      }
+    }
+    fprintf(f, "\n");
+  }
+  fprintf(f, "\n");
+
+  fclose(f);
+  info("Component tree file closed (%s)", filename);
+  free(filename);
+} /* write_maxtree_file_binary */
+
 
 FIBITMAP* freeimage_generic_loader(const char* lpszPathName, int flag) {
   FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
