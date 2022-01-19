@@ -261,6 +261,36 @@ int bit_scan_reverse(ulong val);
 int bits_per_word_log2(void);
 int bits_per_word(void);
 
+typedef  void *(*f_new_aux_data)(AuxDataStore *, void *);
+typedef  void (*f_init_aux_data)(void *, bool , ulong , ulong,  ulong, value);
+typedef  void (*f_delete_aux_data)(void *);
+typedef  void (*f_add_to_aux_data)(void *, void *);
+typedef  void (*f_merge_aux_data)(void *, void *);
+typedef  void (*f_merge_to_aux_data)(AuxDataStore *, void **, void *, void *);
+typedef  void (*f_clone_aux_data)(AuxDataStore *, void **, void *);
+typedef  void (*f_create_mpi_aux_data)(void);
+
+extern f_new_aux_data  new_aux_data;
+extern f_init_aux_data init_aux_data;
+extern f_delete_aux_data delete_aux_data;
+extern f_add_to_aux_data  add_to_aux_data;  
+extern f_merge_aux_data  merge_aux_data;
+extern f_merge_to_aux_data merge_to_aux_data;
+extern f_clone_aux_data clone_aux_data;
+extern f_create_mpi_aux_data create_mpi_aux_data;
+
+
+/*
+extern  void *(*new_aux_data)(AuxDataStore *, void *);
+extern  void (*init_aux_data)(void *,  bool , ulong , ulong,  ulong, value);
+extern  void (*delete_aux_data)(void *);
+extern  void (*add_to_aux_data)(void *, void *);
+extern  void (*merge_aux_data)(void *, void *);
+extern  void (*merge_to_aux_data)(AuxDataStore *, void **, void *, void *);
+extern  void (*clone_aux_data)(AuxDataStore *, void **, void *);
+extern  void (*create_mpi_aux_data)(void);
+
+*/
 /* INCLUDE */
 
 #include "cmdline.h"

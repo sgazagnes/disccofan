@@ -1,8 +1,8 @@
 #include "types.h"
-#include "boundary.h"
 #include "communication.h"
 #include "attributes.h"
 #include "flood.h"
+#include "boundary.h"
 
 
 Node *correct_local_tree(Node *local_tree, Boundary *b);

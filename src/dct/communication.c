@@ -1,6 +1,6 @@
 #include "types.h"
-#include "communication.h"
 #include "attributes.h"
+#include "communication.h"
 
 
 void send_boundary(Boundary *b, int dest) {

@@ -18,10 +18,10 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      :=  -O3 -fopenmp -pedantic -Wall -Wextra -Wundef -Wshadow  -Wcast-align -Wstrict-prototypes -Wwrite-strings -Wcast-qual -Wswitch-default -Wunreachable-code -Wformat=2 -Winit-self -march=native -g -std=gnu99  -Wno-pointer-arith
+CFLAGS      :=  -O3  -fopenmp -pedantic -Wall -Wextra -Wundef -Wshadow  -Wcast-align -Wstrict-prototypes -Wwrite-strings -Wcast-qual -Wswitch-default -Wunreachable-code -Wformat=2 -Winit-self -march=native -g -std=gnu99  -Wno-pointer-arith
 LIB         := -fopenmp -lm -lfreeimage -lhdf5 -lcfitsio  -L/usr/local/hdf5/lib/
 LIBM        :=  -lgsl -lgslcblas  -lfftw3f_omp -lfftw3f
-INC         := -I/usr/local/include -I/usr/local/hdf5/include
+INC         := -I/usr/local/include -I/usr/local/hdf5/include -I/usr/include/cfitsio/
 INCDEP      := 
 
 #---------------------------------------------------------------------------------
@@ -71,7 +71,8 @@ $(TARGETB): $(OBJECTSB)
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+#	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@$(CC) $(CFLAGS)  $(INC) -c $< -o $@
 	@$(CC) $(CFLAGS) $(INCDEP) -MM $(SRCDIR)/$*.$(SRCEXT) > $(BUILDDIR)/$*.$(DEPEXT)
 	@cp -f $(BUILDDIR)/$*.$(DEPEXT) $(BUILDDIR)/$*.$(DEPEXT).tmp
 	@sed -e 's|.*:|$(BUILDDIR)/$*.$(OBJEXT):|' < $(BUILDDIR)/$*.$(DEPEXT).tmp > $(BUILDDIR)/$*.$(DEPEXT)

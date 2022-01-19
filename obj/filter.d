@@ -1,0 +1,17 @@
+obj/filter.o: src/dct/filter.c src/dct/types.h \
+ /usr/include/openmpi-x86_64/mpi.h \
+ /usr/include/openmpi-x86_64/mpi_portable_platform.h src/dct/cmdline.h \
+ src/dct/logc.h src/dct/mpihelper.h src/dct/checks.h src/dct/attributes.h \
+ src/dct/lambdavec.h src/dct/flood.h src/dct/filter.h
+src/dct/filter.c:
+src/dct/types.h:
+/usr/include/openmpi-x86_64/mpi.h:
+/usr/include/openmpi-x86_64/mpi_portable_platform.h:
+src/dct/cmdline.h:
+src/dct/logc.h:
+src/dct/mpihelper.h:
+src/dct/checks.h:
+src/dct/attributes.h:
+src/dct/lambdavec.h:
+src/dct/flood.h:
+src/dct/filter.h:

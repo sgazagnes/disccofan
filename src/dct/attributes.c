@@ -1,8 +1,8 @@
 #include "types.h"
-#include "attributes.h"
 #include "checks.h"
 #include "filter.h"
 #include "eispack.h"
+#include "attributes.h"
 
 void init_aux_data_store(AuxDataStore *store, size_t size_item, ulong size_array){
   store->size_item  = size_item;
@@ -21,7 +21,7 @@ void *get_new_aux_data(AuxDataStore *store){
   
   char *p;
   if (store->item_curr >= store->size_alloc){
-    debug(" Reallocation of attribute storage (may cause errors),size item %ld",  store->size_item);
+    debug(" Reallocation of attribute storage (may cause errors), size item %ld",  store->size_item);
     store->size_alloc = store->size_alloc > 1 ? store->size_alloc * 1.5 : store->size_alloc*100 ;
     store->data       = realloc(store->data, store->size_alloc * store->size_item);
     check_alloc(store->data, 101);
@@ -1105,7 +1105,7 @@ void init_attrib_array(void *attribute, value *gvals, bool border[6], ulong *dim
     bool init = (((x == 0 && border[0]) || (x == width-1  && border[1])  ||
 		  (y == 0 && border[2]) || (y == height-1 && border[3])  ||
 		  (z == 0 && border[4]) || (z == depth-1  && border[5])) || (i >= size2D*depth));
-    init_aux_data(attribute + i*size_att, !init, x + attr_off[0], y + attr_off[1], z+ attr_off[2], 1.);
+    init_aux_data((attribute + i*size_att), !init, x + attr_off[0], y + attr_off[1], z+ attr_off[2], 1.);
   }
 }
 

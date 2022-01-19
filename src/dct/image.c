@@ -2,9 +2,9 @@
 #include <fitsio.h>
 #include <FreeImage.h>
 #include "types.h"
-#include "image.h"
 #include "nifti1.h"
 #include "workspace.h"
+#include "image.h"
 
 #define MIN_HEADER_SIZE 348
 #define NII_HEADER_SIZE 352

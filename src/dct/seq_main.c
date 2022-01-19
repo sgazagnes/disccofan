@@ -28,8 +28,15 @@
 float 		g_max_greyval;
 ulong 		g_max_levels;
 struct tms 	tstruct;				
-clock_t 	start;					
-
+clock_t 	start;
+f_new_aux_data  new_aux_data = NULL;
+f_init_aux_data init_aux_data= NULL;
+f_delete_aux_data delete_aux_data= NULL;
+f_add_to_aux_data  add_to_aux_data= NULL;  
+f_merge_aux_data  merge_aux_data= NULL;
+f_merge_to_aux_data merge_to_aux_data= NULL;
+f_clone_aux_data clone_aux_data= NULL;
+f_create_mpi_aux_data create_mpi_aux_data= NULL;
 
 /* +++++++++++++++++++++++++++++++ */
 /*				   */
@@ -69,6 +76,7 @@ int main(int argc, char** argv) {
   // Initialization of attributes functions //
   info("Attribute choice: %s",     	AttribsArray[args.attribute_arg].name);
   local_tree->size_attr  = AttribsArray[args.attribute_arg].size;
+
   new_aux_data           = AttribsArray[args.attribute_arg].new_data;
   init_aux_data          = AttribsArray[args.attribute_arg].init_data;
   delete_aux_data        = AttribsArray[args.attribute_arg].delete_data;

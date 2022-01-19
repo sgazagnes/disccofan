@@ -6,12 +6,12 @@
 #include "mpihelper.h"
 #include "workspace.h"
 
-
+/*
 struct tms 	tstruct;				
 clock_t 	start;
 ulong 		g_max_levels;
 float 		g_max_greyval;
-
+*/
 void tree_flood(idx *parent,  void *attribute,  BitArray *visited, PrioQueue *q, ulong *ranks, ulong* ranks_inv, ulong *dims,  ulong lwb, ulong upb,  int connectivity, int size_att);
 void tree_flood_par(idx *parents,  BitArray *visited, PrioQueue *q, ulong *ranks, ulong* ranks_inv, ulong *dims, ulong lwb, ulong upb, int connectivity);
 
@@ -30,7 +30,7 @@ void merge_nodes_par(Node *tree,idx x, idx y);
 int get_neighbors(ulong *dims, ulong lwb, ulong upb, ulong *neighbors, ulong p, ulong x, ulong y, ulong z,  int connectivity);
 bool check_neighbor(BitArray *visited, PrioQueue *q, ulong *ranks, ulong* index, ulong* x, ulong* y, ulong *z, ulong* rank, long offset, ulong n_x, ulong n_y, ulong n_z, ulong lwb);
 void remaining(BitArray *visited, PrioQueue *q, ulong *ranks, ulong* index, ulong* rank, ulong* dims, ulong lwb, ulong upb, int connectivity);
-
+value_t transform_float(const float val);
 /* +++++++++++++++++++++++++++++++ */
 /*				   */
 /*     	     Tree Building         */

@@ -1,5 +1,5 @@
-#ifndef ATTRIBUTES_H_
-#define ATTRIBUTES_H_
+#ifndef ATTRIBUTES_H
+#define ATTRIBUTES_H
 
 //#include "types.h"
 
@@ -61,14 +61,13 @@ double inertiafull_ncom_attribute(void *inertiaattr);
 
 void init_attrib_array(void *attribute, value *gvals, bool border[6], ulong *dims, ulong attr_off[3], ulong lwb, ulong upb, ulong size_att);
 
-void *(*new_aux_data)(AuxDataStore *, void *);
-void (*init_aux_data)(void *,  bool , ulong , ulong,  ulong, value);
+
+/*void *(*new_aux_data)(AuxDataStore *, void *);
+void (*init_aux_data)(void *, bool , ulong , ulong,  ulong, value);
 void (*delete_aux_data)(void *);
 void (*add_to_aux_data)(void *, void *);
 void (*merge_aux_data)(void *, void *);
 void (*merge_to_aux_data)(AuxDataStore *, void **, void *, void *);
 void (*clone_aux_data)(AuxDataStore *, void **, void *);
-void (*create_mpi_aux_data)(void);
-
-
+void (*create_mpi_aux_data)(void);*/
 #endif 
