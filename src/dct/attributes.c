@@ -376,13 +376,13 @@ double inertia_div_a2_attribute(void *inertiaattr){
        (inertiadata->sumX * inertiadata->sumX +
 	inertiadata->sumY * inertiadata->sumY +
 	inertiadata->sumZ * inertiadata->sumZ) / area
-       + area / 4.0;  /* ??? */
+       + area / 4.0;  
      return(inertia/pow(area,5./3.));
    } else {
      inertia = inertiadata->sumR2 -
        (inertiadata->sumX * inertiadata->sumX +
 	inertiadata->sumY * inertiadata->sumY ) / area
-       + area / 6.0;  /* ??? */
+       + area / 6.0;  
      return(inertia/pow(area,2));
    }
 } /* inerti
@@ -614,34 +614,39 @@ double  inertiafull_elon_attribute(void *inertiaattr){
    double corrVal    = inertia[10]/12;
    /* double corrValZ   = inertia[3] == 0? 0: inertia[10]/12; */
 
-    double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-			inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-			inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-			inertia[7] - inertia[1]*inertia[2]/inertia[10],
-			inertia[8] - inertia[2]*inertia[3]/inertia[10],
-			inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
+   if(inertia[3] == 0){
+		       
+     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[10] };		
    
-   double *eigval  = malloc(3  * sizeof(double));
-   double *eigvec  = malloc(9  * sizeof(double));
+     double *eigval  = malloc(2  * sizeof(double));
+     double *eigvec  = malloc(4  * sizeof(double));
   
-   double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
-   int ierr = rs (3, tens_mat, eigval, 1, eigvec);
+     double tens_mat[4] = {matrix[0], matrix[2], matrix[2], matrix[1]};
+     int ierr = rs (2, tens_mat, eigval, 1, eigvec);
 
-   double elong = eigval[2]/eigval[1];
-   /*  ncomp[i]    = (matrix[i*6]+matrix[i*6+1]+matrix[i*6+2])/pow(intens[i*2], 5.0/3.0);
-   elong[i]    = eigval[i*3 + 2]/eigval[i*3 + 1];
-   flat[i]     = eigval[i*3 + 1]/eigval[i*3 + 0];
-   //  if ( eigval[i*3 + 0] < 0 || eigval[i*3 + 1] <0 || eigval[i*3 + 2] < 0) 
-   // printf("%lf\n", eigval[i*3 + 0], eigval[i*3 + 1], eigval[i*3 + 2]);
-   double ax_len[3] = {sqrt(20*eigval[i*3 + 2]/intens[i*2]), sqrt(20*eigval[i*3 + 1]/intens[i*2]), sqrt(20*eigval[i*3 + 0]/intens[i*2])};
-   spars[i]     = intens[i*2]/(double) volume[i] * 3.14*ax_len[0]*ax_len[1]*ax_len[2]/(6*intens[i*2]);
-   int pic = 2;
-   if(eigval[i*3+2] == eigval[i*3+1])
-    pic = eigval[i*3+1] == eigval[i*3] ? rand() % 3: rand() % 2 + 1;
-   vec[3*i] = eigvec[i*9+pic*3];
-   vec[3*i+1] = eigvec[i*9+pic*3+1];
-   vec[3*i+2] = eigvec[i*9+pic*3+2]; */
-   return(elong);
+     double elong = eigval[1]/eigval[0];
+     return(elong);
+   } else {
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[10],
+       inertia[8] - inertia[2]*inertia[3]/inertia[10],
+       inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
+   
+     double *eigval  = malloc(3  * sizeof(double));
+     double *eigvec  = malloc(9  * sizeof(double));
+  
+     double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
+     int ierr = rs (3, tens_mat, eigval, 1, eigvec);
+
+     double elong = eigval[2]/eigval[1];
+     printf("%lf\n",elong);
+
+     return(elong);
+   }
 } /* mean_z_attribute */
 
 double  inertiafull_flat_attribute(void *inertiaattr){
@@ -683,6 +688,8 @@ double  inertiafull_flat_attribute(void *inertiaattr){
    return(flat);
 } /* mean_z_attribute */
 
+
+
 double inertiafull_spar_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
    double *inertia = calloc(12, sizeof(double));
@@ -701,24 +708,40 @@ double inertiafull_spar_attribute(void *inertiaattr){
    double c_xyz[3]   = { inertia[1]/inertia[10],inertia[2]/inertia[10],inertia[3]/inertia[10]} ;
    double corrVal    =  inertia[10]/12;
 
-   double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-			inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-			inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-			inertia[7] - inertia[1]*inertia[2]/inertia[10],
-			inertia[8] - inertia[2]*inertia[3]/inertia[10],
-			inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
+   if(inertia[3] == 0){
+		       
+     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[10] };		
    
-   double *eigval  = malloc(3  * sizeof(double));
-   double *eigvec  = malloc(9  * sizeof(double));
+     double *eigval  = malloc(2  * sizeof(double));
+     double *eigvec  = malloc(4  * sizeof(double));
   
-   double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
-   int ierr = rs (3, tens_mat, eigval, 1, eigvec);
-   double ax_len[3] = {sqrt(20*eigval[2]/inertia[10]), sqrt(20*eigval[1]/inertia[10]), sqrt(20*eigval[0]/inertia[10])};
-   double spars = inertia[10]/(double)inertia[0] * 3.14*ax_len[0]*ax_len[1]*ax_len[2]/(6*inertia[10]);
+     double tens_mat[4] = {matrix[0], matrix[2], matrix[2], matrix[1]};
+     int ierr = rs (2, tens_mat, eigval, 1, eigvec);
+     double ax_len[2] = {sqrt(4*eigval[1]/inertia[10]), sqrt(4*eigval[0]/inertia[10])};
+     double spars =  M_PI*ax_len[0]*ax_len[1]/(inertia[10]);
+     return(spars);
+   }else {
+     
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[10],
+       inertia[8] - inertia[2]*inertia[3]/inertia[10],
+       inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
    
-   //printf("%lf, %lf, %lf \n",ax_len[0], inertia[10], inertia[0]);
+     double *eigval  = malloc(3  * sizeof(double));
+     double *eigvec  = malloc(9  * sizeof(double));
+  
+     double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
+     int ierr = rs (3, tens_mat, eigval, 1, eigvec);
+     double ax_len[3] = {sqrt(20*eigval[2]/inertia[10]), sqrt(20*eigval[1]/inertia[10]), sqrt(20*eigval[0]/inertia[10])};
+     double spars =  M_PI*ax_len[0]*ax_len[1]*ax_len[2]/(6*inertia[10]);
+     return(spars);
 
-   return(spars);
+   }
+
 } /* mean_z_attribute */
 
 double  inertiafull_ncom_attribute(void *inertiaattr){
@@ -737,19 +760,31 @@ double  inertiafull_ncom_attribute(void *inertiaattr){
    inertia[10] = inertiadata->sumval;
    inertia[11] = inertiadata->sumval2;
 
-   double c_xyz[3]  = { inertia[1]/inertia[10],inertia[2]/inertia[10],inertia[3]/inertia[10]} ;
-   double corrVal    = inertia[10]/12;
-   double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-			inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-			inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-			inertia[7] - inertia[1]*inertia[2]/inertia[10],
-			inertia[8] - inertia[2]*inertia[3]/inertia[10],
-			inertia[9] - inertia[1]*inertia[3]/inertia[10] };
-   double ncomp    =  inertia[3] != 0? (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0):
-     (matrix[0]+matrix[1])/pow(inertia[10], 2.0);
+   if(inertia[3] == 0){
+     double corrVal    = inertia[10]/12;
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[10],
+       inertia[8] - inertia[2]*inertia[3]/inertia[10],
+       inertia[9] - inertia[1]*inertia[3]/inertia[10] };
+     double ncomp    =  (matrix[0]+matrix[1])/pow(inertia[10], 2.0);
 
-   // ncomp    =   (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0);
-   return(ncomp);
+     // ncomp    =   (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0);
+     return(ncomp);
+   } else {
+     double corrVal    = inertia[10]/12;
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[10],
+       inertia[8] - inertia[2]*inertia[3]/inertia[10],
+       inertia[9] - inertia[1]*inertia[3]/inertia[10] };
+     double ncomp    =  (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0);
+
+     return(ncomp);
+   }
+   
 } /* mean_z_attribute */
 
 

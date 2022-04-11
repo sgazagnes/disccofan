@@ -5,6 +5,7 @@
 #include "nifti1.h"
 #include "workspace.h"
 #include "image.h"
+#include "flood.h"
 
 #define MIN_HEADER_SIZE 348
 #define NII_HEADER_SIZE 352
@@ -1097,8 +1098,10 @@ void write_tree_file_txt(Arguments *args, Node *tree) {
     printf("Error opening file!\n");
     exit(1);
   }
-
-  fprintf(f, "#index \t pixval \t parent \t size CC \t");
+  
+  fprintf(f, "#Pixel list, -1 in column Area means pixel does NOT represent a connected component\n");
+  fprintf(f, "#index \t gval \t parent \t flux \t Area|Volume \t");
+  
   if(args->attribute_arg == 1)
     fprintf(f, "Area of Min Enclosing rectangle");
   else if(args->attribute_arg == 2)
@@ -1106,17 +1109,19 @@ void write_tree_file_txt(Arguments *args, Node *tree) {
   else if(args->attribute_arg >= 3 && args->attribute_arg <= 7 )
     fprintf(f, "Inertia tensor trace \t Inertia tensor trace / area ^2 \t Mean X \t Mean Y \t Mean Z");
   else if( args->attribute_arg > 7 )
-    fprintf(f, "Elong \t Flatness \t Sparseness \t Non-compactness");
+    fprintf(f, "Elongation \t Flatness \t Sparseness \t Non-compactness");
 
    fprintf(f, "\n");
 
   for (ulong i = 0; i < tree->size_curr; i++) {
-    long size;
+    long size = -1;
+    float dh = 0;
     if(is_levelroot(tree,i) ){
       size = (long) (*AttribsArray[args->attribute_arg].area)(tree->attribute + i*tree->size_attr);
-    } else
-      size = -1;
-    fprintf(f, "%ld \t %f \t %ld \t %ld \t", i, tree->gval[i], tree->parent[i], size);
+      dh = tree->parent[i] != BOTTOM ? (tree->gval[i] - tree->gval[tree->parent[i]]): tree->gval[i];
+    } 
+
+    fprintf(f, "%ld \t %f \t %ld \t %f \t %ld \t", i, tree->gval[i], get_levelroot(tree, tree->parent[i]), dh * (float) size, size);
     if(args->attribute_arg == 1){
       if(is_levelroot(tree,i) ){
 	float encRec = (float) (*AttribsArray[args->attribute_arg].attribute)(tree->attribute + i*tree->size_attr);
