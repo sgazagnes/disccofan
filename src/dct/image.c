@@ -1085,8 +1085,13 @@ void write_pattern_spectra2d(Arguments *args, double* spectrum, LambdaVec *lvec_
   free(filename);
 }
 
-void write_tree_file_txt(Arguments *args, Node *tree) {
+void write_tree_file_txt(Arguments *args, Node *tree,ulong *dims ) {
   char *filename;
+  ulong width  = dims[0];
+  ulong height = dims[1];
+  ulong depth  = dims[2];
+  ulong size2D = width * height;
+
   
   if(args->outprefix_orig != NULL)
     asprintf(&filename, "%s.txt", args->outprefix_arg);
@@ -1100,7 +1105,7 @@ void write_tree_file_txt(Arguments *args, Node *tree) {
   }
   
   fprintf(f, "#Pixel list, -1 in column Area means pixel does NOT represent a connected component\n");
-  fprintf(f, "#index \t gval \t parent \t flux \t Area|Volume \t");
+  fprintf(f, "#index \t x \t y \t z \t gval \t parent \t flux \t Area|Volume \t");
   
   if(args->attribute_arg == 1)
     fprintf(f, "Area of Min Enclosing rectangle");
@@ -1116,12 +1121,17 @@ void write_tree_file_txt(Arguments *args, Node *tree) {
   for (ulong i = 0; i < tree->size_curr; i++) {
     long size = -1;
     float dh = 0;
+    ulong x, y, z;
+    x = (i % size2D) % width + tree->offsets[0];
+    y = (i % size2D) / width +  tree->offsets[1];
+    z = i / size2D +  tree->offsets[2];
+    
     if(is_levelroot(tree,i) ){
       size = (long) (*AttribsArray[args->attribute_arg].area)(tree->attribute + i*tree->size_attr);
       dh = tree->parent[i] != BOTTOM ? (tree->gval[i] - tree->gval[tree->parent[i]]): tree->gval[i];
     } 
 
-    fprintf(f, "%ld \t %f \t %ld \t %f \t %ld \t", i, tree->gval[i], get_levelroot(tree, tree->parent[i]), dh * (float) size, size);
+    fprintf(f, "%ld \t %ld \t %ld \t %ld \t %f \t %ld \t %f \t %ld \t", i, x, y, z, tree->gval[i], get_levelroot(tree, tree->parent[i]), dh * (float) size, size);
     if(args->attribute_arg == 1){
       if(is_levelroot(tree,i) ){
 	float encRec = (float) (*AttribsArray[args->attribute_arg].attribute)(tree->attribute + i*tree->size_attr);
