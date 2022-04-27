@@ -164,9 +164,9 @@ void create_mpi_inertia_type(void) {
 void create_mpi_inertiafull_type(void) {
   /* Create MPI_Type for MaxTree Nodes */
 
-  const int nitems = 12;
-  int blocklengths[12] = {1,1,1,1,1,1,1,1,1,1,1,1};
-  MPI_Aint offsets[12];
+  const int nitems = 14;
+  int blocklengths[14] = {1,1,1,1,1,1,1,1,1,1,1,1};
+  MPI_Aint offsets[14];
   offsets[0] = offsetof(InertiaDataFull, area);
   offsets[1] = offsetof(InertiaDataFull, sumX);
   offsets[2] = offsetof(InertiaDataFull, sumY);
@@ -178,13 +178,19 @@ void create_mpi_inertiafull_type(void) {
   offsets[8] = offsetof(InertiaDataFull, sumYZ);
   offsets[9] = offsetof(InertiaDataFull, sumXZ);
   offsets[10] = offsetof(InertiaDataFull, sumval);
-  offsets[11] = offsetof(InertiaDataFull, sumval2);
+  offsets[11] = offsetof(InertiaDataFull, sumXd);
+  offsets[12] = offsetof(InertiaDataFull, sumYd);
+  offsets[13] = offsetof(InertiaDataFull, sumZd);
+
+  //offsets[11] = offsetof(InertiaDataFull, sumval2);
 
 
   /* skipped global index here */
 
-  MPI_Datatype types[12] = {
-    MPI_UINT64_T,
+  MPI_Datatype types[14] = {
+    MPI_DOUBLE,
+    MPI_DOUBLE,
+    MPI_DOUBLE,
     MPI_DOUBLE,
     MPI_DOUBLE,
     MPI_DOUBLE,

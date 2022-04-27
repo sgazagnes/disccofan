@@ -52,6 +52,7 @@ void add_to_inertiafull_data(void *inertiaattr, void *data);
 void merge_inertiafull_data(void *inertiaattr, void *childattr);
 void merge_to_inertiafull_data(AuxDataStore *store, void **thisattr, void *inertiaattr, void *childattr);
 void clone_inertiafull_data(AuxDataStore *store, void **thisattr, void *inertiaattr);
+void *inertiafull_arr(void *inertiaattr);
 void *inertiafull_attribute_arr(void *inertiaattr);
 double inertiafull_area_attribute(void *inertiaattr);
 double inertiafull_elon_attribute(void *inertiaattr);

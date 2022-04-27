@@ -182,9 +182,9 @@ typedef struct _InertiaData {
 } InertiaData;
 
 typedef struct _InertiaDataFull {
-  double area, sumval, sumval2;//, sumvald, sumval2d;
+  double area, sumval;//, sumval2;//, sumvald, sumval2d;
   double sumX, sumY, sumZ, sumX2, sumY2, sumZ2, sumXY, sumYZ, sumXZ;
-  //double sumXd, sumYd, sumZd, sumX2d, sumY2d, sumZ2d, sumXYd, sumYZd, sumXZd;
+  double sumXd, sumYd, sumZd;//, sumX2d, sumY2d, sumZ2d, sumXYd, sumYZd, sumXZd;
 } InertiaDataFull;
 
 /* Attribute enclosing rectangle Structure */

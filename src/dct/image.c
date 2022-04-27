@@ -1114,7 +1114,7 @@ void write_tree_file_txt(Arguments *args, Node *tree,ulong *dims ) {
   else if(args->attribute_arg >= 3 && args->attribute_arg <= 7 )
     fprintf(f, "Inertia tensor trace \t Inertia tensor trace / area ^2 \t Mean X \t Mean Y \t Mean Z");
   else if( args->attribute_arg > 7 )
-    fprintf(f, "Elongation \t Flatness \t Sparseness \t Non-compactness");
+    fprintf(f, "Elongation \t Flatness \t Sparseness \t Non-compactness \t cm_x \t cm_y \t cm_z \t cm_wx \t cm_wy \t cm_wz");
 
    fprintf(f, "\n");
 
@@ -1160,13 +1160,21 @@ void write_tree_file_txt(Arguments *args, Node *tree,ulong *dims ) {
       }
     } else if(args->attribute_arg > 7){
       if(is_levelroot(tree,i) ){
-	float elong = (float) (*AttribsArray[9].attribute)(tree->attribute + i*tree->size_attr);
-	float flat  = (float) (*AttribsArray[10].attribute)(tree->attribute + i*tree->size_attr);
-	float spars = (float) (*AttribsArray[11].attribute)(tree->attribute + i*tree->size_attr);
-	float ncomp = (float) (*AttribsArray[12].attribute)(tree->attribute + i*tree->size_attr);
-	fprintf(f, "%f \t %f \t %f \t %f ", elong, flat, spars, ncomp);
+	double *attrArr = (double*) inertiafull_attribute_arr(tree->attribute + i*tree->size_attr);
+	float elong = (float) attrArr[8];//(*AttribsArray[9].attribute)(tree->attribute + i*tree->size_attr);
+	float flat  = (float) attrArr[9]; //(*AttribsArray[10].attribute)(tree->attribute + i*tree->size_attr);
+	float spars = (float) attrArr[10];//(*AttribsArray[11].attribute)(tree->attribute + i*tree->size_attr);
+	float ncomp = (float) attrArr[11];//(*AttribsArray[12].attribute)(tree->attribute + i*tree->size_attr);
+	float c_x   = (float) attrArr[2];
+	float c_y   = (float) attrArr[3];
+	float c_z   = (float) attrArr[4];
+	float c_xw   = (float) attrArr[5];
+	float c_yw   = (float) attrArr[6];
+	float c_zw   = (float) attrArr[7];	
+	fprintf(f, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f ", elong, flat, spars, ncomp, c_x, c_y, c_z, c_xw, c_yw, c_zw);
+	
       } else {
-	fprintf(f, "%f \t %f \t %f \t %f ", -1, -1, -1, -1);
+	fprintf(f, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f ", -1, -1, -1, -1,-1, -1, -1,-1, -1, -1);
       }
     }
     fprintf(f, "\n");

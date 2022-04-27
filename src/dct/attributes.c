@@ -457,15 +457,18 @@ void init_inertiafull_data(void *inertiaattr, bool init, ulong x, ulong y, ulong
   inertiadata->sumXY = init ? (double)  x * y: 0.;
   inertiadata->sumYZ = init ? (double)  y * z: 0.;
   inertiadata->sumXZ = init ? (double)  z * x: 0.;
-  inertiadata->sumval = init ? (double) 1: 0;
-  inertiadata->sumval2 =  init ? (double)1 : 0;
+  inertiadata->sumval = init ? (double) gval: 0;
+  inertiadata->sumXd = init ? (double)  gval*x : 0.;
+  inertiadata->sumYd = init ? (double)  gval*y : 0.;
+  inertiadata->sumZd = init ? (double)  gval*z : 0.;
+  //inertiadata->sumval2 =  init ? (double)1 : 0;
 }
 
-void *load_inertiafull_data( AuxDataStore *store, void *data){
+void *load_inertiafull_data( AuxDataStore *store, void *data){ //INCORRECT !
   InertiaDataFull *inertiadata;
   inertiadata = store ? get_new_aux_data(store) : calloc(1, sizeof(InertiaDataFull));
   check_alloc(inertiadata, 115);
-    double *init = (double *) data;
+  double *init = (double *) data;
 
   inertiadata->area = init[0];
   inertiadata->sumX = init[1];
@@ -493,8 +496,11 @@ void add_to_inertiafull_data(void *inertiaattr, void *data){
    inertiadata->sumXY += values[0]*values[1];
    inertiadata->sumYZ += values[1]*values[2];
    inertiadata->sumXZ += values[0]*values[2];
-   inertiadata->sumval += 1;
-   inertiadata->sumval2 += 1;
+   inertiadata->sumval += values[3];
+   inertiadata->sumXd += values[3]*values[0];
+   inertiadata->sumYd += values[3]*values[1];
+   inertiadata->sumZd += values[3]*values[2];
+   //inertiadata->sumval2 += 1;
 } /* add_to_inertiafull_data */
 
 void merge_inertiafull_data(void *inertiaattr, void *childattr)
@@ -513,7 +519,10 @@ void merge_inertiafull_data(void *inertiaattr, void *childattr)
    inertiadata->sumYZ += childdata->sumYZ;
    inertiadata->sumXZ += childdata->sumXZ;
    inertiadata->sumval += childdata->sumval;
-   inertiadata->sumval2 += childdata->sumval2;
+   inertiadata->sumXd += childdata->sumXd;
+   inertiadata->sumYd += childdata->sumYd;
+   inertiadata->sumZd += childdata->sumZd;
+   //inertiadata->sumval2 += childdata->sumval2;
 } /* merge_inertia_data */
 
 
@@ -538,7 +547,10 @@ void merge_to_inertiafull_data( AuxDataStore *store, void **thisattr, void *iner
    thisdata->sumYZ = inertiadata->sumYZ + childdata->sumYZ;
    thisdata->sumXZ = inertiadata->sumXZ + childdata->sumXZ;
    thisdata->sumval = inertiadata->sumval + childdata->sumval;
-   thisdata->sumval2 = inertiadata->sumval2 + childdata->sumval2;
+   thisdata->sumXd = inertiadata->sumXd + childdata->sumXd;
+   thisdata->sumYd = inertiadata->sumYd + childdata->sumYd;
+   thisdata->sumZd = inertiadata->sumZd + childdata->sumZd;
+   //thisdata->sumval2 = inertiadata->sumval2 + childdata->sumval2;
 
    // thisdata->sumR2 = inertiadata->sumR2 + childdata->sumR2;
 } /* merge_to_inertiafull_data */
@@ -563,14 +575,38 @@ void clone_inertiafull_data( AuxDataStore *store, void **thisattr, void *inertia
   thisdata->sumYZ = inertiadata->sumYZ;
   thisdata->sumXZ = inertiadata->sumXZ;
   thisdata->sumval = inertiadata->sumval;
-  thisdata->sumval2 = inertiadata->sumval2;
+  thisdata->sumXd = inertiadata->sumXd;
+  thisdata->sumYd = inertiadata->sumYd;
+  thisdata->sumZd = inertiadata->sumZd;
+  // thisdata->sumval2 = inertiadata->sumval2;
   
 } /* clone_inertiafull_data */
 
+void *inertiafull_arr(void *inertiaattr){
+   InertiaDataFull *inertiadata = inertiaattr;
+   double *inertia = calloc(14, sizeof(double));
+   inertia[0] = inertiadata->area;
+   inertia[1] = inertiadata->sumX;
+   inertia[2] = inertiadata->sumY;
+   inertia[3] = inertiadata->sumZ;
+   inertia[4] = inertiadata->sumX2;
+   inertia[5] = inertiadata->sumY2;
+   inertia[6] = inertiadata->sumZ2;
+   inertia[7] = inertiadata->sumXY;
+   inertia[8] = inertiadata->sumYZ;
+   inertia[9] = inertiadata->sumXZ;
+   inertia[10] = inertiadata->sumval;
+   inertia[11] = inertiadata->sumXd;
+   inertia[12] = inertiadata->sumYd;
+   inertia[13] = inertiadata->sumZd;
+   // inertia[11] = inertiadata->sumval2;
+   return(inertia);
+} /* inertia_attribute */
+
+
 void *inertiafull_attribute_arr(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
-   double *inertia = calloc(12, sizeof(double));
-
+   double *inertia = calloc(14, sizeof(double));
    inertia[0] = inertiadata->area;
    inertia[1] = inertiadata->sumX;
    inertia[2] = inertiadata->sumY;
@@ -582,59 +618,51 @@ void *inertiafull_attribute_arr(void *inertiaattr){
    inertia[8] = inertiadata->sumYZ;
    inertia[9] = inertiadata->sumXZ;
    inertia[10] = inertiadata->sumval;
-   inertia[11] = inertiadata->sumval2;
-   return(inertia);
-} /* inertia_attribute */
+   inertia[11] = inertiadata->sumXd;
+   inertia[12] = inertiadata->sumYd;
+   inertia[13] = inertiadata->sumZd;
 
-double inertiafull_area_attribute(void *inertiaattr){
-   InertiaDataFull *inertiadata = inertiaattr;
-   double inertia = inertiadata->area;
+   double *attrArr = calloc(12, sizeof(double));
+   attrArr[0] =  inertia[0];
+   attrArr[1] = inertia[10];
+   attrArr[2] = inertia[1]/inertia[0];
+   attrArr[3] = inertia[2]/inertia[0];
+   attrArr[4] = inertia[3]/inertia[0];
+   attrArr[5] = inertia[11]/inertia[10];
+   attrArr[6] = inertia[12]/inertia[10];
+   attrArr[7] = inertia[13]/inertia[10];
 
-   return(inertia);
-} /* inertia_attribute */
-
-
-
-double  inertiafull_elon_attribute(void *inertiaattr){
-   InertiaDataFull *inertiadata = inertiaattr;
-   double *inertia = calloc(12, sizeof(double));
-   inertia[0] = inertiadata->area;
-   inertia[1] = inertiadata->sumX;
-   inertia[2] = inertiadata->sumY;
-   inertia[3] = inertiadata->sumZ;
-   inertia[4] = inertiadata->sumX2;
-   inertia[5] = inertiadata->sumY2;
-   inertia[6] = inertiadata->sumZ2;
-   inertia[7] = inertiadata->sumXY;
-   inertia[8] = inertiadata->sumYZ;
-   inertia[9] = inertiadata->sumXZ;
-   inertia[10] = inertiadata->sumval;
-   inertia[11] = inertiadata->sumval2;
-   double c_xyz[3]  = { inertia[1]/inertia[10],inertia[2]/inertia[10],inertia[3]/inertia[10]} ;
-   double corrVal    = inertia[10]/12;
-   /* double corrValZ   = inertia[3] == 0? 0: inertia[10]/12; */
-
+   double corrVal    = inertia[0]/12;
    if(inertia[3] == 0){
 		       
-     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-       inertia[7] - inertia[1]*inertia[2]/inertia[10] };		
+     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0] };		
    
      double *eigval  = malloc(2  * sizeof(double));
      double *eigvec  = malloc(4  * sizeof(double));
-  
+
      double tens_mat[4] = {matrix[0], matrix[2], matrix[2], matrix[1]};
      int ierr = rs (2, tens_mat, eigval, 1, eigvec);
+     
+     attrArr[8] = eigval[1]/eigval[0];
+     attrArr[9] = -1;
 
-     double elong = eigval[1]/eigval[0];
-     return(elong);
+          
+     double ax_len[2] = {sqrt(4*eigval[1]/inertia[0]), sqrt(4*eigval[0]/inertia[0])};
+     attrArr[10] =  M_PI*ax_len[0]*ax_len[1]/(inertia[0]);
+     attrArr[11] =  (matrix[0]+matrix[1])/pow(inertia[0], 2.0);
+     
+     free(eigval);
+     free(eigvec);
+      //return(elong);
    } else {
-     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-       inertia[7] - inertia[1]*inertia[2]/inertia[10],
-       inertia[8] - inertia[2]*inertia[3]/inertia[10],
-       inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0],
+       inertia[8] - inertia[2]*inertia[3]/inertia[0],
+       inertia[9] - inertia[1]*inertia[3]/inertia[0] };		
    
      double *eigval  = malloc(3  * sizeof(double));
      double *eigvec  = malloc(9  * sizeof(double));
@@ -642,16 +670,35 @@ double  inertiafull_elon_attribute(void *inertiaattr){
      double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
      int ierr = rs (3, tens_mat, eigval, 1, eigvec);
 
-     double elong = eigval[2]/eigval[1];
-     printf("%lf\n",elong);
-
-     return(elong);
+     attrArr[8] = eigval[2]/eigval[1];
+     attrArr[9] = eigval[1]/eigval[0];
+     
+     double ax_len[3] = {sqrt(20*eigval[2]/inertia[0]), sqrt(20*eigval[1]/inertia[0]), sqrt(20*eigval[0]/inertia[0])};
+     attrArr[10] =  M_PI*ax_len[0]*ax_len[1]*ax_len[2]/(6*inertia[0]);
+     attrArr[11] =  (matrix[0]+matrix[1]+matrix[2])/pow(inertia[0], 5.0/3.0);
+     
+     free(eigval);
+     free(eigvec);
    }
-} /* mean_z_attribute */
+   
+   free(inertia);
+   return(attrArr);
+} /* inertia_attribute_arr */
 
-double  inertiafull_flat_attribute(void *inertiaattr){
+double inertiafull_area_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
-   double *inertia = calloc(12, sizeof(double));
+   double inertia = inertiadata->area;
+
+
+   
+   return(inertia);
+} /* inertia_attribute */
+
+
+
+double  inertiafull_elon_attribute(void *inertiaattr){
+   InertiaDataFull *inertiadata = inertiaattr;
+   double *inertia = calloc(10, sizeof(double));
    inertia[0] = inertiadata->area;
    inertia[1] = inertiadata->sumX;
    inertia[2] = inertiadata->sumY;
@@ -662,20 +709,82 @@ double  inertiafull_flat_attribute(void *inertiaattr){
    inertia[7] = inertiadata->sumXY;
    inertia[8] = inertiadata->sumYZ;
    inertia[9] = inertiadata->sumXZ;
-   inertia[10] = inertiadata->sumval;
-   inertia[11] = inertiadata->sumval2;
-   double c_xyz[3]  = { inertia[1]/inertia[10],inertia[2]/inertia[10],inertia[3]/inertia[10]} ;
-   double corrVal    = inertia[10]/12;
+   //inertia[10] = inertiadata->sumval;
+   //inertia[11] = inertiadata->sumval2;
+   //   printf("%lf, %lf, %lf\n", inertia[0], inertia[10], inertia[11]);
+   
+   double c_xyz[3]  = { inertia[1]/inertia[0],inertia[2]/inertia[0],inertia[3]/inertia[0]} ;
+   double corrVal    = inertia[0]/12;
+   /* double corrValZ   = inertia[3] == 0? 0: inertia[10]/12; */
+   double elong = 0;
+   if(inertia[3] == 0){
+		       
+     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0] };		
+   
+     double *eigval  = malloc(2  * sizeof(double));
+     double *eigvec  = malloc(4  * sizeof(double));
+
+     double tens_mat[4] = {matrix[0], matrix[2], matrix[2], matrix[1]};
+     int ierr = rs (2, tens_mat, eigval, 1, eigvec);
+
+     elong = eigval[1]/eigval[0];
+     free(eigval);
+     free(eigvec);
+      //return(elong);
+   } else {
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0],
+       inertia[8] - inertia[2]*inertia[3]/inertia[0],
+       inertia[9] - inertia[1]*inertia[3]/inertia[0] };		
+   
+     double *eigval  = malloc(3  * sizeof(double));
+     double *eigvec  = malloc(9  * sizeof(double));
+  
+     double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
+     int ierr = rs (3, tens_mat, eigval, 1, eigvec);
+
+     elong = eigval[2]/eigval[1];
+     //printf("%lf\n",elong);
+     free(eigval);
+     free(eigvec);
+     //return(elong);
+   }
+   free(inertia);
+   return elong;
+} /* mean_z_attribute */
+
+double  inertiafull_flat_attribute(void *inertiaattr){
+   InertiaDataFull *inertiadata = inertiaattr;
+   double *inertia = calloc(10, sizeof(double));
+   inertia[0] = inertiadata->area;
+   inertia[1] = inertiadata->sumX;
+   inertia[2] = inertiadata->sumY;
+   inertia[3] = inertiadata->sumZ;
+   inertia[4] = inertiadata->sumX2;
+   inertia[5] = inertiadata->sumY2;
+   inertia[6] = inertiadata->sumZ2;
+   inertia[7] = inertiadata->sumXY;
+   inertia[8] = inertiadata->sumYZ;
+   inertia[9] = inertiadata->sumXZ;
+   //inertia[10] = inertiadata->sumval;
+   // inertia[11] = inertiadata->sumval2;
+   double c_xyz[3]  = { inertia[1]/inertia[0],inertia[2]/inertia[0],inertia[3]/inertia[0]} ;
+   double corrVal    = inertia[0]/12;
 
    if(inertia[3] == 0){
+     free(inertia);
      return -1;
    }
-   double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-			inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-			inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-			inertia[7] - inertia[1]*inertia[2]/inertia[10],
-			inertia[8] - inertia[2]*inertia[3]/inertia[10],
-			inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
+   double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+     inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+     inertia[6] - inertia[3]*inertia[3]/inertia[0] + corrVal,
+     inertia[7] - inertia[1]*inertia[2]/inertia[0],
+     inertia[8] - inertia[2]*inertia[3]/inertia[0],
+     inertia[9] - inertia[1]*inertia[3]/inertia[0] };		
    
    double *eigval  = malloc(3  * sizeof(double));
    double *eigvec  = malloc(9  * sizeof(double));
@@ -685,6 +794,9 @@ double  inertiafull_flat_attribute(void *inertiaattr){
    // printf("%lf, %lf, %lf, %lf \n",inertia[3],eigval[0], eigval[1],eigval[2]);
    //printf("%lf, %lf, %lf, %lf \n",inertia[3], inertia[9], inertia[6], inertia[8]);
    double flat = eigval[1]/eigval[0];
+   free(eigval);
+   free(eigvec);
+   free(inertia);
    return(flat);
 } /* mean_z_attribute */
 
@@ -692,7 +804,7 @@ double  inertiafull_flat_attribute(void *inertiaattr){
 
 double inertiafull_spar_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
-   double *inertia = calloc(12, sizeof(double));
+   double *inertia = calloc(10, sizeof(double));
    inertia[0] = inertiadata->area;
    inertia[1] = inertiadata->sumX;
    inertia[2] = inertiadata->sumY;
@@ -703,50 +815,56 @@ double inertiafull_spar_attribute(void *inertiaattr){
    inertia[7] = inertiadata->sumXY;
    inertia[8] = inertiadata->sumYZ;
    inertia[9] = inertiadata->sumXZ;
-   inertia[10] = inertiadata->sumval;
-   inertia[11] = inertiadata->sumval2;
-   double c_xyz[3]   = { inertia[1]/inertia[10],inertia[2]/inertia[10],inertia[3]/inertia[10]} ;
-   double corrVal    =  inertia[10]/12;
-
+   // inertia[10] = inertiadata->sumval;
+   // inertia[11] = inertiadata->sumval2;
+   double c_xyz[3]   = { inertia[1]/inertia[0],inertia[2]/inertia[0],inertia[3]/inertia[0]} ;
+   double corrVal    =  inertia[0]/12;
+   double spars = 0;
    if(inertia[3] == 0){
 		       
-     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-       inertia[7] - inertia[1]*inertia[2]/inertia[10] };		
+     double matrix[3] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0] };		
    
      double *eigval  = malloc(2  * sizeof(double));
      double *eigvec  = malloc(4  * sizeof(double));
   
      double tens_mat[4] = {matrix[0], matrix[2], matrix[2], matrix[1]};
      int ierr = rs (2, tens_mat, eigval, 1, eigvec);
-     double ax_len[2] = {sqrt(4*eigval[1]/inertia[10]), sqrt(4*eigval[0]/inertia[10])};
-     double spars =  M_PI*ax_len[0]*ax_len[1]/(inertia[10]);
-     return(spars);
+     double ax_len[2] = {sqrt(4*eigval[1]/inertia[0]), sqrt(4*eigval[0]/inertia[0])};
+     spars =  M_PI*ax_len[0]*ax_len[1]/(inertia[0]);
+     free(eigval);
+     free(eigvec);
+     // return(spars);
    }else {
      
-     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-       inertia[7] - inertia[1]*inertia[2]/inertia[10],
-       inertia[8] - inertia[2]*inertia[3]/inertia[10],
-       inertia[9] - inertia[1]*inertia[3]/inertia[10] };		
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0],
+       inertia[8] - inertia[2]*inertia[3]/inertia[0],
+       inertia[9] - inertia[1]*inertia[3]/inertia[0] };		
    
      double *eigval  = malloc(3  * sizeof(double));
      double *eigvec  = malloc(9  * sizeof(double));
   
      double tens_mat[9] = {matrix[0], matrix[3], matrix[5], matrix[3], matrix[1],matrix[4], matrix[5], matrix[4],matrix[2]};
      int ierr = rs (3, tens_mat, eigval, 1, eigvec);
-     double ax_len[3] = {sqrt(20*eigval[2]/inertia[10]), sqrt(20*eigval[1]/inertia[10]), sqrt(20*eigval[0]/inertia[10])};
-     double spars =  M_PI*ax_len[0]*ax_len[1]*ax_len[2]/(6*inertia[10]);
-     return(spars);
+     double ax_len[3] = {sqrt(20*eigval[2]/inertia[0]), sqrt(20*eigval[1]/inertia[0]), sqrt(20*eigval[0]/inertia[0])};
+     spars =  M_PI*ax_len[0]*ax_len[1]*ax_len[2]/(6*inertia[0]);
+     free(eigval);
+     free(eigvec);
+     // return(spars);
 
    }
+   free(inertia);
+   return spars;
 
 } /* mean_z_attribute */
 
 double  inertiafull_ncom_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
-   double *inertia = calloc(12, sizeof(double));
+   double *inertia = calloc(10, sizeof(double));
    inertia[0] = inertiadata->area;
    inertia[1] = inertiadata->sumX;
    inertia[2] = inertiadata->sumY;
@@ -757,61 +875,50 @@ double  inertiafull_ncom_attribute(void *inertiaattr){
    inertia[7] = inertiadata->sumXY;
    inertia[8] = inertiadata->sumYZ;
    inertia[9] = inertiadata->sumXZ;
-   inertia[10] = inertiadata->sumval;
-   inertia[11] = inertiadata->sumval2;
+   //inertia[10] = inertiadata->sumval;
+   //inertia[11] = inertiadata->sumval2;
 
+   double ncomp = 0;
    if(inertia[3] == 0){
-     double corrVal    = inertia[10]/12;
-     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-       inertia[7] - inertia[1]*inertia[2]/inertia[10],
-       inertia[8] - inertia[2]*inertia[3]/inertia[10],
-       inertia[9] - inertia[1]*inertia[3]/inertia[10] };
-     double ncomp    =  (matrix[0]+matrix[1])/pow(inertia[10], 2.0);
+     double corrVal    = inertia[0]/12;
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0],
+       inertia[8] - inertia[2]*inertia[3]/inertia[0],
+       inertia[9] - inertia[1]*inertia[3]/inertia[0] };
+     ncomp    =  (matrix[0]+matrix[1])/pow(inertia[0], 2.0);
 
      // ncomp    =   (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0);
-     return(ncomp);
+     //return(ncomp);
    } else {
-     double corrVal    = inertia[10]/12;
-     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[10] + corrVal,
-       inertia[5] - inertia[2]*inertia[2]/inertia[10] + corrVal,
-       inertia[6] - inertia[3]*inertia[3]/inertia[10] + corrVal,
-       inertia[7] - inertia[1]*inertia[2]/inertia[10],
-       inertia[8] - inertia[2]*inertia[3]/inertia[10],
-       inertia[9] - inertia[1]*inertia[3]/inertia[10] };
-     double ncomp    =  (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0);
+     double corrVal    = inertia[0]/12;
+     double matrix[6] = { inertia[4] - inertia[1]*inertia[1]/inertia[0] + corrVal,
+       inertia[5] - inertia[2]*inertia[2]/inertia[0] + corrVal,
+       inertia[6] - inertia[3]*inertia[3]/inertia[0] + corrVal,
+       inertia[7] - inertia[1]*inertia[2]/inertia[0],
+       inertia[8] - inertia[2]*inertia[3]/inertia[0],
+       inertia[9] - inertia[1]*inertia[3]/inertia[0] };
+      ncomp    =  (matrix[0]+matrix[1]+matrix[2])/pow(inertia[0], 5.0/3.0);
 
-     return(ncomp);
+      //return(ncomp);
    }
+   free(inertia);
+   return ncomp;
    
 } /* mean_z_attribute */
 
 
 
-/* Inertia moments weighted by gvalues */
+/* Inertia moments weighted by gvalues 
 
 
 void *new_inertiaweight_data( AuxDataStore *store, void *data){
   InertiaDataFull *inertiadata;
   inertiadata = store ? get_new_aux_data(store) : calloc(1, sizeof(InertiaDataFull));
   check_alloc(inertiadata, 114);
-  /*
-  inertiadata->area = 1;
-  inertiadata->sumX = init[3]*init[0];
-  inertiadata->sumY = init[3]*init[1];
-  inertiadata->sumZ = init[3]*init[2];
-  inertiadata->sumX2 = init[3]*(init[0]*init[0]);
-  inertiadata->sumY2 = init[3]*(init[1]*init[1]);
-  inertiadata->sumZ2 = init[3]*(init[2]*init[2]);
-  inertiadata->sumXY = init[3]*init[0]*init[1];
-  inertiadata->sumYZ = init[3]*init[1]*init[2];
-  inertiadata->sumXZ = init[3]*init[0]*init[2];
-  inertiadata->sumval = init[3];
-  inertiadata->sumval2 = init[3]*init[3];
-  */
   return(inertiadata);
-} /* new_inertia_data */
+} // new_inertia_data 
 
 
 void init_inertiaweight_data(void *inertiaattr, bool init, ulong x, ulong y, ulong z, value gval){
@@ -843,12 +950,12 @@ void *load_inertiaweight_data( AuxDataStore *store, void *data){
   inertiadata->sumZ = init[3];
   //inertiadata->sumR2 = init[4];
   return(inertiadata);
-} /* load_inertiaweight_data */
+} /// load_inertiaweight_data 
 
 void delete_inertiaweight_data(void *inertiaattr)
 {
   free(inertiaattr);
-} /* delete_inertiafull_data */
+} // delete_inertiafull_data 
 
 void add_to_inertiaweight_data(void *inertiaattr, void *data){
    InertiaDataFull *inertiadata = inertiaattr;
@@ -865,7 +972,7 @@ void add_to_inertiaweight_data(void *inertiaattr, void *data){
    inertiadata->sumXZ += values[3]*values[0]*values[2];
    inertiadata->sumval += values[3];
    inertiadata->sumval2 += values[3]*values[3];
-} /* add_to_inertiaweight_data */
+} // add_to_inertiaweight_data 
 
 void merge_inertiaweight_data(void *inertiaattr, void *childattr)
 {
@@ -884,7 +991,7 @@ void merge_inertiaweight_data(void *inertiaattr, void *childattr)
    inertiadata->sumXZ += childdata->sumXZ;
    inertiadata->sumval += childdata->sumval;
    inertiadata->sumval2 += childdata->sumval2;
-} /* merge_inertia_data */
+} // merge_inertia_data 
 
 
 void merge_to_inertiaweight_data( AuxDataStore *store, void **thisattr, void *inertiaattr, void *childattr){
@@ -911,7 +1018,7 @@ void merge_to_inertiaweight_data( AuxDataStore *store, void **thisattr, void *in
    thisdata->sumval2 = inertiadata->sumval2 + childdata->sumval2;
 
    // thisdata->sumR2 = inertiadata->sumR2 + childdata->sumR2;
-} /* merge_to_inertiaweight_data */
+} // merge_to_inertiaweight_data
 
 void clone_inertiaweight_data( AuxDataStore *store, void **thisattr, void *inertiaattr){
   InertiaDataFull *thisdata = *thisattr;
@@ -935,7 +1042,7 @@ void clone_inertiaweight_data( AuxDataStore *store, void **thisattr, void *inert
   thisdata->sumval = inertiadata->sumval;
   thisdata->sumval2 = inertiadata->sumval2;
   
-} /* clone_inertiaweight_data */
+} // clone_inertiaweight_data 
 
 void *inertiaweight_attribute_arr(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
@@ -954,14 +1061,14 @@ void *inertiaweight_attribute_arr(void *inertiaattr){
    inertia[10] = inertiadata->sumval;
    inertia[11] = inertiadata->sumval2;
    return(inertia);
-} /* inertia_attribute */
+} // inertia_attribute 
 
 double inertiaweight_area_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
    double inertia = inertiadata->area;
 
    return(inertia);
-} /* inertia_attribute */
+} // inertia_attribute 
 
 
 
@@ -998,21 +1105,8 @@ double  inertiaweight_elon_attribute(void *inertiaattr){
    int ierr = rs (3, tens_mat, eigval, 1, eigvec);
 
    double elong = eigval[2]/eigval[1];
-   /*  ncomp[i]    = (matrix[i*6]+matrix[i*6+1]+matrix[i*6+2])/pow(intens[i*2], 5.0/3.0);
-   elong[i]    = eigval[i*3 + 2]/eigval[i*3 + 1];
-   flat[i]     = eigval[i*3 + 1]/eigval[i*3 + 0];
-   //  if ( eigval[i*3 + 0] < 0 || eigval[i*3 + 1] <0 || eigval[i*3 + 2] < 0) 
-   // printf("%lf\n", eigval[i*3 + 0], eigval[i*3 + 1], eigval[i*3 + 2]);
-   double ax_len[3] = {sqrt(20*eigval[i*3 + 2]/intens[i*2]), sqrt(20*eigval[i*3 + 1]/intens[i*2]), sqrt(20*eigval[i*3 + 0]/intens[i*2])};
-   spars[i]     = intens[i*2]/(double) volume[i] * 3.14*ax_len[0]*ax_len[1]*ax_len[2]/(6*intens[i*2]);
-   int pic = 2;
-   if(eigval[i*3+2] == eigval[i*3+1])
-    pic = eigval[i*3+1] == eigval[i*3] ? rand() % 3: rand() % 2 + 1;
-   vec[3*i] = eigvec[i*9+pic*3];
-   vec[3*i+1] = eigvec[i*9+pic*3+1];
-   vec[3*i+2] = eigvec[i*9+pic*3+2]; */
    return(elong);
-} /* mean_z_attribute */
+} // mean_z_attribute 
 
 double  inertiaweight_flat_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
@@ -1052,7 +1146,7 @@ double  inertiaweight_flat_attribute(void *inertiaattr){
    //printf("%lf, %lf, %lf, %lf \n",inertia[3], inertia[9], inertia[6], inertia[8]);
    double flat = eigval[1]/eigval[0];
    return(flat);
-} /* mean_z_attribute */
+} // mean_z_attribute 
 
 double inertiaweight_spar_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
@@ -1091,7 +1185,7 @@ double inertiaweight_spar_attribute(void *inertiaattr){
    printf("%lf, %lf, %lf \n",ax_len[0], ax_len[1], ax_len[2]);
 
    return(spars);
-} /* mean_z_attribute */
+} // mean_z_attribute 
 
 double  inertiaweight_ncom_attribute(void *inertiaattr){
    InertiaDataFull *inertiadata = inertiaattr;
@@ -1122,10 +1216,9 @@ double  inertiaweight_ncom_attribute(void *inertiaattr){
    double ncomp    = (matrix[0]+matrix[1]+matrix[2])/pow(inertia[10], 5.0/3.0);
 
    return(ncomp);
-} /* mean_z_attribute */
+} //mean_z_attribute 
+*/
 
-
-/*    */
 void init_attrib_array(void *attribute, value *gvals, bool border[6], ulong *dims, ulong attr_off[3], ulong lwb, ulong upb, ulong size_att){
   ulong width  = dims[0];
   ulong height = dims[1];
