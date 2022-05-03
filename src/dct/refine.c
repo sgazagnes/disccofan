@@ -67,12 +67,13 @@ void check_refine(Arguments *args, value *gvals, ulong size){
   
   if ((args->bpp_arg > 0 && args->bpp_arg <= 16) || args->refine_arg == 0){
     if(extrema_allR[0] < 0){
-      info("Negative values spotted, transforming the set in positive values");
+      // info("Negative values spotted, transforming the set in positive values");
+      info("Negative values spotted, they might be an issue !!");
       factors[1]        = 1;
       factors[0]        = extrema_allR[0];
       //  apply_refine(gvals, size, factors);
       g_max_greyval = extrema_allR[1];//-extrema_all[0];
-      info("New min and Max values in the full volume: [%f, %f]", 0, g_max_greyval);
+      // info("New min and Max values in the full volume: [%f, %f]", 0., g_max_greyval);
     } else {
       info("No refinement");
       g_max_greyval = extrema_allR[1];

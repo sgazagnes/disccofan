@@ -6,6 +6,7 @@
 #include "workspace.h"
 #include "image.h"
 #include "flood.h"
+#include "attributes.h"
 
 #define MIN_HEADER_SIZE 348
 #define NII_HEADER_SIZE 352
@@ -1137,14 +1138,14 @@ void write_tree_file_txt(Arguments *args, Node *tree,ulong *dims ) {
 	float encRec = (float) (*AttribsArray[args->attribute_arg].attribute)(tree->attribute + i*tree->size_attr);
 	fprintf(f, "%f", encRec);
       } else {
-	fprintf(f, "%f", -1);
+	fprintf(f, "%f", -1.);
       }
     } else if(args->attribute_arg == 2){
       if(is_levelroot(tree,i) ){
 	float diagRec = (float) (*AttribsArray[args->attribute_arg].attribute)(tree->attribute + i*tree->size_attr);
 	fprintf(f, "%f", diagRec);
       } else {
-	fprintf(f, "%f", -1);
+	fprintf(f, "%f", -1.);
       }
     }  else if(args->attribute_arg >= 3 && args->attribute_arg <= 7 ){
       if(is_levelroot(tree,i) ){
@@ -1156,7 +1157,7 @@ void write_tree_file_txt(Arguments *args, Node *tree,ulong *dims ) {
 
 	fprintf(f, "%f \t %f \t %f \t %f \t %f", in1, in2, meanx, meany, meanz);
       } else {
-	fprintf(f, "%f \t %f \t %f \t %f \t %f", -1, -1, -1, -1, -1);
+	fprintf(f, "%f \t %f \t %f \t %f \t %f", -1., -1., -1., -1., -1.);
       }
     } else if(args->attribute_arg > 7){
       if(is_levelroot(tree,i) ){
@@ -1174,7 +1175,7 @@ void write_tree_file_txt(Arguments *args, Node *tree,ulong *dims ) {
 	fprintf(f, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f ", elong, flat, spars, ncomp, c_x, c_y, c_z, c_xw, c_yw, c_zw);
 	
       } else {
-	fprintf(f, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f ", -1, -1, -1, -1,-1, -1, -1,-1, -1, -1);
+	fprintf(f, "%f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f \t %f ", -1., -1., -1., -1., -1., -1., -1.,-1., -1., -1.);
       }
     }
     fprintf(f, "\n");

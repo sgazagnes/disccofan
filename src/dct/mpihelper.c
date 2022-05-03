@@ -165,7 +165,7 @@ void create_mpi_inertiafull_type(void) {
   /* Create MPI_Type for MaxTree Nodes */
 
   const int nitems = 14;
-  int blocklengths[14] = {1,1,1,1,1,1,1,1,1,1,1,1};
+  int blocklengths[14] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1};
   MPI_Aint offsets[14];
   offsets[0] = offsetof(InertiaDataFull, area);
   offsets[1] = offsetof(InertiaDataFull, sumX);
