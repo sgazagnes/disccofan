@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
     timing("Tiles border corrected: wallclock time = %0.2f",
 	   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
   }
-  
+
   /* +++++++++++++++++++++++++++++++ */
   /*         Process the tree        */
   /* +++++++++++++++++++++++++++++++ */
@@ -268,6 +268,7 @@ int main(int argc, char** argv) {
     //   CASE 5: save the tree with attributes //
 
   else if (!strcmp(args.output_arg, "tree")) {
+      
     write_tree_file_txt(&args, local_tree,  dims_tile);
     timing("Component tree file written, wallclock time = %0.2f",
 	   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));

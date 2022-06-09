@@ -30,7 +30,12 @@ Arguments *parse_args(int argc, char** argv, Arguments *args) {
     error("The 2D pattern spectrum is only with the attributes related to the full moment of inertia tensor");
     MPI_Abort(MPI_COMM_WORLD, 001);
   }
+  if(rank()==0 && !strcmp(args->output_arg, "tree") && np()>1){
+    error("The tree writing option is not available with MPI processes yet");
+    MPI_Abort(MPI_COMM_WORLD, 001);
+  }
 
+  
   set_verbosity(args->verbosity_arg);
 
   if (args->outtype_arg == NULL)
