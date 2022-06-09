@@ -20,6 +20,8 @@
 #include "lambdavec.h"
 #include "refine.h"
 #include "workspace.h"
+#include "som_analysis.h"
+
 
 /* +++++++++++++++++++++++++++++++ */
 /*     	   Global Variables        */
@@ -154,7 +156,8 @@ int main(int argc, char** argv) {
     value *out_filter = calloc(local_tree->size_init, sizeof(value));   check_alloc(out_filter, 3);
     
     info("Filtering the data");
-    tree_filtering(local_tree, out_filter, local_tree->size_init, args.decision_arg, args.attribute_arg, args.lambda_arg);
+    tree_filtering(local_tree,        out_filter,         local_tree->size_init,
+		   args.decision_arg, args.attribute_arg, args.lambda_arg);
     MPI_Barrier(MPI_COMM_WORLD);
     timing("Tree filtering: wallclock time = %0.2f",
 	   (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
@@ -289,6 +292,28 @@ int main(int argc, char** argv) {
     
     }
 
+
+    //   CASE 6: SOM Filtering  //
+
+  else if (!strcmp(args.output_arg, "som"))
+    {
+
+      int neuron_idx = args.somneuron_arg[0] + args.somneuron_arg[1]*args.somsize_arg; 
+      value *out_filter = calloc(local_tree->size_init, sizeof(value));   check_alloc(out_filter, 3);
+      ulong *som_attr = read_som_attributes(&args, local_tree->size_init, argv[0]);
+      som_filter(local_tree,        out_filter,        som_attr, neuron_idx);
+		     
+      write_output(&args, out_filter, AttribsArray[args.attribute_arg].name, dims_img, dims_tile, local_tree->border);
+
+      /*float *out_filter = calloc(local_tree->size_init, sizeof(float));   check_alloc(out_filter, 3);
+      
+      tree_filter_test(local_tree, out_filter, 0, local_tree->size_init ,AttribsArray[args.attribute_arg].attribute);
+      write_output(&args, out_filter, AttribsArray[args.attribute_arg].name, dims_img, dims_tile, local_tree->border);
+      timing("Test file written, wallclock time = %0.2f",
+	     (float)(times(&tstruct) - start)/(float)sysconf(_SC_CLK_TCK));
+	     free(out_filter);*/
+    
+    }
   //   CASE 7: No filter  //
   
   else 

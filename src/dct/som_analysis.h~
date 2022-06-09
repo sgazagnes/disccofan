@@ -1,0 +1,11 @@
+#ifndef SOM_ANALYSIS_H
+#define SOM_ANALYSIS_H
+
+/******************************************************************************/
+/*                             Lambda Vector handling                         */
+/******************************************************************************/
+
+ulong *attribute(ulonhg size);
+void read_som_attributes(Arguments *args, ulong size,  char *prefix){
+
+#endif

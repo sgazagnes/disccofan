@@ -134,6 +134,17 @@ struct gengetopt_args_info
   int savetree_arg;	/**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) (default='0').  */
   char * savetree_orig;	/**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) original value given at command line.  */
   const char *savetree_help; /**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) help description.  */
+  char * somfile_arg;	/**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used).  */
+  char * somfile_orig;	/**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) original value given at command line.  */
+  const char *somfile_help; /**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) help description.  */
+  int somsize_arg;	/**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used).  */
+  char * somsize_orig;	/**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) original value given at command line.  */
+  const char *somsize_help; /**< @brief Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used) help description.  */
+  int* somneuron_arg;	/**< @brief Number of tiles horizontally, vertically, in depth, comma separated.  */
+  char ** somneuron_orig;	/**< @brief Number of tiles horizontally, vertically, in depth, comma separated original value given at command line.  */
+  unsigned int somneuron_min; /**< @brief Number of tiles horizontally, vertically, in depth, comma separated's minimum occurreces */
+  unsigned int somneuron_max; /**< @brief Number of tiles horizontally, vertically, in depth, comma separated's maximum occurreces */
+  const char *somneuron_help; /**< @brief Number of tiles horizontally, vertically, in depth, comma separated help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -168,6 +179,9 @@ struct gengetopt_args_info
   unsigned int background_given ;	/**< @brief Whether background was given.  */
   unsigned int verbosity_given ;	/**< @brief Whether verbosity was given.  */
   unsigned int savetree_given ;	/**< @brief Whether savetree was given.  */
+  unsigned int somfile_given ;	/**< @brief Whether somfile was given.  */
+  unsigned int somsize_given ;	/**< @brief Whether somsize was given.  */
+  unsigned int somneuron_given ;	/**< @brief Whether somneuron was given.  */
 
 } ;
 

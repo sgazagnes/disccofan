@@ -1,0 +1,20 @@
+#include "types.h"
+#include "lambdavec.h"
+
+/******************************************************************************/
+/*                            SOM analysis                                    */
+/******************************************************************************/
+
+ulong *som_attribute_create(uint size)
+{
+   ulong *somAttr;
+
+   lvec = (ulong *) calloc(size, sizeof(ulong));
+   if (lvec==NULL)  {
+     warn("Allocation failed");
+     return(NULL);
+   }
+
+   return(somAttr);
+}
+

@@ -61,7 +61,7 @@ const char *gengetopt_args_info_help[] = {
   "      --attribute2=INT     Choose the second attribute for the pattern spectrum\n                             (only works with the inertia tensor so far)\n                             (default=`9')",
   "  -d, --decision=INT       Choose the pruning rule to filter the tree\n                             (default=`0')",
   "  -f, --flood=INT          Choose the used flooding technique (deprecated).\n                             (possible values=\"0\", \"1\", \"2\" default=`0')",
-  "  -o, --output=STRING      Choose the desired output  (possible\n                             values=\"filter\", \"csl\", \"pattern\",\n                             \"pattern2d\", \"eor\", \"test\", \"tree\",\n                             \"none\" default=`filter')",
+  "  -o, --output=STRING      Choose the desired output  (possible\n                             values=\"filter\", \"csl\", \"pattern\",\n                             \"pattern2d\", \"eor\", \"test\", \"tree\",\n                             \"som\", \"none\" default=`filter')",
   "  -l, --lambda=DOUBLE      Lambda value  (default=`100')",
   "      --lvec=STRING        Lambda vector for  attribute\n                             (default=`res/lvec.txt')",
   "      --lvec2=STRING       Lambda vector for second attribute\n                             (default=`res/lvec2.txt')",
@@ -74,6 +74,9 @@ const char *gengetopt_args_info_help[] = {
   "\nOther options:",
   "  -v, --verbosity=STRING   Add verbose output  (possible values=\"OFF\",\n                             \"off\", \"ERROR\", \"error\", \"WARN\", \"warn\",\n                             \"INFO\", \"info\", \"DEBUG\", \"debug\",\n                             \"TRACE\", \"trace\", \"TIMING\", \"timing\",\n                             \"ALL\", \"all\" default=`WARN')",
   "      --savetree=INT       Save the component tree. Each process will save its\n                             local tree, so it can be reused later (the same\n                             number of process will have to be used)  (possible\n                             values=\"0\", \"1\" default=`0')",
+  "      --somfile=STRING     Save the component tree. Each process will save its\n                             local tree, so it can be reused later (the same\n                             number of process will have to be used)",
+  "      --somsize=INT        Save the component tree. Each process will save its\n                             local tree, so it can be reused later (the same\n                             number of process will have to be used)",
+  "      --somneuron=INT      Number of tiles horizontally, vertically, in depth,\n                             comma separated",
     0
 };
 
@@ -99,7 +102,7 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
 const char *cmdline_parser_saveout_values[] = {"0", "1", 0}; /*< Possible values for saveout. */
 const char *cmdline_parser_overlap_values[] = {"0", "1", 0}; /*< Possible values for overlap. */
 const char *cmdline_parser_flood_values[] = {"0", "1", "2", 0}; /*< Possible values for flood. */
-const char *cmdline_parser_output_values[] = {"filter", "csl", "pattern", "pattern2d", "eor", "test", "tree", "none", 0}; /*< Possible values for output. */
+const char *cmdline_parser_output_values[] = {"filter", "csl", "pattern", "pattern2d", "eor", "test", "tree", "som", "none", 0}; /*< Possible values for output. */
 const char *cmdline_parser_tree_values[] = {"min", "max", 0}; /*< Possible values for tree. */
 const char *cmdline_parser_morphology_values[] = {"opening", "closing", 0}; /*< Possible values for morphology. */
 const char *cmdline_parser_connectivity_values[] = {"4", "8", "6", "26", 0}; /*< Possible values for connectivity. */
@@ -145,6 +148,9 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->background_given = 0 ;
   args_info->verbosity_given = 0 ;
   args_info->savetree_given = 0 ;
+  args_info->somfile_given = 0 ;
+  args_info->somsize_given = 0 ;
+  args_info->somneuron_given = 0 ;
 }
 
 static
@@ -212,6 +218,11 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->verbosity_orig = NULL;
   args_info->savetree_arg = 0;
   args_info->savetree_orig = NULL;
+  args_info->somfile_arg = NULL;
+  args_info->somfile_orig = NULL;
+  args_info->somsize_orig = NULL;
+  args_info->somneuron_arg = NULL;
+  args_info->somneuron_orig = NULL;
   
 }
 
@@ -255,6 +266,11 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->background_help = gengetopt_args_info_help[36] ;
   args_info->verbosity_help = gengetopt_args_info_help[38] ;
   args_info->savetree_help = gengetopt_args_info_help[39] ;
+  args_info->somfile_help = gengetopt_args_info_help[40] ;
+  args_info->somsize_help = gengetopt_args_info_help[41] ;
+  args_info->somneuron_help = gengetopt_args_info_help[42] ;
+  args_info->somneuron_min = 2;
+  args_info->somneuron_max = 2;
   
 }
 
@@ -435,6 +451,11 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->verbosity_arg));
   free_string_field (&(args_info->verbosity_orig));
   free_string_field (&(args_info->savetree_orig));
+  free_string_field (&(args_info->somfile_arg));
+  free_string_field (&(args_info->somfile_orig));
+  free_string_field (&(args_info->somsize_orig));
+  free_multiple_field (args_info->somneuron_given, (void *)(args_info->somneuron_arg), &(args_info->somneuron_orig));
+  args_info->somneuron_arg = 0;
   
   
 
@@ -579,6 +600,11 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "verbosity", args_info->verbosity_orig, cmdline_parser_verbosity_values);
   if (args_info->savetree_given)
     write_into_file(outfile, "savetree", args_info->savetree_orig, cmdline_parser_savetree_values);
+  if (args_info->somfile_given)
+    write_into_file(outfile, "somfile", args_info->somfile_orig, 0);
+  if (args_info->somsize_given)
+    write_into_file(outfile, "somsize", args_info->somsize_orig, 0);
+  write_multiple_into_file(outfile, args_info->somneuron_given, "somneuron", args_info->somneuron_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -837,6 +863,9 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
     }
   
   if (check_multiple_option_occurrences(prog_name, args_info->grid_given, args_info->grid_min, args_info->grid_max, "'--grid' ('-g')"))
+     error_occurred = 1;
+  
+  if (check_multiple_option_occurrences(prog_name, args_info->somneuron_given, args_info->somneuron_min, args_info->somneuron_max, "'--somneuron'"))
      error_occurred = 1;
   
   
@@ -1136,6 +1165,7 @@ cmdline_parser_internal (
   int c;	/* Character of the parsed option.  */
 
   struct generic_list * grid_list = NULL;
+  struct generic_list * somneuron_list = NULL;
   int error_occurred = 0;
   struct gengetopt_args_info local_args_info;
   
@@ -1205,6 +1235,9 @@ cmdline_parser_internal (
         { "background",	1, NULL, 0 },
         { "verbosity",	1, NULL, 'v' },
         { "savetree",	1, NULL, 0 },
+        { "somfile",	1, NULL, 0 },
+        { "somsize",	1, NULL, 0 },
+        { "somneuron",	1, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
@@ -1631,6 +1664,45 @@ cmdline_parser_internal (
               goto failure;
           
           }
+          /* Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used).  */
+          else if (strcmp (long_options[option_index].name, "somfile") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->somfile_arg), 
+                 &(args_info->somfile_orig), &(args_info->somfile_given),
+                &(local_args_info.somfile_given), optarg, 0, 0, ARG_STRING,
+                check_ambiguity, override, 0, 0,
+                "somfile", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used).  */
+          else if (strcmp (long_options[option_index].name, "somsize") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->somsize_arg), 
+                 &(args_info->somsize_orig), &(args_info->somsize_given),
+                &(local_args_info.somsize_given), optarg, 0, 0, ARG_INT,
+                check_ambiguity, override, 0, 0,
+                "somsize", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Number of tiles horizontally, vertically, in depth, comma separated.  */
+          else if (strcmp (long_options[option_index].name, "somneuron") == 0)
+          {
+          
+            if (update_multiple_arg_temp(&somneuron_list, 
+                &(local_args_info.somneuron_given), optarg, 0, 0, ARG_INT,
+                "somneuron", '-',
+                additional_error))
+              goto failure;
+          
+          }
           
           break;
         case '?':	/* Invalid option.  */
@@ -1648,9 +1720,15 @@ cmdline_parser_internal (
     &(args_info->grid_orig), args_info->grid_given,
     local_args_info.grid_given, 0,
     ARG_INT, grid_list);
+  update_multiple_arg((void *)&(args_info->somneuron_arg),
+    &(args_info->somneuron_orig), args_info->somneuron_given,
+    local_args_info.somneuron_given, 0,
+    ARG_INT, somneuron_list);
 
   args_info->grid_given += local_args_info.grid_given;
   local_args_info.grid_given = 0;
+  args_info->somneuron_given += local_args_info.somneuron_given;
+  local_args_info.somneuron_given = 0;
   
   if (check_required)
     {
@@ -1666,6 +1744,7 @@ cmdline_parser_internal (
 
 failure:
   free_list (grid_list, 0 );
+  free_list (somneuron_list, 0 );
   
   cmdline_parser_release (&local_args_info);
   return (EXIT_FAILURE);

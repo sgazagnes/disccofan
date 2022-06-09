@@ -40,7 +40,7 @@ option "attribute" a "Choose the attribute to build the tree" int optional defau
 option "attribute2" - "Choose the second attribute for the pattern spectrum (only works with the inertia tensor so far)" int optional default = "9"
 option "decision" d "Choose the pruning rule to filter the tree" int optional default = "0"
 option "flood" f "Choose the used flooding technique (deprecated)." int values="0","1","2" optional default="0"
-option "output" o "Choose the desired output" string values="filter","csl","pattern","pattern2d", "eor","test","tree","none" optional default="filter"
+option "output" o "Choose the desired output" string values="filter","csl","pattern","pattern2d", "eor","test","tree","som","none" optional default="filter"
 option "lambda" l "Lambda value" double optional default="100"
 option "lvec"  - "Lambda vector for  attribute" string optional default="res/lvec.txt"
 option "lvec2"  - "Lambda vector for second attribute" string optional default="res/lvec2.txt"
@@ -55,3 +55,6 @@ option "background" - "Account for background level in the pattern spectra" int 
 section "Other options"
 option "verbosity" v "Add verbose output" values="OFF","off","ERROR","error","WARN","warn","INFO","info","DEBUG","debug","TRACE","trace","TIMING","timing","ALL","all" optional default="WARN"
 option "savetree" - "Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used)" int values="0","1" optional default="0"
+option "somfile" - "Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used)" string optional
+option "somsize" - "Save the component tree. Each process will save its local tree, so it can be reused later (the same number of process will have to be used)" int optional
+option "somneuron" - "Number of tiles horizontally, vertically, in depth, comma separated" int multiple(2) optional
