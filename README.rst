@@ -1,5 +1,12 @@
-disccofan
+DISCCOFAN
 ==========
+
+
+.. image:: docs/source/images/disccofan.png
+   :width: 300px
+   :align: center
+
+|
 
 **disccofan** is a Python library that provides utilities for analyzing patterns and structures in 2D and 3D datasets.
 
