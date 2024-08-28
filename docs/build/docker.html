@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using disccofan with Docker &mdash; disccofan 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1875455e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=af2ce170"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Support" href="FAQ.html" />
+    <link rel="prev" title="Getting started with simple examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/disccofan.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Getting started with simple examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using disccofan with Docker</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pulling-the-docker-image">Pulling the Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-disccofan-with-docker">Running disccofan with Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-output-files">Accessing Output Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-docker-image">Updating the Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Support</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">disccofan</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using disccofan with Docker</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/docker.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-disccofan-with-docker">
+<h1>Using disccofan with Docker<a class="headerlink" href="#using-disccofan-with-docker" title="Permalink to this heading"></a></h1>
+<p>This guide provides instructions on how to use <span class="bold-smallcaps">disccofan</span> via the Docker image. Docker allows for a consistent environment to run <span class="bold-smallcaps">disccofan</span>, ensuring all dependencies are correctly installed and configured. This simplifies the use of disccofan as you do not need to have all libraries installed.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<ul>
+<li><p>Ensure that <strong>Docker</strong> is installed on your system. You can download Docker from the <a class="reference external" href="https://www.docker.com/get-started">official website</a> and follow the installation instructions for your platform (Windows, macOS, or Linux).</p></li>
+<li><p>Verify Docker installation by running the following command in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>This should display the Docker version number, confirming that it is installed correctly.</p>
+</li>
+</ul>
+</section>
+<section id="pulling-the-docker-image">
+<h2>Pulling the Docker Image<a class="headerlink" href="#pulling-the-docker-image" title="Permalink to this heading"></a></h2>
+<p>To use <span class="bold-smallcaps">disccofan</span>, you need to pull the Docker image that contains it. Use the following command to download the image from Docker Hub:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>sgazagnes/disccofan:latest
+</pre></div>
+</div>
+</section>
+<section id="running-disccofan-with-docker">
+<h2>Running disccofan with Docker<a class="headerlink" href="#running-disccofan-with-docker" title="Permalink to this heading"></a></h2>
+<p>Once you have pulled the Docker image, you can run <span class="bold-smallcaps">disccofan</span> using Docker. Here is to run <span class="bold-smallcaps">disccofan</span> interactively:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/data<span class="w"> </span>sgazagnes/disccofan:latest
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">$(pwd):/data</span></code> option mounts the current working directory to the Docker container, allowing <span class="bold-smallcaps">disccofan</span> to access files on your host machine. Once in the contained, you can run <span class="bold-smallcaps">disccofan</span> using the examples and documentation provided in the other sections. Note that using mpi inside of a container may sometimes lead to a Permission denied. You may have to run the container as a root user, and add the option <cite>–allow-run-as-root`</cite> in the mpi command.</p>
+</section>
+<section id="accessing-output-files">
+<h2>Accessing Output Files<a class="headerlink" href="#accessing-output-files" title="Permalink to this heading"></a></h2>
+<p>By default, output files generated by <span class="bold-smallcaps">disccofan</span> will be saved inside the Docker container. To access these files, they should be saved in a mounted directory (as demonstrated in the examples above). This allows you to easily access the output files from your host system.</p>
+</section>
+<section id="updating-the-docker-image">
+<h2>Updating the Docker Image<a class="headerlink" href="#updating-the-docker-image" title="Permalink to this heading"></a></h2>
+<p>To ensure you are using the latest version of the Docker image, run the following command to pull the latest version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>sgazagnes/disccofan:latest
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<p>Using <span class="bold-smallcaps">disccofan</span> with Docker provides a flexible and efficient way to run the software without worrying about environment setup or dependency management. For further customization or issues, refer to the additional documentation or contact me at &lt;<a class="reference external" href="mailto:sgsgazagnes&#37;&#52;&#48;gmail&#46;com">sgsgazagnes<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Getting started with simple examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="FAQ.html" class="btn btn-neutral float-right" title="Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
