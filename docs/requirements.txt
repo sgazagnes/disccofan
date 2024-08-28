@@ -1,6 +1,2 @@
 sphinx
 sphinx-rtd-theme
-numpy
-matplotlib
-astropy
-h5py
