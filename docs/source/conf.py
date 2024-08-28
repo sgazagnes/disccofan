@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('../../src'))  # Adjust path to your source c
 
 project = 'disccofan'
 author = 'Simon Gazagnes, Michael H.F. Wilkilson'
-release = '1.0.0'
+release = '2.0.0'
 
 # -- General configuration ---------------------------------------------------
 
