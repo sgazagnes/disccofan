@@ -1,12 +1,11 @@
+# .readthedocs.yaml
+
+# Required version
 version: 2
 
+# Build documentation in the "docs" directory with Sphinx
 sphinx:
   configuration: docs/source/conf.py
-
-python:
-  version: 3.8
-  install:
-    - requirements: docs/requirements.txt
 
 build:
   os: ubuntu-20.04
@@ -19,3 +18,11 @@ build:
 formats:
   - pdf
   - epub
+
+# Define the Python version and dependencies
+# python:
+#   version: "3.8"
+#   install:
+#     - method: pip
+#       path: .
+#     - requirements: docs/requirements.txt
