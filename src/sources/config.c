@@ -38,7 +38,7 @@ void set_default_values(Arguments* args) {
     strcpy(args->input_file_style, "auto");
     strcpy(args->output_file_style, "auto");
     strcpy(args->hdf5_dataset, "my_dataset");
-    strcpy(args->image_options, "classic");
+    strcpy(args->image_options, "grayscale");
     args->save_output = 1;
     args->tile_overlap = 1;
     args->mpi_grid[0] = 1;
@@ -219,7 +219,7 @@ void parse_config_file(const char* filename, Arguments* args) {
           strcpy(args->image_options, combine);
         else{
             warn("Combine image is weirdly set up. This parameter is a mess anyway, so I'll put the default value");
-            strcpy(args->image_options, "classic");
+            strcpy(args->image_options, "grayscale");
         }
     }
 

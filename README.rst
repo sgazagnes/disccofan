@@ -21,3 +21,13 @@ All techniques that **disccofan** is using were published in three different pap
 - `Parallel Attribute Computation for Distributed Component Forests <https://ieeexplore.ieee.org/document/9897660>`_ 
 
 
+AUTHOR
+------
+
+- Simon Gazagnes <sgsgazagnes@gmail.com>
+
+LICENSE
+-------
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+

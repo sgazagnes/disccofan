@@ -1339,7 +1339,7 @@ void write_pattern_spectra(Arguments *args, Operation *ope_cur, double* spectrum
     exit(1);
   }
 
-  fprintf(f, "lambdas \t bin_label \t spectra \n");
+  fprintf(f, "lambdas \t spectra \n");
 
   // Allocate buffer for each thread
   int num_threads = omp_get_max_threads();

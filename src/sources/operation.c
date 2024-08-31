@@ -90,8 +90,10 @@ void perform_pattern_spectrum(Node *tree, Operation *ope_cur, double *spectrum, 
         check_alloc(temp_2D_spectrum, 11);
 
         info("Computing the 2D pattern spectrum");
-        if (ope_cur->attribute_idx == 0 && ope_cur->attribute_idx_2D != 0)
-            tree_pattern_spectrum2d(tree, tree->size_init, ope_cur->lvec1, ope_cur->lvec2, tree->area_copy, tree->gval_par, temp_2D_spectrum, 1, AttribsArray[ope_cur->attribute_idx].area, AttribsArray[ope_cur->attribute_idx_2D].area, AttribsArray[ope_cur->attribute_idx_2D].attribute);
+        if (ope_cur->attribute_idx == 0 && ope_cur->attribute_idx_2D != 0){
+            error("Please invert your two attribute functions. The attribute function with the highest index should be first.");
+            // tree_pattern_spectrum2d(tree, tree->size_init, ope_cur->lvec1, ope_cur->lvec2, tree->area_copy, tree->gval_par, temp_2D_spectrum, 1, AttribsArray[ope_cur->attribute_idx].area, AttribsArray[ope_cur->attribute_idx_2D].area, AttribsArray[ope_cur->attribute_idx_2D].attribute);
+        }
         else if (ope_cur->attribute_idx_2D == 0 && ope_cur->attribute_idx != 0)
             tree_pattern_spectrum2d(tree, tree->size_init, ope_cur->lvec1, ope_cur->lvec2, tree->area_copy, tree->gval_par, temp_2D_spectrum, 1, AttribsArray[ope_cur->attribute_idx].area, AttribsArray[ope_cur->attribute_idx].attribute, AttribsArray[ope_cur->attribute_idx].area);
         else
@@ -179,7 +181,7 @@ void perform_operation(Arguments *args, Node *tree, Operation *ope_cur, Output *
         ope_cur->lvec1     = lambda_vector_read(ope_cur->lvec_name, ope_cur->imscale);
         // print_lambda_vec(ope_cur->lvec1);
         ope_cur->lvec2     = lambda_vector_read(ope_cur->lvec_name_2D, ope_cur->imscale_2D);
-// print_lambda_vec(ope_cur->lvec2);
+// print_lambda_vec(ope_cur->lvec2)    ;
         output->pattern_spec = calloc(ope_cur->lvec1->num_lambdas*ope_cur->lvec2->num_lambdas, sizeof(double)); check_alloc(output->pattern_spec , 10);
 
         perform_pattern_spectrum(tree, ope_cur, output->pattern_spec, 2);  

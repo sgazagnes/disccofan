@@ -51,8 +51,9 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Getting started with simple examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docker.html">Using disccofan with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Getting Started with Simple Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">Running DISCCOFAN with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version_updates.html">Version Updates and Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Support</a></li>
 </ul>
 
@@ -90,24 +91,24 @@
 </div>
 </li>
 <li><p><strong>Install Dependencies</strong>:</p>
-<p>Ensure you have the required libraries installed. <span class="bold-smallcaps">disccofan</span> requires the following libraries:</p>
+<p>Ensure that you have the required libraries installed. <span class="bold-smallcaps">disccofan</span> requires the following libraries:</p>
 <ul class="simple">
-<li><p>FreeImage: For reading most image types. (<a class="reference external" href="https://freeimage.sourceforge.io/">https://freeimage.sourceforge.io/</a>)</p></li>
-<li><p>CFITSIO: For reading FIT/FITS files. (<a class="reference external" href="https://heasarc.gsfc.nasa.gov/fitsio/">https://heasarc.gsfc.nasa.gov/fitsio/</a>)</p></li>
-<li><p>HDF5: For reading HDF5 (.h5) files. (<a class="reference external" href="https://portal.hdfgroup.org/">https://portal.hdfgroup.org/</a>)</p></li>
-<li><p>LibConfig: For reading the config file. (<a class="reference external" href="https://hyperrealm.github.io/libconfig/">https://hyperrealm.github.io/libconfig/</a>)</p></li>
-<li><p>OpenMP and OpenMPI: For parallelization options</p></li>
+<li><p><strong>FreeImage</strong>: For reading most image types. (<a class="reference external" href="https://freeimage.sourceforge.io/">https://freeimage.sourceforge.io/</a>)</p></li>
+<li><p><strong>CFITSIO</strong>: For reading FIT/FITS files. (<a class="reference external" href="https://heasarc.gsfc.nasa.gov/fitsio/">https://heasarc.gsfc.nasa.gov/fitsio/</a>)</p></li>
+<li><p><strong>HDF5</strong>: For reading HDF5 (.h5) files. (<a class="reference external" href="https://portal.hdfgroup.org/">https://portal.hdfgroup.org/</a>)</p></li>
+<li><p><strong>LibConfig</strong>: For reading the config file. (<a class="reference external" href="https://hyperrealm.github.io/libconfig/">https://hyperrealm.github.io/libconfig/</a>)</p></li>
+<li><p><strong>OpenMP</strong> and <strong>OpenMPI</strong>: For parallelization options</p></li>
 </ul>
-<p>Some of these libraries may be installed by default on your system. Some libraries are not and you will have to install them manually.</p>
-<p>On a Debian-based system, the following line should make sure you are installing all the necessary libraries:</p>
+<p>Some of these libraries may already be installed on your system. If not, you will need to install them manually.</p>
+<p>On a Debian-based system, use the following command to install the necessary libraries:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc<span class="w"> </span>make<span class="w"> </span>openmpi-dev<span class="w"> </span>libcfitsio-dev<span class="w"> </span>libhdf5-dev<span class="w"> </span>libfreeimage-dev<span class="w"> </span>libconfig-dev
 </pre></div>
 </div>
-<p>On a Fedora or Redhat-based system, the following line should make sure you are installing all the necessary libraries:</p>
+<p>On a Fedora or Redhat-based system, use this command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>gcc<span class="w"> </span>make<span class="w"> </span>openmpi-devel<span class="w"> </span>cfitsio-devel<span class="w"> </span>hdf5-devel<span class="w"> </span>freeimage-devel<span class="w"> </span>libconfig-devel
 </pre></div>
 </div>
-<p>The code was most recently (August 2024) successfully tested on Fedora 40 with the following libraries:</p>
+<p>The code was most recently tested (August 2024) on Fedora 40 with the following libraries:</p>
 <ul class="simple">
 <li><p><cite>make-1:4.4.1-6.fc40</cite></p></li>
 <li><p><cite>gcc-14.2.1-1.fc40</cite></p></li>
@@ -118,34 +119,40 @@
 <li><p><cite>cfitsio-devel-4.4.0-2.fc40</cite></p></li>
 <li><p><cite>freeimage-devel-3.19.0-0.fc40</cite></p></li>
 </ul>
-<p></p>
 </li>
 <li><p><strong>Build the Project</strong>:</p>
-<p>Navigate to the project directory and use <cite>make</cite> to build:</p>
+<p>Navigate to the project directory and build the project using <cite>make</cite>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>disccofan
 make<span class="w"> </span>disccofan
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic" start="3">
-<li><p><strong>Check that the installation worked properly</strong>:</p>
-<p><span class="bold-smallcaps">disccofan</span> has a few bash scripts for testing whether the installation was successfull and that most operations are supported by your system. It is strongly advised to run these tests. Note that these tests require that Python 3 is installed as well as the following packages: numpy, astropy, h5py (run <cite>pip install numpy astropy h5py</cite> if you do not have these packages installed).</p>
-<p>There are three main scripts for testing the code. First one tests the code without any parallelization:</p>
+<li><p><strong>Check the Installation</strong>:</p>
+<p><span class="bold-smallcaps">disccofan</span> includes several bash scripts to test the installation and verify that most operations are supported by your system. It is recommended to run these tests. Note that these tests require Python 3 and the following packages: <cite>numpy</cite>, <cite>astropy</cite>, and <cite>h5py</cite>. Install them using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>numpy<span class="w"> </span>astropy<span class="w"> </span>h5py
+</pre></div>
+</div>
+<p>There are three main scripts for testing:</p>
+<ul>
+<li><p>To test without parallelization:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./tests/test_sequential.sh
 </pre></div>
 </div>
-<p>Second one tests the code with multithreading:</p>
+</li>
+<li><p>To test with multithreading:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./tests/test_threading.sh
 </pre></div>
 </div>
-<p>Last one tests the code with MPI parallelization:</p>
+</li>
+<li><p>To test with MPI parallelization:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./tests/test_mpi.sh
 </pre></div>
 </div>
 </li>
-<li><p><strong>What to do if the installation failed</strong>:</p>
-<p>If you did not manage to install <span class="bold-smallcaps">disccofan</span>, feel free to contact me so we can work a way around. Alternatively, if you know Docker, there exists a Docker image of disccofan that is relatively easy to use so you do not have to go through installing the code and nessecary libraries. See more in the <cite>Running disccofan with Docker</cite> section.</p>
+</ul>
+</li>
+<li><p><strong>Troubleshooting Installation Issues</strong>:</p>
+<p>If you encounter problems with the installation, feel free to contact me for assistance. Alternatively, a Docker image of <span class="bold-smallcaps">disccofan</span> is available, which simplifies usage without needing to install the code and libraries manually. See the <cite>Running disccofan with Docker</cite> section for more information.</p>
 </li>
 </ol>
 </section>

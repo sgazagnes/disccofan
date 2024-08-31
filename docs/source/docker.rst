@@ -1,5 +1,5 @@
-Using disccofan with Docker
-===========================
+Running DISCCOFAN with Docker
+=============================
 
 .. role:: bold-smallcaps
 
@@ -53,7 +53,5 @@ To ensure you are using the latest version of the Docker image, run the followin
 
    docker pull sgazagnes/disccofan:latest
 
-Conclusion
-----------
 
 Using :bold-smallcaps:`disccofan` with Docker provides a flexible and efficient way to run the software without worrying about environment setup or dependency management. For further customization or issues, refer to the additional documentation or contact me at <sgsgazagnes@gmail.com>.

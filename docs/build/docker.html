@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using disccofan with Docker &mdash; disccofan 2.0.0 documentation</title>
+  <title>Running DISCCOFAN with Docker &mdash; disccofan 2.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1875455e" />
@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Support" href="FAQ.html" />
-    <link rel="prev" title="Getting started with simple examples" href="examples.html" /> 
+    <link rel="next" title="Version Updates and Information" href="version_updates.html" />
+    <link rel="prev" title="Getting Started with Simple Examples" href="examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,16 +51,16 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Getting started with simple examples</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Using disccofan with Docker</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Getting Started with Simple Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running DISCCOFAN with Docker</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pulling-the-docker-image">Pulling the Docker Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-disccofan-with-docker">Running disccofan with Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Running disccofan with Docker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#accessing-output-files">Accessing Output Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#updating-the-docker-image">Updating the Docker Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="version_updates.html">Version Updates and Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Support</a></li>
 </ul>
 
@@ -78,7 +78,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Using disccofan with Docker</li>
+      <li class="breadcrumb-item active">Running DISCCOFAN with Docker</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/docker.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -88,8 +88,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="using-disccofan-with-docker">
-<h1>Using disccofan with Docker<a class="headerlink" href="#using-disccofan-with-docker" title="Permalink to this heading"></a></h1>
+  <section id="running-disccofan-with-docker">
+<h1>Running DISCCOFAN with Docker<a class="headerlink" href="#running-disccofan-with-docker" title="Permalink to this heading"></a></h1>
 <p>This guide provides instructions on how to use <span class="bold-smallcaps">disccofan</span> via the Docker image. Docker allows for a consistent environment to run <span class="bold-smallcaps">disccofan</span>, ensuring all dependencies are correctly installed and configured. This simplifies the use of disccofan as you do not need to have all libraries installed.</p>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
@@ -110,8 +110,8 @@
 </pre></div>
 </div>
 </section>
-<section id="running-disccofan-with-docker">
-<h2>Running disccofan with Docker<a class="headerlink" href="#running-disccofan-with-docker" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h2>Running disccofan with Docker<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <p>Once you have pulled the Docker image, you can run <span class="bold-smallcaps">disccofan</span> using Docker. Here is to run <span class="bold-smallcaps">disccofan</span> interactively:</p>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/data<span class="w"> </span>sgazagnes/disccofan:latest
@@ -130,9 +130,6 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>sgazagnes/disccofan:latest
 </pre></div>
 </div>
-</section>
-<section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <p>Using <span class="bold-smallcaps">disccofan</span> with Docker provides a flexible and efficient way to run the software without worrying about environment setup or dependency management. For further customization or issues, refer to the additional documentation or contact me at &lt;<a class="reference external" href="mailto:sgsgazagnes&#37;&#52;&#48;gmail&#46;com">sgsgazagnes<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;.</p>
 </section>
 </section>
@@ -141,8 +138,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="examples.html" class="btn btn-neutral float-left" title="Getting started with simple examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="FAQ.html" class="btn btn-neutral float-right" title="Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="examples.html" class="btn btn-neutral float-left" title="Getting Started with Simple Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="version_updates.html" class="btn btn-neutral float-right" title="Version Updates and Information" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

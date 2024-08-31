@@ -1,4 +1,8 @@
 #LambdaVector file. Keep this exact line in all similar lambda vector files
-5
-10
-20
+100
+1000
+10000
+50000
+100000
+150000
+

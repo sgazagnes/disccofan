@@ -1,5 +1,7 @@
 #LambdaVector file. Keep this exact line in all similar lambda vector files
+1
+1.5
+2
+2.5
+3
 5
-10
-20
-30

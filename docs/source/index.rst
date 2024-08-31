@@ -10,6 +10,7 @@ Welcome to disccofan's documentation!
    usage
    examples
    docker
+   version_updates
    FAQ
 
 .. Indices and tables

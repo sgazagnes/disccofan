@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Getting started with simple examples &mdash; disccofan 2.0.0 documentation</title>
+  <title>Getting Started with Simple Examples &mdash; disccofan 2.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1875455e" />
@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Using disccofan with Docker" href="docker.html" />
+    <link rel="next" title="Running DISCCOFAN with Docker" href="docker.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
@@ -51,8 +51,26 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started with simple examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docker.html">Using disccofan with Docker</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with Simple Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#filtering-structures-based-on-their-morphological-properties">Filtering Structures Based on Their Morphological Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-structures-sizes">Using the Structures’ Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-structures-elongation">Using the Structures’ Elongation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extracting-structures-based-on-their-morphological-properties">Extracting Structures Based on Their Morphological Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-dmp">Creating a DMP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploring-the-1d-pattern-spectrum">Exploring the 1D Pattern Spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploring-the-2d-pattern-spectrum">Exploring the 2D Pattern Spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#speeding-up-the-code">Speeding Up the Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-threads">Using Threads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-mpi-with-a-single-input-data-set">Using MPI with a Single Input Data Set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-mpi-with-a-pre-cut-data-set">Using MPI with a Pre-Cut Data Set</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">Running DISCCOFAN with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version_updates.html">Version Updates and Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQ.html">Support</a></li>
 </ul>
 
@@ -70,7 +88,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Getting started with simple examples</li>
+      <li class="breadcrumb-item active">Getting Started with Simple Examples</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,8 +99,586 @@
            <div itemprop="articleBody">
              
   <section id="getting-started-with-simple-examples">
-<h1>Getting started with simple examples<a class="headerlink" href="#getting-started-with-simple-examples" title="Permalink to this heading"></a></h1>
-<p>Coming soon</p>
+<h1>Getting Started with Simple Examples<a class="headerlink" href="#getting-started-with-simple-examples" title="Permalink to this heading"></a></h1>
+<p>Here are some working examples to help you understand how to use <span class="bold-smallcaps">disccofan</span> for your projects. We will use the well-known Lena grayscale image, renamed as <cite>input_image.png</cite> in <span class="bold-smallcaps">disccofan</span>’s main folder. The grayscale values range from 3 to 255. Note that we use a 2D image for simplicity, but any 2D or 3D data can be used.</p>
+<section id="filtering-structures-based-on-their-morphological-properties">
+<h2>Filtering Structures Based on Their Morphological Properties<a class="headerlink" href="#filtering-structures-based-on-their-morphological-properties" title="Permalink to this heading"></a></h2>
+<section id="using-the-structures-sizes">
+<h3>Using the Structures’ Sizes<a class="headerlink" href="#using-the-structures-sizes" title="Permalink to this heading"></a></h3>
+<p>The simplest operation is filtering based on the size of the structures. For this, you can use default settings. Create a config file named <cite>config_filtering.ini</cite> with the following options:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">150</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><span class="bold-smallcaps">disccofan</span> will read the image <cite>input_image.png</cite> and apply a top-hat filter to remove all bright structures smaller than 150 pixels. The result will be saved as <cite>output_image_filter_area_150.000.png</cite>. Note that the final output name includes the operation type and parameters. To run the code without parallelization:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_filtering.ini
+</pre></div>
+</div>
+</div></blockquote>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center" style="width:50%">
+      <img src="_static/images/input_image.png" width="200px" height="200px">
+      <p>The original `input_image.png`.</p>
+    </td>
+    <td style="text-align:center" style="width:50%">
+      <img src="_static/images/output_image_filter_area_150.000.png" width="200px" height="200px">
+      <p>The result of the filtering operation.</p>
+    </td>
+  </tr>
+</table><p>By default, <span class="bold-smallcaps">disccofan</span> filters the brightest structures. To filter the darkest structures instead, set the <cite>tree_type</cite> to <cite>min</cite> in the config file. You can also change this from the command line:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_filtering.ini<span class="w"> </span>-tree_type<span class="w"> </span>min
+</pre></div>
+</div>
+</div></blockquote>
+<p>This will result in removing the darkest structures smaller than 150 pixels:</p>
+<table style="width:100%; table-layout: fixed;">
+  <tr>
+    <td style="width:50%; text-align:center; padding: 10px;">
+      <img src="_static/images/input_image.png" width="200px" height="200px" alt="Original Input Image">
+      <p>The original `input_image.png`.</p>
+    </td>
+    <td style="width:50%; text-align:center; padding: 10px;">
+      <img src="_static/images/output_image_filter_area_150.000_min.png"width="200px" height="200px" alt="Filtered Image">
+      <p>The result of the filtering operation with dark structures removed.</p>
+    </td>
+  </tr>
+</table><p>Remember to use a different filename for the output when changing the <cite>tree_type</cite> option to avoid overwriting the previous results.</p>
+</section>
+<section id="using-the-structures-elongation">
+<h3>Using the Structures’ Elongation<a class="headerlink" href="#using-the-structures-elongation" title="Permalink to this heading"></a></h3>
+<p>Instead of size, you can filter based on elongation or other attributes. For example, to keep only the most elongated structures, you can use the <cite>X-extent</cite> or <cite>Elongation</cite> attribute functions. Update <cite>config_filtering.ini</cite> with the following parameters:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">100</span><span class="o">)</span>,<span class="w"> </span><span class="c1"># X-extent</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="m">10</span><span class="o">)</span>,<span class="w"> </span><span class="c1"># Elongation</span>
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The first operation removes structures with an x-axis extent smaller than 100 pixels. The second operation removes structures with elongation less than 10. Elongation is computed through the inertia matrix, making this operation rotation-invariant, unlike the <cite>X-extent</cite> which is axis-dependent. Run the code as before:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_filtering.ini
+</pre></div>
+</div>
+</div></blockquote>
+<p>Here are the resulting images:</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/input_image.png" width="150px" height="150px">
+      <p>The original `input_image.png`.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_filter_xext_100.000.png" width="150px" height="150px">
+      <p>The result of filtering using the X-extent attribute.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_filter_elong_10.000.png" width="150px" height="150px">
+      <p>The result of filtering using the Elongation attribute.</p>
+    </td>
+  </tr>
+</table><p>To understand how each attribute works and how to adjust thresholds for your application, you can experiment with different attributes and threshold values.</p>
+</section>
+</section>
+<section id="extracting-structures-based-on-their-morphological-properties">
+<h2>Extracting Structures Based on Their Morphological Properties<a class="headerlink" href="#extracting-structures-based-on-their-morphological-properties" title="Permalink to this heading"></a></h2>
+<p>Instead of removing structures, you can extract them. This operation is similar to filtering but instead shows the structures that do not meet the specified criteria. The result is the difference between the original image and the filtered image.</p>
+<p>Create a config file named <cite>config_extracting.ini</cite> with the following options:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;extract&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">150</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Run the code with:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_extracting.ini
+</pre></div>
+</div>
+</div></blockquote>
+<p>The output image will be named <cite>output_image_extract_area_150.000.png</cite> and will display only the bright structures that are 150 pixels or less.</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/input_image.png" width="200px" height="200px">
+      <p>The original `input_image.png`.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_extract_area_150.000.png" width="200px" height="200px">
+      <p>The result of the extracting operation.</p>
+    </td>
+  </tr>
+</table><p>Similarly, you can explore other attribute functions. Update <cite>config_extracting.ini</cite> with the following parameters:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;extract&quot;</span>,<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="m">50</span><span class="o">)</span>,<span class="w"> </span><span class="c1"># Diagonal of enclosing rectangle</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;extract&quot;</span>,<span class="w"> </span><span class="m">16</span>,<span class="w"> </span><span class="m">5</span><span class="o">)</span>,<span class="w"> </span><span class="c1"># Sparseness</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;extract&quot;</span>,<span class="w"> </span><span class="m">17</span>,<span class="w"> </span><span class="m">0</span>.2<span class="o">)</span>,<span class="w"> </span><span class="c1"># Non-compactness</span>
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/input_image.png" width="200px" height="200px">
+      <p>The original `input_image.png`.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_extract_rectdiag_1500.000.png" width="200px" height="200px">
+      <p>The result of extracting based on the diagonal of the enclosing rectangle attribute.</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_extract_spars_2.000.png" width="200px" height="200px">
+      <p>The result of extracting based on the sparseness attribute.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_extract_ncomp_0.300.png" width="200px" height="200px">
+      <p>The result of extracting based on the non-compactness attribute.</p>
+    </td>
+  </tr>
+</table></section>
+<section id="creating-a-dmp">
+<h2>Creating a DMP<a class="headerlink" href="#creating-a-dmp" title="Permalink to this heading"></a></h2>
+<p>The Differential Morphological Profile (DMP) operation is useful for observing image content at different scales. We will use attribute function 0, which returns the size of the structures. First, create a file named <cite>lvec.txt</cite> with a list of characteristic scales that might be interesting for the image. For a 512 by 512 pixel image, you can use scales ranging from 1 to 262144. Here is an example <cite>lvec.txt</cite> file:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#LambdaVector file. Keep this exact line in all similar lambda vector files</span>
+<span class="m">100</span>
+<span class="m">1000</span>
+<span class="m">10000</span>
+<span class="m">50000</span>
+<span class="m">100000</span>
+<span class="m">150000</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Ensure the txt file starts with the line <cite>#LambdaVector file. Keep this exact line in all similar lambda vector files</cite>, as this tells <span class="bold-smallcaps">disccofan</span> that the file is valid for processing.</p>
+<p>Create a <cite>config_dmp.ini</cite> with the following options:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;dmp&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec.txt&quot;</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Make sure the path to <cite>lvec.txt</cite> is correct. If it’s in the same folder as <cite>disccofan</cite>, you can use the relative path.</p>
+<p>Run the code with:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_dmp.ini
+</pre></div>
+</div>
+</div></blockquote>
+<p>The output will be a FITS file named <cite>output_image_dmp_max_area.fits</cite>, as the DMP operation always adds one more dimension compared to the input image. This file contains multiple slices representing the differential morphological profile for the specified scales.</p>
+<p>Open the FITS file with an imaging software or Python to view the slices. Each slice corresponds to a scale from the <cite>lvec.txt</cite> file:</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_dmp_max_area0.png" width="150px" height="150px">
+      <p>First slice of the DMP (scale = 100).</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_dmp_max_area1.png" width="150px" height="150px">
+      <p>Second slice of the DMP (scale = 1000).</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_dmp_max_area2.png" width="150px" height="150px">
+      <p>Third slice of the DMP (scale = 10000).</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_dmp_max_area3.png" width="150px" height="150px">
+      <p>Fourth slice of the DMP (scale = 50000).</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_dmp_max_area4.png" width="150px" height="150px">
+      <p>Fifth slice of the DMP (scale = 100000).</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image_dmp_max_area5.png" width="150px" height="150px">
+      <p>Sixth slice of the DMP (scale = 150000).</p>
+    </td>
+  </tr>
+</table><p>As with filtering operations, the <cite>dmp</cite> operation can be used with any attribute function.</p>
+</section>
+<section id="exploring-the-1d-pattern-spectrum">
+<h2>Exploring the 1D Pattern Spectrum<a class="headerlink" href="#exploring-the-1d-pattern-spectrum" title="Permalink to this heading"></a></h2>
+<p>The 1D pattern spectrum is another approach to exploring the amount of information at different scales. It uses similar parameters to the <cite>dmp</cite> operation and requires a <cite>lvec.txt</cite> file (which can have a different name) containing the characteristic scales of interest. You can use a similar <cite>lvec.txt</cite> file as before:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#LambdaVector file. Keep this exact line in all similar lambda vector files</span>
+<span class="m">100</span>
+<span class="m">1000</span>
+<span class="m">10000</span>
+<span class="m">50000</span>
+<span class="m">100000</span>
+<span class="m">150000</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Create a configuration file named <cite>config_pattern1d.ini</cite> with the following options:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;pattern&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec.txt&quot;</span>,<span class="w"> </span><span class="m">1</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <cite>1</cite> at the end is a scale factor used to multiply all the scales in the <cite>lvec.txt</cite> file. While it might seem unnecessary, this factor is a practical way to explore different characteristic scales by simply adjusting the scales in the file.</p>
+<p>Run the code with:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_pattern1d.ini
+</pre></div>
+</div>
+</div></blockquote>
+<p>The output will be a text file named <cite>output_image_PS_1D_area.txt</cite>. This file contains two columns: one for the bins (or <cite>lambdas</cite>) and the second for the actual pattern spectrum. Each value in the pattern spectrum represents the amount of information contained between the bin and the next bin. Note that the first bin might show a value of 0, even if this value wasn’t in the <cite>lvec.txt</cite> file. This is done for practicality to include information between 0 and the first scale noted in the <cite>lvec.txt</cite> file.</p>
+<p>To visualize the pattern spectrum, you can use Python, R, or any other tool for plotting. Here’s a sample Python script to create a histogram of the pattern spectrum:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Read the data</span>
+<span class="n">pat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;output_image_PS_1D_area.txt&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Extract lambdas and spectrum values</span>
+<span class="n">lambdas</span> <span class="o">=</span> <span class="n">pat</span><span class="p">[</span><span class="s1">&#39;lambdas&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">spectra</span> <span class="o">=</span> <span class="n">pat</span><span class="p">[</span><span class="s1">&#39;spectra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Print values for verification</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lambdas:&quot;</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spectra:&quot;</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
+
+<span class="c1"># Adjust lambdas to avoid inf values during log10 transformation</span>
+<span class="n">lambdas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.5</span>
+<span class="n">lambdas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">lambdas</span><span class="p">)</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">spectra</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Bins&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pattern Spectrum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">lambdas</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">xtick_labels</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> &lt;= Size &lt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">lambdas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">10</span><span class="o">**</span><span class="n">lambdas</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lambdas</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Size &gt;= </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="mi">10</span><span class="o">**</span><span class="n">lambdas</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">xtick_labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+
+<span class="c1"># Show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This script will generate a plot similar to the one below:</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/pattern1D.png" width="75%">
+      <p>The resulting 1D pattern spectrum.</p>
+    </td>
+  </tr>
+</table><p>If everything is correct, the sum of all the bins in the pattern spectrum should correspond to the sum of the pixel gray values in the image.</p>
+</section>
+<section id="exploring-the-2d-pattern-spectrum">
+<h2>Exploring the 2D Pattern Spectrum<a class="headerlink" href="#exploring-the-2d-pattern-spectrum" title="Permalink to this heading"></a></h2>
+<p>The 2D pattern spectrum extends the 1D pattern spectrum to include a second attribute function. In this example, we will compute a 2D pattern spectrum using the size and elongation of the structures in the image. The process is similar to the 1D pattern spectrum, with the addition of a second attribute function.</p>
+<p>First, create a list of scales for the size attribute using a <cite>lvec.txt</cite> file, similar to the one used previously:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#LambdaVector file. Keep this exact line in all similar lambda vector files</span>
+<span class="m">100</span>
+<span class="m">1000</span>
+<span class="m">10000</span>
+<span class="m">50000</span>
+<span class="m">100000</span>
+<span class="m">150000</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Next, create a file for the second attribute function (elongation), named <cite>lvec_attr2.txt</cite>, with the following values:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#LambdaVector file. Keep this exact line in all similar lambda vector files</span>
+<span class="m">1</span>
+<span class="m">1</span>.5
+<span class="m">2</span>
+<span class="m">2</span>.5
+<span class="m">3</span>
+<span class="m">5</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Create a configuration file named <cite>config_pattern2d.ini</cite> with the following options:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;pattern2D&quot;</span>,<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="s2">&quot;lvec_attr2.txt&quot;</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec.txt&quot;</span>,<span class="w"> </span><span class="m">1</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>It’s important to note that the attribute function with the highest index (in this case, 14 for elongation) should be listed first. Additionally, the 2D pattern spectrum only works with attributes belonging to the same group, except for attribute function 0, which can be combined with any other attribute functions if it appears second in the config file.</p>
+<p>Run the code with:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>config_pattern2d.ini
+</pre></div>
+</div>
+</div></blockquote>
+<p>The output file will be named <cite>output_image_PS_2D_elong_area.txt</cite>. This file contains three columns: the bins for each attribute function in the first two columns, and the 2D pattern spectrum in the third column. To visualize the result, you can use Python as follows:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Load the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;output_image_PS_2D_elong_area.txt&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Extract values for plotting</span>
+<span class="n">lambda_attr1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambdas_attr1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">lambda_attr2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda_attr2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">spectra</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;spectra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Unique values for axes</span>
+<span class="n">lambda1_unique</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">lambda_attr1</span><span class="p">)</span>
+<span class="n">lambda2_unique</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">lambda_attr2</span><span class="p">)</span>
+
+<span class="c1"># Create a 2D array for the pattern spectrum</span>
+<span class="n">pattern_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">lambda1_unique</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">lambda2_unique</span><span class="p">)))</span>
+
+<span class="c1"># Fill the pattern spectrum array</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lambda_attr1</span><span class="p">)):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lambda1_unique</span> <span class="o">==</span> <span class="n">lambda_attr1</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lambda2_unique</span> <span class="o">==</span> <span class="n">lambda_attr2</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pattern_spectrum</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectra</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<span class="c1"># Apply log10 scale to x-axis (lambda_attr2) and spectrum values</span>
+<span class="n">pattern_spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">pattern_spectrum</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>  <span class="c1"># Adding a small value to avoid log(0)</span>
+<span class="n">lambda2_unique_log</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">lambda2_unique</span> <span class="o">+</span> <span class="mf">1e-1</span><span class="p">)</span>
+
+<span class="c1"># Plotting the heatmap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">pattern_spectrum</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+            <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">lambda2_unique_log</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">lambda2_unique_log</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lambda1_unique</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">lambda1_unique</span><span class="o">.</span><span class="n">min</span><span class="p">()],</span>
+            <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Log10 of Pattern Spectrum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Log10 of Size&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Elongation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;2D Pattern Spectrum (Log Scale)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>  <span class="c1"># Ensure origin is at the bottom-left</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The resulting 2D pattern spectrum will look like this:</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/pattern2D.png" width="75%">
+      <p>The resulting 2D pattern spectrum.</p>
+    </td>
+  </tr>
+</table></section>
+<section id="speeding-up-the-code">
+<h2>Speeding Up the Code<a class="headerlink" href="#speeding-up-the-code" title="Permalink to this heading"></a></h2>
+<section id="using-threads">
+<h3>Using Threads<a class="headerlink" href="#using-threads" title="Permalink to this heading"></a></h3>
+<p><span class="bold-smallcaps">disccofan</span> utilizes OpenMP for multi-threading to accelerate processing. This method is described in the paper: <strong>Concurrent Computation of Attribute Filters on Shared Memory Parallel Machines</strong> (&lt;<a class="reference external" href="https://ieeexplore.ieee.org/document/4407727">https://ieeexplore.ieee.org/document/4407727</a>&gt;). To enable multi-threading, simply specify the number of threads in the <cite>config.ini</cite> file:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">150</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+<span class="nv">threads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Alternatively, you can activate threading via the command line:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-threads<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For the image <cite>input_image.png</cite>, using four threads should ideally reduce processing time by a factor of four. However, this linear speed-up is generally observed for images up to 16 bits per pixel. The parallelization scheme may not perform as well for images with higher dynamic ranges. For floating point or 32-bit per pixel values, multi-threading is not recommended unless the data is relatively simple and free of noise.</p>
+</section>
+<section id="using-mpi-with-a-single-input-data-set">
+<h3>Using MPI with a Single Input Data Set<a class="headerlink" href="#using-mpi-with-a-single-input-data-set" title="Permalink to this heading"></a></h3>
+<p><span class="bold-smallcaps">disccofan</span> also supports advanced parallelization using OpenMPI, which is more versatile than multi-threading. For a single input file, MPI can split the image into several parts, both horizontally and vertically (and in depth for 3D data). This is controlled via the <cite>mpi_grid</cite> option in the <cite>config.ini</cite> file:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">150</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+<span class="nv">mpi_grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="m">2</span>,2,1<span class="o">]</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>In this configuration, the image is divided into 4 parts within a 2x2 grid. To fully utilize this grid, you need to run four MPI processes:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpiexec<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>./disccofan
+</pre></div>
+</div>
+</div></blockquote>
+<p>Alternatively, you can use the <cite>-grid</cite> option directly:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpiexec<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>./disccofan<span class="w"> </span>-grid<span class="w"> </span><span class="o">[</span><span class="m">2</span>,2,1<span class="o">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Each process handles a separate image segment, but the output is typically saved as a single file in formats like FITS or HDF5, as Freeimage does not support simultaneous writes from multiple processes.</p>
+<p>To write the final result as individual images from each process, update the <cite>config.ini</cite> file as follows:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_image.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;output_image-T0T.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">150</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+<span class="nv">mpi_grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="m">2</span>,2,1<span class="o">]</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This configuration results in separate files for each process (indexed from 0 to 3):</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/output_image-T2T_filter_area_150.000.png" width="200px" height="200px">
+      <p>The output image from process 2</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image-T3T_filter_area_150.000.png" width="200px" height="200px">
+      <p>The output image from process 3</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/output_image-T0T_filter_area_150.000.png" width="200px" height="200px">
+      <p>The output image from process 0</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/output_image-T1T_filter_area_150.000.png" width="200px" height="200px">
+      <p>The output image from process 1</p>
+    </td>
+  </tr>
+</table><p>MPI parallelization is available for all operations in <span class="bold-smallcaps">disccofan</span>, but it should be used <strong>very carefully</strong> with the <cite>tree</cite> operation. Although it is functional, the resulting files require special handling compared to single tree files.</p>
+</section>
+<section id="using-mpi-with-a-pre-cut-data-set">
+<h3>Using MPI with a Pre-Cut Data Set<a class="headerlink" href="#using-mpi-with-a-pre-cut-data-set" title="Permalink to this heading"></a></h3>
+<p>When working with very large images or datasets, it can be more practical to divide the data into smaller segments. These segments can then be stored on individual nodes of a high-performance cluster and processed in parallel.</p>
+<p><span class="bold-smallcaps">disccofan</span> supports processing pre-cut data sets, but requires that you have enough MPI processes to handle each segment of the data. Each pre-cut image should be named with a specific format: <cite>-T[X]T.[fileformat]</cite>, where <cite>[X]</cite> denotes the MPI process number responsible for this segment, and <cite>[fileformat]</cite> is the format of the image. The ordering of these images is also critical. For instance, if your data is divided into 3 horizontal parts and 2 vertical parts, the images should be named and ordered as follows:</p>
+<ul class="simple">
+<li><p><cite>toto-T0T.png</cite> is the lower-left part</p></li>
+<li><p><cite>toto-T1T.png</cite> and <cite>toto-T2T.png</cite> are the other parts in the same row</p></li>
+<li><p><cite>toto-T3T.png</cite>, <cite>toto-T4T.png</cite>, and <cite>toto-T5T.png</cite> are the parts in the next row above</p></li>
+</ul>
+<p>The principle remains the same for 3D datasets, where the data is also divided by depth.</p>
+<p>For example, I divided <cite>input_image.png</cite> into 3 horizontal and 2 vertical parts as shown:</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/toto-T3T.png" width="150px" height="150px">
+      <p>The input image toto-T3T.png.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/toto-T4T.png" width="150px" height="150px">
+      <p>The input image toto-T4T.png.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/toto-T5T.png" width="150px" height="150px">
+      <p>The input image toto-T5T.png.</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/toto-T0T.png" width="150px" height="150px">
+      <p>The input image toto-T0T.png.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/toto-T1T.png" width="150px" height="150px">
+      <p>The input image toto-T1T.png.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/toto-T2T.png" width="150px" height="150px">
+      <p>The input image toto-T2T.png.</p>
+    </td>
+  </tr>
+</table><p>In the <cite>config.ini</cite> file, you would set it up as follows:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">input_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;toto-T0T.png&quot;</span>
+<span class="nv">output_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;out_toto-T0T.png&quot;</span>
+<span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">    </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">150</span><span class="o">)</span>,
+<span class="o">)</span><span class="p">;</span>
+<span class="nv">mpi_grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="m">3</span>,2,1<span class="o">]</span><span class="p">;</span>
+<span class="nv">tile_overlap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <cite>tile_overlap = 0</cite> setting is <strong>critical</strong> here. <span class="bold-smallcaps">disccofan</span> requires individual tiles to have a pixel overlap at the borders with neighboring tiles. When processing a single input file, this overlap is straightforward. However, with pre-cut data, this overlap must be managed through additional inter-process communication to ensure continuity between tiles.</p>
+<p>To execute the processing, use:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpiexec<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span><span class="w"> </span>./disccofan
+</pre></div>
+</div>
+</div></blockquote>
+<p>This command launches 6 processes to handle the six tiles, and outputs will be saved separately as files named <cite>out_toto-T0T_filter_area_150.000.png</cite>, etc.</p>
+<table style="width:100%">
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/out_toto-T3T_filter_area_150.000.png" width="150px" height="150px">
+      <p>The output image from process 3.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/out_toto-T4T_filter_area_150.000.png" width="150px" height="150px">
+      <p>The output image from process 4.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/out_toto-T5T_filter_area_150.000.png" width="150px" height="150px">
+      <p>The output image from process 5.</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center">
+      <img src="_static/images/out_toto-T0T_filter_area_150.000.png" width="150px" height="150px">
+      <p>The output image from process 0.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/out_toto-T1T_filter_area_150.000.png" width="150px" height="150px">
+      <p>The output image from process 1.</p>
+    </td>
+    <td style="text-align:center">
+      <img src="_static/images/out_toto-T2T_filter_area_150.000.png" width="150px" height="150px">
+      <p>The output image from process 2.</p>
+    </td>
+  </tr>
+</table><p>It is important to note that processing individual tiles results <strong>in the same outcome</strong> as processing the entire dataset as a single image or volume. This is due to the principle of <strong>Distributed Component Forests</strong>, as detailed in the paper:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.worldscientific.com/doi/10.1142/S0218001419400123?srsltid=AfmBOorzh_s6u-6cin0VpWfJYVFr3kvkKw8Chr1SxBPhBGWghmRcXMPG">Distributed Component Forests in 2-D: Hierarchical Image Representations Suitable for Tera-Scale Images</a></p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -90,7 +686,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="docker.html" class="btn btn-neutral float-right" title="Using disccofan with Docker" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="docker.html" class="btn btn-neutral float-right" title="Running DISCCOFAN with Docker" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
