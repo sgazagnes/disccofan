@@ -68,7 +68,7 @@ comparing its performance with the only other available code. The tests are base
    .. raw:: html
 
       <div style="display: flex; flex-direction: column; align-items: center;">
-         <img src="docs/scaling/lofar.png" width="30%" />
+         <img src="docs/scaling/lofar.png" width="95%" />
          <p style="text-align: center; font-style: italic; margin-top: 0.5em;">
             Figure 4: Execution time (left), speed-up (middle) and memory gain (right) on the LOFAR 3D observation, with single precision floating point values. The 3D
             tile size remains constant (15000 × 15000 × 15 pixels), such that the volume size increases linearly with the number of processes used. With 48 processes,
