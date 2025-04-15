@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; disccofan 2.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1875455e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=73cda6fb"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started with Simple Examples" href="examples.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/disccofan.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file-parameters">Configuration File Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-options">Command-Line Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detailed-parameter-descriptions">Detailed Parameter Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-file-parameters">Output File Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-processing-parameters">Pre-processing Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#operation-parameters">Operation Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operations-details">Operations details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#combining-several-operations">Combining Several Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#parallelization-options">Parallelization Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tree-structure">Tree Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verbosity">Verbosity</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Getting Started with Simple Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">Running DISCCOFAN with Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version_updates.html">Version Updates and Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Support</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">disccofan</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<p><span class="bold-smallcaps">disccofan</span> can be utilized in various ways: through a configuration file, command-line options, with multi-threading or multiple MPI processes… Below are some basic examples of how to use <span class="bold-smallcaps">disccofan</span>:</p>
+<ol class="arabic">
+<li><p><strong>Example 1: Using the default `config.ini` file with a single process</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan
+</pre></div>
+</div>
+</li>
+<li><p><strong>Example 2: Using a specific configuration file with a single process</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-config<span class="w"> </span>myconfig.ini
+</pre></div>
+</div>
+</li>
+<li><p><strong>Example 3: Using the default `config.ini` file while overriding some parameters from the terminal</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./disccofan<span class="w"> </span>-input_image<span class="w"> </span>ilikebirds.png
+</pre></div>
+</div>
+</li>
+<li><p><strong>Example 4: Using 4 MPI processes, 2 threads, and the default `config.ini` file</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>./disccofan<span class="w"> </span>-g<span class="w"> </span><span class="m">2</span>,2,1<span class="w"> </span>-threads<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><span class="bold-smallcaps">disccofan</span> provides a wide range of parameters and options for customizing the processing of data sets. Below is a detailed description of the configuration parameters and command-line options.</p>
+<section id="configuration-file-parameters">
+<h2>Configuration File Parameters<a class="headerlink" href="#configuration-file-parameters" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>input_name</strong>: (str) The name of the input file.</p></li>
+<li><p><strong>output_name</strong>: (str) The name of the output file.</p></li>
+<li><p><strong>input_type</strong>: (str) File type for the input.</p></li>
+<li><p><strong>output_type</strong>: (str) File type for the output.</p></li>
+<li><p><strong>hdf5_dataset</strong>: (str) The dataset name if using HDF5 files.</p></li>
+<li><p><strong>save_output</strong>: (int) Whether to save output images (1 for yes, 0 for no).</p></li>
+<li><p><strong>tile_overlap</strong>: (int) Indicates if tiles include overlap (1 for yes, 0 for no).</p></li>
+<li><p><strong>mpi_grid</strong>: (list of int) Number of tiles horizontally, vertically, and in depth.</p></li>
+<li><p><strong>threads</strong>: (int) Number of threads to use.</p></li>
+<li><p><strong>preprocessing</strong>: (str) Preprocessing of the data.</p></li>
+<li><p><strong>image_options</strong>: (str) Additional preprocessing options.</p></li>
+<li><p><strong>pixel_dim</strong>: (list of float) Physical dimensions of pixels.</p></li>
+<li><p><strong>operation</strong>: (tuple) Processing operations, including filters and parameters.</p></li>
+<li><p><strong>tree_type</strong>: (str) Type of tree operation.</p></li>
+<li><p><strong>pixel_connectivity</strong>: (int) Pixel connectivity (4 for 2D, 6 for 3D, 8 or 26 for including diagonal neighbors).</p></li>
+<li><p><strong>verbosity</strong>: (str) Logging level.</p></li>
+</ul>
+</section>
+<section id="command-line-options">
+<h2>Command-Line Options<a class="headerlink" href="#command-line-options" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>-config</strong>: (str) Path to the configuration file.</p></li>
+<li><p><strong>-input_image</strong>: (str) Specify the input image file.</p></li>
+<li><p><strong>-output_image</strong>: (str) Specify the output image file.</p></li>
+<li><p><strong>-input_type</strong>: (str) Override input file type.</p></li>
+<li><p><strong>-output_type</strong>: (str) Override output file type.</p></li>
+<li><p><strong>-hdf5_dataset</strong>: (str) Override HDF5 dataset name.</p></li>
+<li><p><strong>-image_options</strong>: (str) Override image options.</p></li>
+<li><p><strong>-verbosity</strong>, <strong>-v</strong>: (str) Override verbosity level.</p></li>
+<li><p><strong>-save_output</strong>: (int) Override save output setting.</p></li>
+<li><p><strong>-tile_overlap</strong>: (int) Override tile overlap setting.</p></li>
+<li><p><strong>-threads</strong>, <strong>-t</strong>: (int) Override number of threads.</p></li>
+<li><p><strong>-preprocessing</strong>: (str) Override preprocessing setting.</p></li>
+<li><p><strong>-grid</strong>, <strong>-g</strong>: (list of int) Override MPI grid settings.</p></li>
+<li><p><strong>-operation</strong>, <strong>-o</strong>: (tuple) Override processing operations.</p></li>
+</ul>
+</section>
+<section id="detailed-parameter-descriptions">
+<h2>Detailed Parameter Descriptions<a class="headerlink" href="#detailed-parameter-descriptions" title="Permalink to this heading"></a></h2>
+<p><strong>input_name</strong>: Specifies the dataset to process. For command-line overrides, use <cite>-input_image</cite> (e.g., <cite>-input_image toto.png</cite>). Command-line options override those in the config file.</p>
+<p><strong>input_type</strong>: Leave as ‘auto’ for common formats (e.g., PNG, PGM, TIF, JP(E)G, FITS, HDF5).</p>
+<p>For HDF5 files, specify the dataset name using <strong>hdf5_dataset</strong>.</p>
+<p>For large datasets split into multiple parts, ensure enough MPI processes are allocated. Use the format <cite>toto-T0T.[format]</cite> for <cite>input_name</cite>, where <cite>[format]</cite> is the image format. <cite>-T0T</cite> means the data set is split and each part should be read by independant processes. See one of the example in the documentation for further details.</p>
+<p><strong>tile_overlap</strong>: Only for pre-cut data sets. Set to 1 if tiles overlap by one pixel; otherwise, set to 0. For single-file datasets, <strong>tile_overlap</strong> should be left to 1.</p>
+<p><strong>pixel_dim</strong>: Represents physical pixel dimensions if morphological accuracy is required.</p>
+<p><strong>pixel_connectivity</strong>: Specifies neighboring pixel connectivity. Default is 4 in 2D and 6 in 3D. Set to 8 or 26 to include diagonal neighbors.</p>
+</section>
+<section id="output-file-parameters">
+<h2>Output File Parameters<a class="headerlink" href="#output-file-parameters" title="Permalink to this heading"></a></h2>
+<p>The <strong>output_name</strong> parameter in the configuration file specifies the name of the output file. The final name depends on the operation and parameters used. You can also specify the output file using the <strong>-output_image</strong> command-line option (e.g., <cite>-output_image toto_out.png</cite>).</p>
+<p>For HDF5 output files, the dataset name defaults to <cite>disccofan</cite>.</p>
+</section>
+<section id="pre-processing-parameters">
+<h2>Pre-processing Parameters<a class="headerlink" href="#pre-processing-parameters" title="Permalink to this heading"></a></h2>
+<p>You can set the <strong>preprocessing</strong> option in the configuration file or via command line to preprocess data. Available options include:</p>
+<ul class="simple">
+<li><p><strong>ubyte</strong>: 8-bit scaling</p></li>
+<li><p><strong>ushort</strong>: 16-bit scaling</p></li>
+<li><p><strong>uint</strong>: 32-bit scaling</p></li>
+<li><p><strong>log</strong>: Natural logarithm</p></li>
+<li><p><strong>log10</strong>: Logarithm base 10</p></li>
+<li><p><strong>exp</strong>: Exponential</p></li>
+<li><p><strong>sqrt</strong>: Square root</p></li>
+</ul>
+<p>Although <span class="bold-smallcaps">disccofan</span> primarily handles grayscale datasets, it also supports RGB (converted to luminance), LOFAR, or specific sequences. Set <strong>image_options</strong> to “grayscale” (default), “rgb”, “lofar”, or “sequence” as needed.</p>
+</section>
+<section id="operation-parameters">
+<h2>Operation Parameters<a class="headerlink" href="#operation-parameters" title="Permalink to this heading"></a></h2>
+<p>The <strong>operation</strong> parameter is crucial for specifying which analysis you want to perform on your data. There are eight possible operations: <cite>filter</cite>, <cite>extract</cite>, <cite>dmp</cite>, <cite>csl</cite>, <cite>pattern</cite>, <cite>pattern2D</cite>, <cite>tree</cite>, and <cite>check</cite>. Each operation requires an attribute function to specify the morphological properties of interest. Below, we describe these attributes and the corresponding operations.</p>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<p>There are 18 attribute functions categorized into 5 groups. Each function is indexed for reference and can be used to analyze the morphological properties of objects in the image.</p>
+<ol class="arabic">
+<li><p><strong>Group #1: Connected Components Size</strong></p>
+<ul class="simple">
+<li><p><strong>Size</strong>: Determines the size of objects in the image. Index: 0.</p></li>
+</ul>
+</li>
+<li><p><strong>Group #2: Connected Components Dimensions</strong></p>
+<p>Provides detailed measurements of object dimensions:</p>
+<ul class="simple">
+<li><p><strong>Area of Minimal Enclosing Rectangle</strong>: Area of the smallest rectangle that completely encloses the object. Index: 1.</p></li>
+<li><p><strong>Square of Diagonal of Minimal Enclosing Rectangle</strong>: Square of the diagonal length of the minimal enclosing rectangle. Index: 2.</p></li>
+<li><p><strong>X-Extent</strong>: Maximum extent of the object along the x-axis. Index: 3.</p></li>
+<li><p><strong>Y-Extent</strong>: Maximum extent of the object along the y-axis. Index: 4.</p></li>
+<li><p><strong>Z-Extent</strong>: Maximum extent of the object along the z-axis. Index: 5.</p></li>
+</ul>
+</li>
+<li><p><strong>Group #3: Connected Components Center of Mass</strong></p>
+<p>Provides coordinates of the center of mass:</p>
+<ul class="simple">
+<li><p><strong>X-Mean</strong>: X-coordinate of the center of mass. Index: 6.</p></li>
+<li><p><strong>Y-Mean</strong>: Y-coordinate of the center of mass. Index: 7.</p></li>
+<li><p><strong>Z-Mean</strong>: Z-coordinate of the center of mass. Index: 8.</p></li>
+</ul>
+</li>
+<li><p><strong>Group #4: Connected Components Weighted Center of Mass</strong></p>
+<p>Provides weighted center of mass information:</p>
+<ul class="simple">
+<li><p><strong>X-Wmean</strong>: X-coordinate of the weighted center of mass. Index: 9.</p></li>
+<li><p><strong>Y-Wmean</strong>: Y-coordinate of the weighted center of mass. Index: 10.</p></li>
+<li><p><strong>Z-Wmean</strong>: Z-coordinate of the weighted center of mass. Index: 11.</p></li>
+<li><p><strong>Total Flux</strong>: Total flux of the object. Index: 12.</p></li>
+</ul>
+</li>
+<li><p><strong>Group #5: Connected Components Inertia Properties</strong></p>
+<p>Provides details about the object’s inertia properties:</p>
+<ul class="simple">
+<li><p><strong>Trace of the Inertia Matrix</strong>: Trace of the inertia matrix. Index: 13.</p></li>
+<li><p><strong>Elongation</strong>: Ratio of the longest axis to the second longest axis. Index: 14.</p></li>
+<li><p><strong>Flatness</strong>: Ratio of the second longest axis to the third longest axis (only in 3D). Index: 15.</p></li>
+<li><p><strong>Sparseness</strong>: Sparseness or porosity of the object. Index: 16.</p></li>
+<li><p><strong>Non-compactness</strong>: Non-compactness or asymmetry of the object. Index: 17.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="operations-details">
+<h3>Operations details<a class="headerlink" href="#operations-details" title="Permalink to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Filtering and Extracting Features</strong>:</p>
+<ul>
+<li><p><strong>filter</strong> or <strong>extract</strong> apply morphological operations based on chosen attributes. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">100</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>This filters (or extracts) objects based on their size. <cite>0</cite> represents the attribute function index, and <cite>100</cite> is the threshold.</p>
+</li>
+<li><p><strong>Differential Morphological Profile (DMP)</strong>:</p>
+<ul>
+<li><p><strong>dmp</strong> generates a profile based on a sequence of extract operations with varying thresholds. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;dmp&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec.txt&quot;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>Here, <cite>0</cite> sets the attribute function, and <cite>lvec.txt</cite> contains the thresholds for filtering.</p>
+</li>
+<li><p><strong>CSL Segmentation</strong>:</p>
+<ul>
+<li><p><strong>csl</strong> segments the image based on scale, contrast, and luminance. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;csl&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec.txt&quot;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p><cite>0</cite> sets the attribute function, and <cite>lvec.txt</cite> contains thresholds for CSL properties. Note: This operation is partially implemented.</p>
+</li>
+<li><p><strong>Pattern Spectrum</strong>:</p>
+<ul>
+<li><p><strong>pattern</strong> calculates the 1D pattern spectrum. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;pattern&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec.txt&quot;</span>,<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p><cite>0</cite> sets the attribute function, <cite>lvec.txt</cite> contains thresholds for defining scales, and <cite>1</cite> is the scale factor applied to values in <cite>lvec.txt</cite>.</p>
+</li>
+<li><p><strong>2D Pattern Spectrum</strong>:</p>
+<ul>
+<li><p><strong>pattern2D</strong> calculates the 2D pattern spectrum. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;pattern2D&quot;</span>,<span class="w"> </span><span class="m">17</span>,<span class="w"> </span><span class="s2">&quot;lvec2.txt&quot;</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s2">&quot;lvec2.txt&quot;</span>,<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>Here lvec.txt contains thresholds for attribute function 0, lvec2.txt contains thresholds for attribute function 17, and the two 1s are scale factors applied to values in each file.</p>
+</li>
+<li><p><strong>Tree</strong>:</p>
+<ul>
+<li><p><strong>tree</strong> generates a text file with the tree structure and attributes. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;tree&quot;</span>,<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>Note: Using the tree operation with MPI may produce different results compared to sequential processing. Ensure you understand MPI parallelization before using it for tree analysis.</p>
+</li>
+<li><p><strong>Check</strong>:</p>
+<ul>
+<li><p><strong>check</strong> replaces each pixel value with the corresponding attribute value. Example syntax:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;check&quot;</span>,<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>This fills each pixel with the size (attribute function 0) of the corresponding object it belongs to.</p>
+</li>
+</ol>
+</section>
+<section id="combining-several-operations">
+<h3>Combining Several Operations<a class="headerlink" href="#combining-several-operations" title="Permalink to this heading"></a></h3>
+<p>You can combine multiple operations in a single run to avoid the overhead of rebuilding the tree structure and attributes for each operation. To do this, set the <strong>operation</strong> parameter with a list of operations. For example:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">100</span><span class="o">)</span>,
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;filter&quot;</span>,<span class="w"> </span><span class="m">13</span>,<span class="w"> </span><span class="m">5</span><span class="o">)</span>,
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;extract&quot;</span>,<span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">1000</span><span class="o">)</span>,
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;dmp&quot;</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s2">&quot;tests/lvec.txt&quot;</span><span class="o">)</span>,
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;pattern&quot;</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s2">&quot;tests/lvec.txt&quot;</span><span class="o">)</span>,
+<span class="w">   </span><span class="o">(</span><span class="s2">&quot;tree&quot;</span>,<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Operations will be executed sequentially. If operations use attribute functions from the same group, the computation will be faster since the same tree is reused.</p>
+</section>
+</section>
+<section id="parallelization-options">
+<h2>Parallelization Options<a class="headerlink" href="#parallelization-options" title="Permalink to this heading"></a></h2>
+<p>You can enhance the performance of <span class="bold-smallcaps">disccofan</span> using threads or MPI. Threads are suitable for datasets with a narrow dynamic range (up to 16 bits). Set the number of threads using <strong>threads</strong> (or <strong>-threads</strong>).</p>
+<p>For MPI parallelization, use <cite>mpirun</cite> or <cite>mpiexec</cite>. Define data distribution with the <strong>mpi_grid</strong> option (or <strong>-grid</strong>). For example, setting <strong>mpi_grid</strong> to <cite>[2,2,1]</cite> indicates 4 MPI processes. Ensure that the total number of MPI processes matches the grid size.</p>
+</section>
+<section id="tree-structure">
+<h2>Tree Structure<a class="headerlink" href="#tree-structure" title="Permalink to this heading"></a></h2>
+<p>By default, <span class="bold-smallcaps">disccofan</span> constructs a max-tree, emphasizing bright objects in the image. To focus on dark objects (with lower gray values), set the <strong>tree_type</strong> option to <cite>min</cite> to build a min-tree.</p>
+</section>
+<section id="verbosity">
+<h2>Verbosity<a class="headerlink" href="#verbosity" title="Permalink to this heading"></a></h2>
+<p>Adjust the logging level using the verbosity option. Available levels include <cite>off</cite>, <cite>debug</cite>, <cite>info</cite>, <cite>warn</cite>, and <cite>error</cite>.</p>
+<p>For additional help, refer to the examples section to see practical applications of these options.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Getting Started with Simple Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
