@@ -1,0 +1,183 @@
+#!/bin/bash
+
+#~ ./bubbles ../21cm/512_Vel_LC/delta_T_v3_z011.68_nf0.952007_useTs1_512_1024Mpc nf095 512 10 1 1 1 ../21cm/512_Vel_LC/updated_smoothed_deltax_z011.68_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_LC/delta_T_v3_z010.49_nf0.896767_useTs1_512_1024Mpc nf09 512 10 1 1 1 ../21cm/512_Vel_LC/updated_smoothed_deltax_z010.49_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_LC/delta_T_v3_z009.40_nf0.803590_useTs1_512_1024Mpc nf08 512 10 1 1 1 ../21cm/512_Vel_LC/updated_smoothed_deltax_z009.40_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_LC/delta_T_v3_z008.61_nf0.693219_useTs1_512_1024Mpc nf07 512 10 1 1 1 ../21cm/512_Vel_LC/updated_smoothed_deltax_z008.61_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_LC/delta_T_v3_z007.70_nf0.498114_useTs1_512_1024Mpc nf05 512 10 1 1 1 ../21cm/512_Vel_LC/updated_smoothed_deltax_z007.70_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_LC/delta_T_v3_z007.04_nf0.294003_useTs1_512_1024Mpc nf03 512 10 1 1 1 ../21cm/512_Vel_LC/updated_smoothed_deltax_z007.04_512_1024Mpc
+
+#~ cp -r out ../21cm/512_Vel_LC/outdtdens
+#~ rm -r out/*
+
+#~ ./bubbles ../21cm/512_Vel_NoLC/delta_T_v3_z011.68_nf0.952007_useTs1_512_1024Mpc nf095 512 10 1 1 1 ../21cm/512_Vel_NoLC/updated_smoothed_deltax_z011.68_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_NoLC/delta_T_v3_z010.49_nf0.896767_useTs1_512_1024Mpc nf09 512 10 1 1 1 ../21cm/512_Vel_NoLC/updated_smoothed_deltax_z010.49_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_NoLC/delta_T_v3_z009.40_nf0.803590_useTs1_512_1024Mpc nf08 512 10 1 1 1 ../21cm/512_Vel_NoLC/updated_smoothed_deltax_z010.49_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_NoLC/delta_T_v3_z008.61_nf0.693219_useTs1_512_1024Mpc nf07 512 10 1 1 1 ../21cm/512_Vel_NoLC/updated_smoothed_deltax_z008.61_512_1024Mpc
+#~ ./bubbles ../21cm/512_Vel_NoLC/delta_T_v3_z007.70_nf0.498114_useTs1_512_1024Mpc nf05 512 10 1 1 1 ../21cm/512_Vel_NoLC/updated_smoothed_deltax_z007.70_512_1024Mpc
+
+#~ cp -r out ../21cm/512_Vel_NoLC/outdtdens
+#~ rm -r out/*
+
+#~ ./bubbles ../21cm/512_NoLC_NoL2PT/delta_T_v3_z011.68_nf0.950974_useTs1_512_1024Mpc nf095 512 10 1 1 1 ../21cm/512_NoLC_NoL2PT/updated_smoothed_deltax_z011.68_512_1024Mpc
+#~ ./bubbles ../21cm/512_NoLC_NoL2PT/delta_T_v3_z010.49_nf0.894689_useTs1_512_1024Mpc nf09 512 10 1 1 1 ../21cm/512_NoLC_NoL2PT/updated_smoothed_deltax_z010.49_512_1024Mpc
+#~ ./bubbles ../21cm/512_NoLC_NoL2PT/delta_T_v3_z009.40_nf0.799835_useTs1_512_1024Mpc nf08 512 10 1 1 1 ../21cm/512_NoLC_NoL2PT/updated_smoothed_deltax_z009.40_512_1024Mpc
+#~ ./bubbles ../21cm/512_NoLC_NoL2PT/delta_T_v3_z008.61_nf0.688072_useTs1_512_1024Mpc nf07 512 10 1 1 1 ../21cm/512_NoLC_NoL2PT/updated_smoothed_deltax_z008.61_512_1024Mpc
+#~ ./bubbles ../21cm/512_NoLC_NoL2PT/delta_T_v3_z007.70_nf0.492276_useTs1_512_1024Mpc nf05 512 10 1 1 1 ../21cm/512_NoLC_NoL2PT/updated_smoothed_deltax_z007.70_512_1024Mpc
+#~ ./bubbles ../21cm/512_NoLC_NoL2PT/delta_T_v3_z007.04_nf0.289951_useTs1_512_1024Mpc nf03 512 10 1 1 1 ../21cm/512_NoLC_NoL2PT/updated_smoothed_deltax_z007.04_512_1024Mpc
+
+#~ cp -r out ../21cm/512_NoLC_NoL2PT/outdtdens
+#~ rm -r out/*
+
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=10_RHS=0_fa=2_z=9.29 z_9_29 1024 10 1 1 0 dd 0.0 0.1
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=10_RHS=0_fa=2_z=9.04 z_9_04 1024 10 1 1 0 dd 0.0 0.1
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=10_RHS=0_fa=2_z=8.80 z_8_80 1024 10 1 1 0 dd 0.0 0.1
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=10_RHS=0_fa=2_z=8.57 z_8_57 1024 10 1 1 0 dd 0.0 0.1
+
+#~ cp -r out ../21cm/21SSD/RSD/outdtbfx10fa2rhs0
+#~ rm -r out/*
+
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=1_RHS=0_fa=1_z=9.29 z_9_29 1024 10 1 1 0 dd 0.0 0.1
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=1_RHS=0_fa=1_z=9.04 z_9_04 1024 10 1 1 0 dd 0.0 0.1
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=1_RHS=0_fa=1_z=8.80 z_8_80 1024 10 1 1 0 dd 0.0 0.1
+#~ ./bubbles ../21cm/21SSD/RSD/dtb_fx=1_RHS=0_fa=1_z=8.57 z_8_57 1024 10 1 1 0 dd 0.0 0.1
+
+#~ cp -r out ../21cm/21SSD/RSD/outdtbfx1fa1rhs0
+#~ rm -r out/*
+#
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/delta_T_v3_z013.57_nf0.954454_useTs1_256_512Mpc nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z013.57_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/xH_nohalos_z013.57_nf0.954454_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z013.57_256_512Mpc 0.0 0.0
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/delta_T_v3_z012.19_nf0.902608_useTs1_256_512Mpc nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z012.19_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/xH_nohalos_z012.19_nf0.902608_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z012.19_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/delta_T_v3_z010.71_nf0.794681_useTs1_256_512Mpc nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z010.71_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/xH_nohalos_z010.71_nf0.794681_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z010.71_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/delta_T_v3_z009.82_nf0.689196_useTs1_256_512Mpc nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z009.82_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/xH_nohalos_z009.82_nf0.689196_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z009.82_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/delta_T_v3_z008.80_nf0.515339_useTs1_256_512Mpc nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z008.80_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/xH_nohalos_z008.80_nf0.515339_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z008.80_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/delta_T_v3_z007.88_nf0.299584_useTs1_256_512Mpc nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z007.88_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc01/xH_nohalos_z007.88_nf0.299584_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mp xH_nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc01/updated_smoothed_deltax_z007.88_256_512Mpc 0.0 0.5
+
+#cp -r out ../Simulations/21cmFAST/256/Mturn1e8fesc01/
+#rm -r out/*
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/delta_T_v3_z013.86_nf0.942389_useTs1_256_512Mpc nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z013.86_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/xH_nohalos_z013.86_nf0.942389_Fstar0.0500_starPL0.5000_Fesc0.5000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z013.86_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/delta_T_v3_z013.00_nf0.897416_useTs1_256_512Mpc nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z013.00_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/xH_nohalos_z013.00_nf0.897416_Fstar0.0500_starPL0.5000_Fesc0.5000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z013.00_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/delta_T_v3_z011.93_nf0.794887_useTs1_256_512Mpc nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z011.93_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/xH_nohalos_z011.93_nf0.794887_Fstar0.0500_starPL0.5000_Fesc0.5000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z011.93_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/delta_T_v3_z011.43_nf0.716884_useTs1_256_512Mpc nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z011.43_256_512Mpc
+# ./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/xH_nohalos_z011.43_nf0.716884_Fstar0.0500_starPL0.5000_Fesc0.5000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z011.43_256_512Mpc 0.0 0.5
+ 
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/delta_T_v3_z010.49_nf0.481403_useTs1_256_512Mpc  nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z010.49_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/xH_nohalos_z010.49_nf0.481403_Fstar0.0500_starPL0.5000_Fesc0.5000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z010.49_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/delta_T_v3_z010.04_nf0.316005_useTs1_256_512Mpc nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z010.04_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc05/xH_nohalos_z010.04_nf0.316005_Fstar0.0500_starPL0.5000_Fesc0.5000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc05/updated_smoothed_deltax_z010.04_256_512Mpc 0.0 0.5
+
+
+#cp -r out ../Simulations/21cmFAST/256/Mturn1e8fesc05/
+#rm -r out/*
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/delta_T_v3_z013.86_nf0.946284_useTs1_256_512Mpc nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z013.86_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/xH_nohalos_z013.86_nf0.946284_Fstar0.0500_starPL0.5000_Fesc1.0000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z013.86_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/delta_T_v3_z013.00_nf0.899170_useTs1_256_512Mpc nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z013.00_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/xH_nohalos_z013.00_nf0.899170_Fstar0.0500_starPL0.5000_Fesc1.0000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z013.00_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/delta_T_v3_z011.93_nf0.787218_useTs1_256_512Mpc nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z011.93_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/xH_nohalos_z011.93_nf0.787218_Fstar0.0500_starPL0.5000_Fesc1.0000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z011.93_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/delta_T_v3_z011.43_nf0.696118_useTs1_256_512Mpc nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z011.43_256_512Mpc
+# ./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/xH_nohalos_z011.43_nf0.696118_Fstar0.0500_starPL0.5000_Fesc1.0000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z011.43_256_512Mpc 0.0 0.5
+ 
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/delta_T_v3_z010.71_nf0.490638_useTs1_256_512Mpc nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z010.71_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/xH_nohalos_z010.71_nf0.490638_Fstar0.0500_starPL0.5000_Fesc1.0000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z010.71_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/delta_T_v3_z010.26_nf0.297080_useTs1_256_512Mpc nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z010.26_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e8fesc1/xH_nohalos_z010.26_nf0.297080_Fstar0.0500_starPL0.5000_Fesc1.0000_escPL-0.5000_Mturn1.00e+08_HIIfilter1_RHIImax50_256_512Mpc xH_nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e8fesc1/updated_smoothed_deltax_z010.26_256_512Mpc 0.0 0.5
+
+
+#cp -r out ../Simulations/21cmFAST/256/Mturn1e8fesc1/
+#rm -r out/*
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/delta_T_v3_z010.49_nf0.944868_useTs1_256_512Mpc nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z010.49_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/xH_nohalos_z010.49_nf0.944868_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+09_HIIfilter1_RHIImax50_256_512Mpc xH_nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z010.49_256_512Mpc 0.0 0.1
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/delta_T_v3_z009.61_nf0.901648_useTs1_256_512Mpc nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z009.61_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/xH_nohalos_z009.61_nf0.901648_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+09_HIIfilter1_RHIImax50_256_512Mpc xH_nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z009.61_256_512Mpc 0.0 0.1
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/delta_T_v3_z008.42_nf0.796872_useTs1_256_512Mpc nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z008.42_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/xH_nohalos_z008.42_nf0.796872_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+09_HIIfilter1_RHIImax50_256_512Mpc xH_nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z008.42_256_512Mpc 0.0 0.1
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/delta_T_v3_z007.70_nf0.692167_useTs1_256_512Mpc nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z007.70_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/xH_nohalos_z007.70_nf0.692167_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+09_HIIfilter1_RHIImax50_256_512Mpc xH_nf07 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z007.70_256_512Mpc 0.0 0.1
+ 
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/delta_T_v3_z006.88_nf0.513258_useTs1_256_512Mpc nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z006.88_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/xH_nohalos_z006.88_nf0.513258_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+09_HIIfilter1_RHIImax50_256_512Mpc xH_nf05 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z006.88_256_512Mpc 0.0 0.1
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/delta_T_v3_z006.14_nf0.285770_useTs1_256_512Mpc nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z006.14_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e9fesc01/xH_nohalos_z006.14_nf0.285770_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+09_HIIfilter1_RHIImax50_256_512Mpc xH_nf03 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e9fesc01/updated_smoothed_deltax_z006.14_256_512Mpc 0.0 0.1
+
+#cp -r out ../Simulations/21cmFAST/256/Mturn1e9fesc01/
+#rm -r out/*
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e10fesc01/delta_T_v3_z007.88_nf0.945700_useTs1_256_512Mpc nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e10fesc01/updated_smoothed_deltax_z007.88_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e10fesc01/xH_nohalos_z007.88_nf0.945700_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+10_HIIfilter1_RHIImax50_256_512Mpc xH_nf095 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e10fesc01/updated_smoothed_deltax_z007.88_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e10fesc01/delta_T_v3_z007.20_nf0.906022_useTs1_256_512Mpc nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e10fesc01/updated_smoothed_deltax_z007.20_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e10fesc01/xH_nohalos_z007.20_nf0.906022_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+10_HIIfilter1_RHIImax50_256_512Mpc xH_nf09 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e10fesc01/updated_smoothed_deltax_z007.20_256_512Mpc 0.0 0.5
+
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e10fesc01/delta_T_v3_z006.28_nf0.804439_useTs1_256_512Mpc nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e10fesc01/updated_smoothed_deltax_z006.28_256_512Mpc
+#./bubbles ../Simulations/21cmFAST/256/Mturn1e10fesc01/xH_nohalos_z006.28_nf0.804439_Fstar0.0500_starPL0.5000_Fesc0.1000_escPL-0.5000_Mturn1.00e+10_HIIfilter1_RHIImax50_256_512Mpc xH_nf08 256 10 1 1 1 ../Simulations/21cmFAST/256/Mturn1e10fesc01/updated_smoothed_deltax_z006.28_256_512Mpc 0.0 0.5
+
+#cp -r out ../Simulations/21cmFAST/256/Mturn1e10fesc01/
+#rm -r out/*
+
+./bubbles ../Simulations/RSAGE/rsage_const/ion_fields/*49* nf095 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*49* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_const/ion_fields/*53* nf09 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*53* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_const/ion_fields/*59* nf08 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*59* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_const/ion_fields/*63* nf07 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*63* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_const/ion_fields/*71* nf05 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*71* 0.9 1.0 -64
+
+cp -r out ../Simulations/RSAGE/rsage_const/outall
+rm -r out/*
+
+./bubbles ../Simulations/RSAGE/rsage_SFR/ion_fields/*48* nf095 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*48* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_SFR/ion_fields/*53* nf09 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*53* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_SFR/ion_fields/*58* nf08 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*58* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_SFR/ion_fields/*62* nf07 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*62* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_SFR/ion_fields/*69* nf05 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*69* 0.9 1.0 -64
+
+cp -r out ../Simulations/RSAGE/rsage_SFR/outall
+rm -r out/*
+
+./bubbles ../Simulations/RSAGE/rsage_fej/ion_fields/*48* nf095 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*48* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_fej/ion_fields/*53* nf09 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*53* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_fej/ion_fields/*59* nf08 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*59* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_fej/ion_fields/*64* nf07 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*64* 0.9 1.0 -64
+
+./bubbles ../Simulations/RSAGE/rsage_fej/ion_fields/*71* nf05 256 10 1 1 0 ../Simulations/RSAGE/density_fields/*71* 0.9 1.0 -64
+
+cp -r out ../Simulations/RSAGE/rsage_fej/outall
+rm -r out/*

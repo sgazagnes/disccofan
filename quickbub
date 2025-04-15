@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for i in {0..50}
+do
+    mpirun -np 1 ./disccoman -g 1,1,1  -l 10 -v info --intype fits  --attribute 4 -c 26   --threads 1   -f eor --eor hii  --bpp -32  --inprefix ../Simulations/21cmFAST/256/fesc02_error/thr_fesc02_noise${i} --outprefix out/thr_fesc02_noise${i}
+done
